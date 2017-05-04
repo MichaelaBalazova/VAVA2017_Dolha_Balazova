@@ -1,18 +1,26 @@
 package test;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import test.TestBeanRemote;
+import entity.EmployeesModel;
+import test.EmployeeManagerRemote;
 
 public class ClientTest {
 
 	public static void main(String[] args) throws Exception {
 		Context context = createRemoteEjbContext("localhost", "8080");
-		TestBeanRemote remote = (TestBeanRemote)context.lookup("ejb:LibQEAR/LibQServer//TestBean!test.TestBeanRemote");
+		EmployeeManagerRemote remote = (EmployeeManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//EmployeeManagerBean!test.EmployeeManagerRemote");
 		System.out.println(remote.tstPlus("Hello", "Jaro"));
+
+		List<EmployeesModel> list_employees = remote.getAllEmployees();
+		System.out.println(list_employees.size());
+		for (EmployeesModel employee : list_employees){
+			System.out.println("(" + employee.getId() + ", " + employee.getFirst_name() + ", " + employee.getLast_name() + ")");
+		}
 	}
 
 	/**

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class BooksTab {
 	
+	public int offset = 0;
 	private JButton all_books = new JButton("Show all books");
 	private JButton detail_books = new JButton("Detail of selected book");
 	private JLabel books_per_page = new JLabel("Books Per Page");
@@ -97,25 +99,56 @@ public class BooksTab {
 		            detail_books.setEnabled(!lsm.isSelectionEmpty());
 		        }
 		});
-		
-		all_books.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});
 			
 		detail_books.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
 			    } 
 		});
 		
-		next.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});
-		
-		prev.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});
+	}
+	
+	public void addActions(ActionListener showAllBooks, ActionListener prevBooks, ActionListener nextBooks){
+		all_books.addActionListener(showAllBooks);
+		prev.addActionListener(prevBooks);
+		next.addActionListener(nextBooks);
+	}
+	
+	public void addTableRow(Object[] row){
+		this.model.addRow(row);
+	}
+	
+	public void clearTable(){
+		this.model.setRowCount(0);
+	}
+	
+	public int getLimit(){
+		int limit = 0;
+		try{
+			limit = Integer.parseInt(offset_txt.getText());
+			if (limit < 1){
+				JOptionPane.showMessageDialog(null,"The number is invalid","Error",JOptionPane.ERROR_MESSAGE);
+				return -1;
+			}
+		}
+		catch(NumberFormatException e){
+			System.out.println("Error : " + e.getMessage());			
+		}
+		return limit;
+	}
+	
+	public void setNextEnabled(boolean enabled){
+		next.setEnabled(enabled);
+	}
+	
+	public void setPrevEnabled(boolean enabled){
+		prev.setEnabled(enabled);
+	}
+	
+	public void setOffset(int offset){
+		this.offset = offset;
+	}
+	
+	public int getOffset(){
+		return this.offset;
 	}
 }
