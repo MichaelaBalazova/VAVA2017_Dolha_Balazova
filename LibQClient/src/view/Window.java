@@ -23,7 +23,7 @@ public class Window extends JFrame implements ActionListener {
 	
 	private JPanel panel = new JPanel();
 	
-	public Window(PGPoolingDataSource source) {
+	public Window() {
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(50, 50, 2584, 1480);

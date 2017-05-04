@@ -74,6 +74,7 @@ public class BooksTab {
 		//vizibilita pre strankovacie buttony
 		prev.setEnabled(false);
 		next.setEnabled(false);
+		detail_books.setEnabled(false);
 		
 		//pridavanie komponentov na panel
 		panel.add(next);
