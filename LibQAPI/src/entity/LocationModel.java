@@ -1,6 +1,8 @@
 package entity;
 
-public class LocationModel {
+import java.io.Serializable;
+
+public class LocationModel implements Serializable{
 	
 	private int id;
 	private int floor;

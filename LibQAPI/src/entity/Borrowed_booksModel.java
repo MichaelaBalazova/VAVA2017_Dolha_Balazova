@@ -1,8 +1,9 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Borrowed_booksModel {
+public class Borrowed_booksModel implements Serializable{
 	
 	private int id;
 	private Date borrowed_from;

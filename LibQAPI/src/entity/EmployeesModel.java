@@ -1,8 +1,9 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class EmployeesModel {
+public class EmployeesModel implements Serializable{
 	
 	private int id;
 	private String first_name;

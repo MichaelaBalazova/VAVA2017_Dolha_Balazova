@@ -1,6 +1,8 @@
 package entity;
 
-public class StateModel {
+import java.io.Serializable;
+
+public class StateModel implements Serializable{
 	
 	private int id;
 	private String type_of_state;
