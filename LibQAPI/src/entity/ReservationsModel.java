@@ -1,8 +1,9 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ReservationsModel {
+public class ReservationsModel implements Serializable{
 
 	private int id;
 	private Date reservation_from;

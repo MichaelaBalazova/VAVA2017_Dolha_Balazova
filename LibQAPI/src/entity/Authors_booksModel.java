@@ -1,6 +1,8 @@
 package entity;
 
-public class Authors_booksModel {
+import java.io.Serializable;
+
+public class Authors_booksModel implements Serializable{
 	
 	private int id;
 	private AuthorsModel author_id;

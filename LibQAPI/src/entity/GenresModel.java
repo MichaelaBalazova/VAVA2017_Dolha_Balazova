@@ -1,6 +1,8 @@
 package entity;
 
-public class GenresModel {
+import java.io.Serializable;
+
+public class GenresModel implements Serializable{
 
 	private int id;
 	private String name;

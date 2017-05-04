@@ -1,6 +1,8 @@
 package entity;
 
-public class Available_booksModel {
+import java.io.Serializable;
+
+public class Available_booksModel implements Serializable{
 	
 	private int id;
 	private String identifier;

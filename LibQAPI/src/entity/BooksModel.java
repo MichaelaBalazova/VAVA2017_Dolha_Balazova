@@ -1,9 +1,10 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class BooksModel {
+public class BooksModel implements Serializable{
 	
 	private int id;
 	private String title;
