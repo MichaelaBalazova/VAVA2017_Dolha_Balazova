@@ -33,20 +33,20 @@ import org.jdatepicker.impl.UtilDateModel;
 public class MembersTab {
 	
 	private JButton all_members = new JButton("Show all members");
-	private JButton select_num_borrowed = new JButton("Filter Records");
+	private JButton filter_recods = new JButton("Filter Records");
+	private JLabel members_per_page = new JLabel("Members Per Page");
 	private JPanel panel;
 	private JButton prev = new JButton("PREV");
 	private JButton next = new JButton("NEXT");
 	private JButton change_person = new JButton("Update selected person");
 	private String[] columns_members = {"ID", "First Name", "Second Name", "Birthday", "Email", "Telephone", "Address","Member from", "Borrowed Books" };
-	private JTextField offset_txt;
+	private JTextField offset_txt = new JTextField();;
 	private JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JSeparator separator3 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JLabel filter1 = new JLabel("Filter for borrowed books");
 	private JLabel filter2 = new JLabel("and date of membership");
 	private JLabel filter3 = new JLabel("Select number of borrowed books");
-	private JLabel filter4 = new JLabel("Select date 'Member from'");
 	private JLabel change_label = new JLabel("Change personal info of person");
 	private JTextField find = new JTextField();
 	private JLabel find_l = new JLabel("Find a person in table");
@@ -63,6 +63,7 @@ public class MembersTab {
 	public MembersTab(JPanel members_panel) {
 		this.panel = members_panel;
 		
+		//nastaveni tabulky s Members 
 		table.setModel(model);
 		table.setBackground(new Color(240,248,255));
 		table.setFont(new Font("Segoe", Font.BOLD, 20));
@@ -79,59 +80,61 @@ public class MembersTab {
 		table.getColumnModel().getColumn(8).setPreferredWidth(1);
 		panel.add(scroll);
 		
+		//combobox pre filtrovanie podla poctu pozicanych knih
 		String[] options = { "---", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };		
 		JComboBox comboBox = new JComboBox(options);
 		comboBox.setBounds(26, 260, 209, 39);
 		comboBox.setFont(new Font("Sans Serif", Font.PLAIN, 18));
 		panel.add(comboBox);
 		
-		all_members.setBounds(26, 28, 209, 41);
-		all_members.setFont(new Font("Sans Serif", Font.PLAIN, 20));
-		panel.add(all_members);
-		
-		select_num_borrowed.setBounds(26, 375, 210, 41);
-		select_num_borrowed.setFont(new Font("Sans Serif", Font.PLAIN, 18));
-		panel.add(select_num_borrowed);
-		
-		offset_txt = new JTextField();
+		//textfield pre zadavanie offsetu
 		offset_txt.setText("30");
 		offset_txt.setBounds(26, 116, 120, 39);
 		offset_txt.setColumns(10);
 		offset_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20));
-		panel.add(offset_txt);
 		
-		JLabel lblPer2 = new JLabel("Members Per Page");
-		lblPer2.setBounds(26, 86, 197, 33);
-		lblPer2.setFont(new Font("Sans Serif", Font.PLAIN, 18));
-		panel.add(lblPer2);
+		//nastavovanie pozicii komponentov
+		all_members.setBounds(26, 28, 209, 41);
+		members_per_page.setBounds(26, 86, 197, 33);
+		filter_recods.setBounds(26, 330, 210, 41);
 		prev.setBounds(280, 1270, 120, 35);		
-		next.setBounds(2357, 1270, 120, 35);	
-		prev.setFont(new Font("Sans Serif", Font.PLAIN, 20));
-		next.setFont(new Font("Sans Serif", Font.PLAIN, 20));
-		prev.setEnabled(false);
-		next.setEnabled(false);
+		next.setBounds(2357, 1270, 120, 35);
 		separator1.setBounds(10, 183, 260, 20);
-		separator2.setBounds(10, 450, 260, 20);
-		separator3.setBounds(10, 545, 260, 20);
-		change_label.setBounds(26, 453, 230, 22);
-		change_label.setFont(new Font("Sans Serif", Font.BOLD, 15));
-		change_person.setBounds(26, 485, 210, 35);
+		separator2.setBounds(10, 405, 260, 20);
+		separator3.setBounds(10, 500, 260, 20);
+		change_person.setBounds(26, 440, 210, 35);
 		filter1.setBounds(26, 187, 220, 22);
 		filter2.setBounds(26, 202, 200, 22);
 		filter3.setBounds(26, 240, 220, 22);
-		filter4.setBounds(26, 310, 200, 22);
-		filter1.setFont(new Font("Sans Serif", Font.BOLD, 16));
-		filter2.setFont(new Font("Sans Serif", Font.BOLD, 16));
-		filter3.setFont(new Font("Sans Serif", Font.PLAIN, 14));
-		filter4.setFont(new Font("Sans Serif", Font.PLAIN, 14));
-		person_borrowed.setBounds(26, 560, 210, 35);
+		person_borrowed.setBounds(26, 515, 210, 35);
+		change_label.setBounds(26, 408, 230, 22);
+		find_l.setBounds(26, 595, 220, 20);
+		find.setBounds(26, 615, 200, 35);
 		
-		change_person.setEnabled(false);
-		person_borrowed.setEnabled(false);
-		find.setEditable(false);
+		//nastavovanie pisma komponentov
+		filter_recods.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+		all_members.setFont(new Font("Sans Serif", Font.PLAIN, 20));
+		prev.setFont(new Font("Sans Serif", Font.PLAIN, 20));
+		next.setFont(new Font("Sans Serif", Font.PLAIN, 20));
 		change_person.setFont(new Font("Sans Serif", Font.PLAIN, 17));
 		person_borrowed.setFont(new Font("Sans Serif", Font.PLAIN, 14));
 		find.setFont(new Font("Sans Serif", Font.PLAIN, 20));
+		change_label.setFont(new Font("Sans Serif", Font.BOLD, 15));
+		filter1.setFont(new Font("Sans Serif", Font.BOLD, 16));
+		filter2.setFont(new Font("Sans Serif", Font.BOLD, 16));
+		filter3.setFont(new Font("Sans Serif", Font.PLAIN, 14));
+		members_per_page.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+		find_l.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+		
+		//vizibilita komponentov
+		prev.setEnabled(false);
+		next.setEnabled(false);		
+		change_person.setEnabled(false);
+		person_borrowed.setEnabled(false);
+		find.setEditable(false);
+		
+		//pridavanie komponentov na panel
+		panel.add(members_per_page);
 		panel.add(next);
 		panel.add(prev);
 		panel.add(separator1);
@@ -140,25 +143,12 @@ public class MembersTab {
 		panel.add(filter1);
 		panel.add(filter2);
 		panel.add(filter3);
-		panel.add(filter4);
 		panel.add(change_person);
 		panel.add(change_label);
 		panel.add(person_borrowed);
-		
-		UtilDateModel model = new UtilDateModel();
-		Properties p = new Properties();
-		p.put("text.today", "Today");
-		p.put("text.month", "Month");
-		p.put("text.year", "Year");
-		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
-		
-		datePicker.setBounds(26, 330, 120, 45);
-		panel.add(datePicker);
-		
-		find_l.setFont(new Font("Sans Serif", Font.PLAIN, 18));
-		find_l.setBounds(26, 640, 220, 20);
-		find.setBounds(26, 660, 200, 35);
+		panel.add(filter_recods);
+		panel.add(all_members);
+		panel.add(offset_txt);		
 		panel.add(find);
 		panel.add(find_l);
 		
@@ -177,7 +167,7 @@ public class MembersTab {
 			    } 
 		});
 		
-		select_num_borrowed.addActionListener(new ActionListener() { 
+		filter_recods.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
 		    	} 
 		});
