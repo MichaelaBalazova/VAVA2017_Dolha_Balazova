@@ -22,6 +22,10 @@ import javax.swing.JLabel;
 public class Window extends JFrame implements ActionListener {
 	
 	private JPanel panel = new JPanel();
+	public BooksTab books_tab;
+	public MembersTab members_tab;
+	public Available_booksTab available_books_tab;
+	public ReservationsTab reservations_tab;
 	
 	public Window() {
 		setVisible(true);
@@ -43,25 +47,25 @@ public class Window extends JFrame implements ActionListener {
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Book Catalogue", null, panel_1, null);
 		panel_1.setLayout(null);		
-		BooksTab books_tab = new BooksTab(panel_1);
+		books_tab = new BooksTab(panel_1);
 		
 		//panel Members
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Members", null, panel_2, null);
 		panel_2.setLayout(null);					
-		MembersTab members_tab = new MembersTab(panel_2);
+		members_tab = new MembersTab(panel_2);
 		
 		//panel Borrow a book (Tabulka Available_books a nasledne pridavanie do Borrowed books a zmena stavu v Available_books)
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("Borrow a book", null, panel_3, null);
 		panel_3.setLayout(null);				
-		Available_booksTab available_books_tab = new Available_booksTab(panel_3);
+		available_books_tab = new Available_booksTab(panel_3);
 		
 		//panel Reservations
 		JPanel panel_4 = new JPanel();
 		tabbedPane.addTab("Reservations", null, panel_4, null);
 		panel_4.setLayout(null);			
-		ReservationsTab reservations_tab = new ReservationsTab(panel_4);
+		reservations_tab = new ReservationsTab(panel_4);
 	}
 
 	@Override

@@ -63,7 +63,7 @@ public class MembersTab {
 	public MembersTab(JPanel members_panel) {
 		this.panel = members_panel;
 		
-		//nastaveni tabulky s Members 
+		//nastavenie tabulky s Members 
 		table.setModel(model);
 		table.setBackground(new Color(240,248,255));
 		table.setFont(new Font("Segoe", Font.BOLD, 20));
