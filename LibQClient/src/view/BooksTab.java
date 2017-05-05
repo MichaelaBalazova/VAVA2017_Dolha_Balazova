@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,14 +22,19 @@ import javax.swing.table.DefaultTableModel;
 
 public class BooksTab {
 	
+	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	public int offset = 0;
-	private JButton all_books = new JButton("Show all books");
-	private JButton detail_books = new JButton("Detail of selected book");
-	private JLabel books_per_page = new JLabel("Books Per Page");
+	private ImageIcon imgSK = new ImageIcon("img/sk-flag.png");
+	private ImageIcon imgEN = new ImageIcon("img/en-flag.png");
+	private JButton langSK = new JButton(imgSK);
+	private JButton langEN = new JButton(imgEN);
+	private JButton all_books = new JButton(resourceBundle.getString("BooksTab.btn.Show_all_books")); //$NON-NLS-1$
+	private JButton detail_books = new JButton(resourceBundle.getString("BooksTab.btn.Detail_of_selected_book")); //$NON-NLS-1$
+	private JLabel books_per_page = new JLabel(resourceBundle.getString("BooksTab.lbl.Books_per_page")); //$NON-NLS-1$
 	private JPanel panel;
-	private JButton prev = new JButton("PREV");
-	private JButton next = new JButton("NEXT");
-	private String[] columns_books = {"ID", "Title", "Publisher", "Pages", "Pieces", "EAN_code", "Book genre" };
+	private JButton prev = new JButton(resourceBundle.getString("BooksTab.btn.PREV")); //$NON-NLS-1$
+	private JButton next = new JButton(resourceBundle.getString("BooksTab.btn.NEXT")); //$NON-NLS-1$
+	private String[] columns_books = {"ID", "Title", "Publisher", "Pages", "Pieces", "EAN_code", "Book genre" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 	private JTextField offset_txt;
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
@@ -43,12 +51,12 @@ public class BooksTab {
 		//JTable pre Books
 		table.setModel(model);
 		table.setBackground(new Color(240,248,255));
-		table.setFont(new Font("Segoe", Font.BOLD, 20));
+		table.setFont(new Font("Segoe", Font.BOLD, 20)); //$NON-NLS-1$
 		table.setRowHeight(40);
 		scroll.setBounds(280, 19, 2198, 1233);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);	
-		table.getTableHeader().setFont(new Font("Sans Serif", Font.PLAIN, 20));
+		table.getTableHeader().setFont(new Font("Sans Serif", Font.PLAIN, 20)); //$NON-NLS-1$
 		model.setColumnIdentifiers(columns_books);
 		table.getColumnModel().getColumn(0).setPreferredWidth(1);
 		table.getColumnModel().getColumn(1).setPreferredWidth(240);
@@ -65,13 +73,21 @@ public class BooksTab {
 		books_per_page.setBounds(26, 86, 197, 33);
 		prev.setBounds(280, 1270, 120, 35);		
 		next.setBounds(2357, 1270, 120, 35);
+		langSK.setBounds(26, 300, 60, 35);
+		langEN.setBounds(106, 300, 60, 35);
 		
 		//nastavovanie pisma pre komponenty
-		all_books.setFont(new Font("Sans Serif", Font.PLAIN, 20));
-		detail_books.setFont(new Font("Sans Serif", Font.PLAIN, 16));
-		books_per_page.setFont(new Font("Sans Serif", Font.PLAIN, 18));
-		prev.setFont(new Font("Sans Serif", Font.PLAIN, 20));
-		next.setFont(new Font("Sans Serif", Font.PLAIN, 20));
+		all_books.setFont(new Font("Sans Serif", Font.PLAIN, 20)); //$NON-NLS-1$
+		detail_books.setFont(new Font("Sans Serif", Font.PLAIN, 16)); //$NON-NLS-1$
+		books_per_page.setFont(new Font("Sans Serif", Font.PLAIN, 18)); //$NON-NLS-1$
+		prev.setFont(new Font("Sans Serif", Font.PLAIN, 20)); //$NON-NLS-1$
+		next.setFont(new Font("Sans Serif", Font.PLAIN, 20)); //$NON-NLS-1$
+		
+		//nastavenie funkcionality jazykovych zmien
+		langSK.addActionListener(e -> {Locale.setDefault(new Locale("sk", "SK")); 
+			resourceBundle = resourceBundle.getBundle("messages");});
+		langEN.addActionListener(e -> {Locale.setDefault(new Locale("en", "EN")); 
+			resourceBundle = resourceBundle.getBundle("messages");});
 		
 		//vizibilita pre strankovacie buttony
 		prev.setEnabled(false);
@@ -83,13 +99,15 @@ public class BooksTab {
 		panel.add(prev);
 		panel.add(all_books);
 		panel.add(detail_books);
+		panel.add(langSK);
+		panel.add(langEN);
 		panel.add(books_per_page);
 		
 		offset_txt = new JTextField();
-		offset_txt.setText("30");
+		offset_txt.setText("30"); //$NON-NLS-1$
 		offset_txt.setBounds(26, 116, 120, 39);
 		offset_txt.setColumns(10);
-		offset_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20));
+		offset_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20)); //$NON-NLS-1$
 		panel.add(offset_txt);
 				
 		ListSelectionModel listSelectionModel = table.getSelectionModel();
@@ -126,12 +144,12 @@ public class BooksTab {
 		try{
 			limit = Integer.parseInt(offset_txt.getText());
 			if (limit < 1){
-				JOptionPane.showMessageDialog(null,"The number is invalid","Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"The number is invalid","Error",JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 				return -1;
 			}
 		}
 		catch(NumberFormatException e){
-			System.out.println("Error : " + e.getMessage());			
+			System.out.println("Error : " + e.getMessage());			 //$NON-NLS-1$
 		}
 		return limit;
 	}

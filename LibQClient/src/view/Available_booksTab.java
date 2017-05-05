@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,13 +20,14 @@ import javax.swing.table.DefaultTableModel;
 
 public class Available_booksTab {
 
-	private JButton all_available_books = new JButton("Show all available books");
+	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", new Locale("sk","SK")); //$NON-NLS-1$ //$NON-NLS-2$
+	private JButton all_available_books = new JButton(resourceBundle.getString("Available_booksTab.btn.Show_all_available_books")); //$NON-NLS-1$
 	private JPanel panel;
-	private JLabel available_books_per_page = new JLabel("Records Per Page");
-	private JButton borrow_book = new JButton("Borrow selected book");
-	private JButton prev = new JButton("PREV");
-	private JButton next = new JButton("NEXT");
-	private String[] columns_available_books = {"ID", "State", "Identifier", "Title", "Publisher"};
+	private JLabel available_books_per_page = new JLabel(resourceBundle.getString("Available_booksTab.lbl.Records_per_page")); //$NON-NLS-1$
+	private JButton borrow_book = new JButton(resourceBundle.getString("Available_booksTab.btn.Borrow_selected_book")); //$NON-NLS-1$
+	private JButton prev = new JButton(resourceBundle.getString("Available_booksTab.btn.PREW")); //$NON-NLS-1$
+	private JButton next = new JButton(resourceBundle.getString("Available_booksTab.btn.NEXT")); //$NON-NLS-1$
+	private String[] columns_available_books = {"ID", "State", "Identifier", "Title", "Publisher"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	private JTextField offset_txt = new JTextField();
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
@@ -41,13 +44,13 @@ public class Available_booksTab {
 		//tabulka pre Available Books
 		table.setModel(model);
 		table.setBackground(new Color(240,248,255));
-		table.setFont(new Font("Segoe", Font.BOLD, 20));
+		table.setFont(new Font("Segoe", Font.BOLD, 20)); //$NON-NLS-1$
 		table.setRowHeight(40);
 		scroll.setBounds(280, 19, 2198, 1233);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		model.setColumnIdentifiers(columns_available_books);
-		table.getTableHeader().setFont(new Font("Sans Serif", Font.PLAIN, 20));
+		table.getTableHeader().setFont(new Font("Sans Serif", Font.PLAIN, 20)); //$NON-NLS-1$
 		table.getColumnModel().getColumn(0).setPreferredWidth(1);
 		table.getColumnModel().getColumn(1).setPreferredWidth(1);
 		table.getColumnModel().getColumn(3).setPreferredWidth(200);
@@ -62,11 +65,11 @@ public class Available_booksTab {
 		borrow_book.setBounds(26, 183, 209, 41);
 		
 		//nastavovanie pisma pre komponenty
-		all_available_books.setFont(new Font("Sans Serif", Font.PLAIN, 17));
-		available_books_per_page.setFont(new Font("Sans Serif", Font.PLAIN, 18));
-		prev.setFont(new Font("Sans Serif", Font.PLAIN, 20));
-		next.setFont(new Font("Sans Serif", Font.PLAIN, 20));
-		borrow_book.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+		all_available_books.setFont(new Font("Sans Serif", Font.PLAIN, 17)); //$NON-NLS-1$
+		available_books_per_page.setFont(new Font("Sans Serif", Font.PLAIN, 18)); //$NON-NLS-1$
+		prev.setFont(new Font("Sans Serif", Font.PLAIN, 20)); //$NON-NLS-1$
+		next.setFont(new Font("Sans Serif", Font.PLAIN, 20)); //$NON-NLS-1$
+		borrow_book.setFont(new Font("Sans Serif", Font.PLAIN, 18)); //$NON-NLS-1$
 		
 		//viditelnost pre buttony
 		prev.setEnabled(false);
@@ -81,10 +84,10 @@ public class Available_booksTab {
 		panel.add(borrow_book);
 		
 		//textfield pre zadanie offsetu
-		offset_txt.setText("30");
+		offset_txt.setText("30"); //$NON-NLS-1$
 		offset_txt.setBounds(26, 116, 120, 39);
 		offset_txt.setColumns(10);
-		offset_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20));
+		offset_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20)); //$NON-NLS-1$
 		panel.add(offset_txt);
 		
 		all_available_books.addActionListener(new ActionListener() { 
