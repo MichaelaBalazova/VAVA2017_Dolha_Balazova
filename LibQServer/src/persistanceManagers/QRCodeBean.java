@@ -1,4 +1,4 @@
-package test;
+package persistanceManagers;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -18,6 +18,8 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import test.QRCodeBeanRemote;
+
 /**
  * Session Bean implementation class QRCodeBean
  */
@@ -27,30 +29,26 @@ public class QRCodeBean implements QRCodeBeanRemote {
     public int createQRCode(File saveFile, String stringToEncode){
 		int size = 250;
 		String fileType = "png";
-		try {
-			
+		try {			
 			Map<EncodeHintType, Object> hintMap = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
 			hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-			
-			// Now with zxing version 3.2.1 you could change border size (white border size to just 1)
 			hintMap.put(EncodeHintType.MARGIN, 1); /* default = 4 */
 			hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
  
 			QRCodeWriter qrCodeWriter = new QRCodeWriter();
 			BitMatrix byteMatrix = qrCodeWriter.encode(stringToEncode, BarcodeFormat.QR_CODE, size,
 					size, hintMap);
-			int CrunchifyWidth = byteMatrix.getWidth();
-			BufferedImage image = new BufferedImage(CrunchifyWidth, CrunchifyWidth,
-					BufferedImage.TYPE_INT_RGB);
+			int width = byteMatrix.getWidth();
+			BufferedImage image = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
 			image.createGraphics();
  
 			Graphics2D graphics = (Graphics2D) image.getGraphics();
 			graphics.setColor(Color.WHITE);
-			graphics.fillRect(0, 0, CrunchifyWidth, CrunchifyWidth);
+			graphics.fillRect(0, 0, width, width);
 			graphics.setColor(Color.BLACK);
  
-			for (int i = 0; i < CrunchifyWidth; i++) {
-				for (int j = 0; j < CrunchifyWidth; j++) {
+			for (int i = 0; i < width; i++) {
+				for (int j = 0; j < width; j++) {
 					if (byteMatrix.get(i, j)) {
 						graphics.fillRect(i, j, 1, 1);
 					}
@@ -59,9 +57,11 @@ public class QRCodeBean implements QRCodeBeanRemote {
 			ImageIO.write(image, fileType, saveFile);
 		} catch (WriterException e) {
 			e.printStackTrace();
+			//log unsuccessful creation of QR
 			return -1;
 		} catch (IOException e) {
 			e.printStackTrace();
+			//log unsuccessful creation of QR
 			return -1;
 		}
 		//log successful creation of QR
