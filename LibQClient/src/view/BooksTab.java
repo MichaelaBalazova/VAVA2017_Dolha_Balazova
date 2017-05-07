@@ -38,17 +38,10 @@ public class BooksTab {
 	private JButton detail_books = new JButton(resourceBundle.getString("BooksTab.btn.Detail_of_selected_book"));
 	private JLabel books_per_page = new JLabel(resourceBundle.getString("BooksTab.lbl.Books_per_page"));
 	private JPanel panel;
-<<<<<<< HEAD
-	private JButton prev = new JButton("PREV");
-	private JButton next = new JButton("NEXT");
-	private String[] columns_books = {"ID", "Title", "Publisher", "Pages", "Pieces", "EAN_code", "Book genre" };
-	private JTextField limit_txt;
-=======
 	private JButton prev = new JButton(resourceBundle.getString("BooksTab.btn.PREV"));
 	private JButton next = new JButton(resourceBundle.getString("BooksTab.btn.NEXT"));
 	private String[] columns_books = {"ID", "Title", "Publisher", "Pages", "Pieces", "EAN_code", "Book genre"}; 
-	private JTextField offset_txt;
->>>>>>> ad5b169e047ca7919136f141319d6f11588fafd3
+	private JTextField limit_txt = new JTextField();;
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
 	private DefaultTableModel model= new DefaultTableModel(){
@@ -120,21 +113,11 @@ public class BooksTab {
 		panel.add(langEN);
 		panel.add(books_per_page);
 		
-<<<<<<< HEAD
-		limit_txt = new JTextField();
-		limit_txt.setText("30");
+		limit_txt.setText("30"); 
 		limit_txt.setBounds(26, 116, 120, 39);
 		limit_txt.setColumns(10);
-		limit_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20));
+		limit_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20)); 
 		panel.add(limit_txt);
-=======
-		offset_txt = new JTextField();
-		offset_txt.setText("30"); 
-		offset_txt.setBounds(26, 116, 120, 39);
-		offset_txt.setColumns(10);
-		offset_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20)); 
-		panel.add(offset_txt);
->>>>>>> ad5b169e047ca7919136f141319d6f11588fafd3
 				
 		ListSelectionModel listSelectionModel = table.getSelectionModel();
 		listSelectionModel.addListSelectionListener(new ListSelectionListener() {
