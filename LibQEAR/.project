@@ -3,8 +3,8 @@
 	<name>LibQEAR</name>
 	<comment></comment>
 	<projects>
-		<project>LibQAPI</project>
 		<project>LibQServer</project>
+		<project>LibQAPI</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -65,9 +65,9 @@ public class Available_booksTab {
 		//nastavovanie pozicii pre komponenty
 		all_available_books.setBounds(26, 28, 209, 41);
 		available_books_per_page.setBounds(26, 86, 197, 33);
-		prev.setBounds(280, 1270, 120, 35);		
-		next.setBounds(2357, 1270, 120, 35);
-		borrow_book.setBounds(26, 183, 209, 41);
+		prev.setBounds(280, 1270, 200, 35);		
+		next.setBounds(2277, 1270, 200, 35);
+		borrow_book.setBounds(26, 183, 227, 41);
 		langSK.setBounds(26, 300, 60, 35);
 		langEN.setBounds(106, 300, 60, 35);
 		
