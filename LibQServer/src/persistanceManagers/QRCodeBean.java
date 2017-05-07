@@ -28,7 +28,13 @@ public class QRCodeBean implements QRCodeBeanRemote {
 
     public int createQRCode(File saveFile, String stringToEncode){
 		int size = 250;
-		String fileType = "png";
+		String fileType = null;
+		for (String suff : ImageIO.getWriterFileSuffixes()){
+			if (saveFile.getName().endsWith("."+suff)){
+				fileType = suff;
+				break;
+			}
+		}
 		try {			
 			Map<EncodeHintType, Object> hintMap = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
 			hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
