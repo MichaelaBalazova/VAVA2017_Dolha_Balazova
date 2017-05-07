@@ -12,13 +12,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class List_of_borrowed_booksWindow extends JFrame{
+public class MemberListOfBorrowedBooksWindow extends JFrame{
 	
 	private JPanel panel = new JPanel();
 	private JTable table  = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
 	private JEditorPane txt = new JEditorPane("text/html", "");
-	private String[] columns = {"ID", "Book title", "Publisher", "Borrowed_from", "Borrowed_to", "State", "Borrowed By" };
+	private String[] columns = {"Borrowed ID", "Book title", "Publisher", "Borrowed_from", "Borrowed_to", "State", "Borrowed By", "Department"};
 	private DefaultTableModel model = new DefaultTableModel(){
 		@Override
 	    public boolean isCellEditable(int row, int column) {
@@ -26,10 +26,9 @@ public class List_of_borrowed_booksWindow extends JFrame{
 	    }
 	};
 	
-	public List_of_borrowed_booksWindow(int member_id, String first_name, String last_name) {
-		setVisible(true);
+	public MemberListOfBorrowedBooksWindow(int member_id, String first_name, String last_name) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(50, 50, 1900, 650);
+		setBounds(50, 50, 2000, 650);
 		setTitle("List of borrowed books of a member");
 		setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -44,12 +43,13 @@ public class List_of_borrowed_booksWindow extends JFrame{
 		table.setFont(new Font("Sans Serif", Font.BOLD, 20));
 		table.getTableHeader().setFont(new Font("Sans Serif", Font.PLAIN, 20));
 		table.setRowHeight(40);
-		scroll.setBounds(35, 70, 1830, 500);
+		scroll.setBounds(35, 70, 1930, 500);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		panel.add(scroll);
 		table.getColumnModel().getColumn(0).setPreferredWidth(1);
 		table.getColumnModel().getColumn(1).setPreferredWidth(250);
+		table.getColumnModel().getColumn(2).setPreferredWidth(150);
 		table.getColumnModel().getColumn(5).setPreferredWidth(1);
 		
 		txt.setBounds(35, 7, 800, 50);
@@ -60,6 +60,13 @@ public class List_of_borrowed_booksWindow extends JFrame{
 		panel.add(txt);
 		
 		txt.setText("<b>Member ID:</b> " + member_id + "<br>" + first_name + " " + last_name ); 
-		
+	}
+	
+	public void setWinVisile(boolean value){
+		this.setVisible(value);
+	}
+	
+	public void addTableRow(Object[] row){
+		this.model.addRow(row);
 	}
 }

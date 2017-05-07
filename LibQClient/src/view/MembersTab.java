@@ -7,8 +7,10 @@ import java.awt.event.ActionListener;
 import java.util.Properties;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -32,15 +34,17 @@ import org.jdatepicker.impl.UtilDateModel;
 
 public class MembersTab {
 	
+	public int offset = 0;
 	private JButton all_members = new JButton("Show all members");
-	private JButton filter_recods = new JButton("Filter Records");
+	private JButton filter_records = new JButton("Filter Records");
 	private JLabel members_per_page = new JLabel("Members Per Page");
+	private JCheckBox checkbox = new JCheckBox("Enable filter");
 	private JPanel panel;
 	private JButton prev = new JButton("PREV");
 	private JButton next = new JButton("NEXT");
 	private JButton change_person = new JButton("Update selected person");
 	private String[] columns_members = {"ID", "First Name", "Second Name", "Birthday", "Email", "Telephone", "Address","Member from", "Borrowed Books" };
-	private JTextField offset_txt = new JTextField();;
+	private JTextField limit_txt = new JTextField();;
 	private JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JSeparator separator3 = new JSeparator(SwingConstants.HORIZONTAL);
@@ -83,36 +87,41 @@ public class MembersTab {
 		//combobox pre filtrovanie podla poctu pozicanych knih
 		String[] options = { "---", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };		
 		JComboBox comboBox = new JComboBox(options);
-		comboBox.setBounds(26, 260, 209, 39);
+		comboBox.setBounds(26, 310, 209, 39);
 		comboBox.setFont(new Font("Sans Serif", Font.PLAIN, 18));
 		panel.add(comboBox);
 		
+		//checkbox pre filtrovanie zaznamov
+		checkbox.setBounds(50, 240, 150, 30);
+		checkbox.setFont(new Font("Sans Serif", Font.PLAIN, 20));;
+		
 		//textfield pre zadavanie offsetu
-		offset_txt.setText("30");
-		offset_txt.setBounds(26, 116, 120, 39);
-		offset_txt.setColumns(10);
-		offset_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20));
+		limit_txt.setText("30");
+		limit_txt.setBounds(26, 116, 120, 39);
+		limit_txt.setColumns(10);
+		limit_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20));
 		
 		//nastavovanie pozicii komponentov
 		all_members.setBounds(26, 28, 209, 41);
 		members_per_page.setBounds(26, 86, 197, 33);
-		filter_recods.setBounds(26, 330, 210, 41);
+		filter_records.setBounds(26, 375, 210, 41);
 		prev.setBounds(280, 1270, 120, 35);		
 		next.setBounds(2357, 1270, 120, 35);
 		separator1.setBounds(10, 183, 260, 20);
-		separator2.setBounds(10, 405, 260, 20);
-		separator3.setBounds(10, 500, 260, 20);
-		change_person.setBounds(26, 440, 210, 35);
+		separator2.setBounds(10, 435, 260, 20);
+		separator3.setBounds(10, 525, 260, 20);
+		change_person.setBounds(26, 470, 210, 35);
+		//filter1.setBounds(26, 187, 220, 22);
 		filter1.setBounds(26, 187, 220, 22);
 		filter2.setBounds(26, 202, 200, 22);
-		filter3.setBounds(26, 240, 220, 22);
-		person_borrowed.setBounds(26, 515, 210, 35);
-		change_label.setBounds(26, 408, 230, 22);
-		find_l.setBounds(26, 595, 220, 20);
-		find.setBounds(26, 615, 200, 35);
+		filter3.setBounds(26, 285, 220, 22);
+		person_borrowed.setBounds(26, 545, 210, 35);
+		change_label.setBounds(26, 438, 230, 22);
+		find_l.setBounds(26, 625, 220, 20);
+		find.setBounds(26, 645, 200, 35);
 		
 		//nastavovanie pisma komponentov
-		filter_recods.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+		filter_records.setFont(new Font("Sans Serif", Font.PLAIN, 18));
 		all_members.setFont(new Font("Sans Serif", Font.PLAIN, 20));
 		prev.setFont(new Font("Sans Serif", Font.PLAIN, 20));
 		next.setFont(new Font("Sans Serif", Font.PLAIN, 20));
@@ -146,32 +155,13 @@ public class MembersTab {
 		panel.add(change_person);
 		panel.add(change_label);
 		panel.add(person_borrowed);
-		panel.add(filter_recods);
+		panel.add(filter_records);
 		panel.add(all_members);
-		panel.add(offset_txt);		
+		panel.add(limit_txt);		
 		panel.add(find);
 		panel.add(find_l);
-		
-		all_members.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});
-		
-		next.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});
-		
-		prev.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});
-		
-		filter_recods.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-		    	} 
-		});
-		
+		panel.add(checkbox);
+			
 		change_person.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 					
 				}
@@ -186,11 +176,71 @@ public class MembersTab {
 		listSelectionModel.addListSelectionListener(new ListSelectionListener() {
 		        public void valueChanged(ListSelectionEvent e) { 
 		            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-		            change_person.setEnabled(!lsm.isSelectionEmpty());
+		            //change_person.setEnabled(!lsm.isSelectionEmpty());
 		            person_borrowed.setEnabled(!lsm.isSelectionEmpty());
 		        }
 		});
 		
 	}
 	
+	public void addActions(ActionListener showAllMembers, ActionListener prevMembers, ActionListener nextMembers, 
+			ActionListener memberListOfBorrowedBooks, ActionListener filterRecords){
+		all_members.addActionListener(showAllMembers);
+		prev.addActionListener(prevMembers);
+		next.addActionListener(nextMembers);
+		person_borrowed.addActionListener(memberListOfBorrowedBooks);
+		filter_records.addActionListener(filterRecords);
+	}
+	
+	public void addTableRow(Object[] row){
+		this.model.addRow(row);
+	}
+	
+	public void clearTable(){
+		this.model.setRowCount(0);
+	}
+	
+	public int getLimit(){
+		int limit = 0;
+		try{
+			limit = Integer.parseInt(limit_txt.getText());
+			if (limit < 1){
+				JOptionPane.showMessageDialog(null,"The number is invalid","Error",JOptionPane.ERROR_MESSAGE);
+				return -1;
+			}
+		}
+		catch(NumberFormatException e){
+			System.out.println("Error : " + e.getMessage());			
+		}
+		return limit;
+	}
+	
+	public void setNextEnabled(boolean enabled){
+		next.setEnabled(enabled);
+	}
+	
+	public void setPrevEnabled(boolean enabled){
+		prev.setEnabled(enabled);
+	}
+	
+	public void setOffset(int offset){
+		this.offset = offset;
+	}
+	
+	public int getOffset(){
+		return this.offset;
+	}
+	
+	public int getSelectedRowMember_id(){
+		int selected_row = (int) this.table.getValueAt(table.getSelectedRow(), 0);
+		return selected_row;
+	}
+	
+	public String getSelectedRowFirstname(){
+		return this.table.getValueAt(table.getSelectedRow(), 1).toString();
+	}
+	
+	public String getSelectedRowSecondname(){
+		return this.table.getValueAt(table.getSelectedRow(), 2).toString();
+	}
 }
