@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -32,6 +35,11 @@ import org.jdatepicker.impl.UtilDateModel;
 
 public class MembersTab {
 	
+	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
+	private ImageIcon imgSK = new ImageIcon("img/sk-flag.png");
+	private ImageIcon imgEN = new ImageIcon("img/en-flag.png");
+	private JButton langSK = new JButton(imgSK);
+	private JButton langEN = new JButton(imgEN);
 	private JButton all_members = new JButton("Show all members");
 	private JButton filter_recods = new JButton("Filter Records");
 	private JLabel members_per_page = new JLabel("Members Per Page");
@@ -110,6 +118,8 @@ public class MembersTab {
 		change_label.setBounds(26, 408, 230, 22);
 		find_l.setBounds(26, 595, 220, 20);
 		find.setBounds(26, 615, 200, 35);
+		langSK.setBounds(26, 300, 60, 35);
+		langEN.setBounds(106, 300, 60, 35);
 		
 		//nastavovanie pisma komponentov
 		filter_recods.setFont(new Font("Sans Serif", Font.PLAIN, 18));
@@ -125,6 +135,12 @@ public class MembersTab {
 		filter3.setFont(new Font("Sans Serif", Font.PLAIN, 14));
 		members_per_page.setFont(new Font("Sans Serif", Font.PLAIN, 18));
 		find_l.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+		langSK.setActionCommand("setLangSK");
+		langEN.setActionCommand("setLangEN");
+		
+		//nastavenie funkcionality jazykovych zmien	
+		langSK.addActionListener(e -> setLanguage(e));
+		langEN.addActionListener(e -> setLanguage(e));
 		
 		//vizibilita komponentov
 		prev.setEnabled(false);
@@ -151,6 +167,8 @@ public class MembersTab {
 		panel.add(offset_txt);		
 		panel.add(find);
 		panel.add(find_l);
+		panel.add(langSK);
+		panel.add(langEN);
 		
 		all_members.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
@@ -191,6 +209,38 @@ public class MembersTab {
 		        }
 		});
 		
+	}
+	
+	private void setLanguage(ActionEvent a){
+		String actionCommand = a.getActionCommand();
+		if (actionCommand.equals(langSK.getActionCommand())){
+			Locale.setDefault(new Locale("sk","SK"));
+		}
+		if (actionCommand.equals(langEN.getActionCommand())){
+			Locale.setDefault(new Locale("en","EN"));
+		}
+		resourceBundle = ResourceBundle.getBundle("messages");
+		all_members.setText(resourceBundle.getString("MembersTab.btn.All_members"));
+		filter_recods.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
+		members_per_page.setText(resourceBundle.getString("MembersTab.lbl.Members_Per_Page"));
+		change_person.setText(resourceBundle.getString("MembersTab.btn.Change_person"));
+		prev.setText(resourceBundle.getString("MembersTab.btn.PREV"));
+		next.setText(resourceBundle.getString("MembersTab.btn.NEXT"));
+		table.getColumnModel().getColumn(1).setHeaderValue(resourceBundle.getString("MembersTab.clmn.First_name"));
+		table.getColumnModel().getColumn(2).setHeaderValue(resourceBundle.getString("MembersTab.clmn.Second_name"));
+		table.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("MembersTab.clmn.Birthday"));
+		table.getColumnModel().getColumn(4).setHeaderValue(resourceBundle.getString("MembersTab.clmn.Email"));
+		table.getColumnModel().getColumn(5).setHeaderValue(resourceBundle.getString("MembersTab.clmn.Telephone"));
+		table.getColumnModel().getColumn(6).setHeaderValue(resourceBundle.getString("MembersTab.clmn.Address"));
+		table.getColumnModel().getColumn(7).setHeaderValue(resourceBundle.getString("MembersTab.clmn.Member_from"));
+		table.getColumnModel().getColumn(8).setHeaderValue(resourceBundle.getString("MembersTab.clmn.Borrowed_books"));
+		table.getTableHeader().repaint();
+		filter1.setText(resourceBundle.getString("MembersTab.lbl.Filter1"));
+		filter2.setText(resourceBundle.getString("MembersTab.lbl.Filter2"));
+		filter3.setText(resourceBundle.getString("MembersTab.lbl.Filter3"));
+		change_label.setText(resourceBundle.getString("MembersTab.lbl.Change_label"));
+		find_l.setText(resourceBundle.getString("MembersTab.lbl.Find_l"));
+		person_borrowed.setText(resourceBundle.getString("MembersTab.btn.Person_borrowed"));
 	}
 	
 }
