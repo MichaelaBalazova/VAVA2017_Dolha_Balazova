@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
@@ -72,11 +73,13 @@ public class Available_booksTab {
 		langEN.setBounds(106, 300, 60, 35);
 		
 		//nastavovanie pisma pre komponenty
-		all_available_books.setFont(new Font("Sans Serif", Font.PLAIN, 17));
-		available_books_per_page.setFont(new Font("Sans Serif", Font.PLAIN, 18)); 
+		all_available_books.setFont(new Font("Sans Serif", Font.PLAIN, 15));
+		all_available_books.setMargin(new Insets(0,0,0,0));
+		available_books_per_page.setFont(new Font("Sans Serif", Font.PLAIN, 16)); 
 		prev.setFont(new Font("Sans Serif", Font.PLAIN, 20)); 
 		next.setFont(new Font("Sans Serif", Font.PLAIN, 20)); 
 		borrow_book.setFont(new Font("Sans Serif", Font.PLAIN, 18)); 
+		borrow_book.setMargin(new Insets(0,0,0,0));
 		langSK.setActionCommand("setLangSK");
 		langEN.setActionCommand("setLangEN");
 		
@@ -143,7 +146,7 @@ public class Available_booksTab {
 			Locale.setDefault(new Locale("en","EN"));
 		}
 		resourceBundle = ResourceBundle.getBundle("messages");
-		all_available_books.setText(resourceBundle.getString("Available_booksTab.btn.Show_all_available_books")); 
+		all_available_books.setText(resourceBundle.getString("Available_booksTab.btn.Show_all_available_books"));
 		available_books_per_page.setText(resourceBundle.getString("Available_booksTab.lbl.Records_per_page")); 
 		borrow_book.setText(resourceBundle.getString("Available_booksTab.btn.Borrow_selected_book")); 
 		prev.setText(resourceBundle.getString("Available_booksTab.btn.PREW")); 
