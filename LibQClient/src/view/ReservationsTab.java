@@ -59,8 +59,8 @@ public class ReservationsTab {
 		//nastvenie pozicii pre komponenty
 		reservations_per_page.setBounds(26, 86, 197, 33);
 		all_reservations.setBounds(26, 28, 209, 41);
-		prev.setBounds(280, 1270, 120, 35);		
-		next.setBounds(2357, 1270, 120, 35);
+		prev.setBounds(280, 1270, 200, 35);		
+		next.setBounds(2277, 1270, 200, 35);
 		delete_reservation.setBounds(26, 183, 209, 41);
 		
 		//nastevenie pisma pre komponenty

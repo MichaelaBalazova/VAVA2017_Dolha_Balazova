@@ -77,8 +77,8 @@ public class BooksTab {
 		all_books.setBounds(26, 28, 209, 41);
 		detail_books.setBounds(26, 183, 209, 41);
 		books_per_page.setBounds(26, 86, 197, 33);
-		prev.setBounds(280, 1270, 120, 35);		
-		next.setBounds(2357, 1270, 120, 35);
+		prev.setBounds(280, 1270, 200, 35);		
+		next.setBounds(2277, 1270, 200, 35);
 		langSK.setBounds(26, 300, 60, 35);
 		langEN.setBounds(106, 300, 60, 35);
 		print_QR.setBounds(26, 350, 209, 41);

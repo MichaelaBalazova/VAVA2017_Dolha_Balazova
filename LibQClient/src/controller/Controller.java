@@ -44,8 +44,7 @@ public class Controller {
 		PrevMembers prevMembers = new PrevMembers(context, win);
 		NextMembers nextMembers = new NextMembers(context, win);
 		MemberListOfBorrowedBooks memberListOfBorrowedBooks = new MemberListOfBorrowedBooks(context, win);
-		FilterMembers filterMembers = new FilterMembers(context, win);
-		win.members_tab.addActions(showAllMembers, prevMembers, nextMembers, memberListOfBorrowedBooks, filterMembers);
+		win.members_tab.addActions(showAllMembers, prevMembers, nextMembers, memberListOfBorrowedBooks);
 	}
 	
 	private class ShowAllBooks implements ActionListener{
@@ -61,6 +60,7 @@ public class Controller {
 		}
 		
 		public void actionPerformed(ActionEvent e){
+		
 			BooksManagerRemote remote = null;
 			try {
 				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
@@ -220,6 +220,42 @@ public class Controller {
 		}
 		
 		public void actionPerformed(ActionEvent e){
+			
+			if (!win.members_tab.isCheckBoxSelected()){
+				MembersManagerRemote remote = null;
+				try {
+					remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
+				} catch (NamingException e1) {
+					e1.printStackTrace();
+				}
+				members_limit = win.members_tab.getLimit();
+				members_offset = 0;		
+				win.members_tab.setOffset(members_offset);
+				win.members_tab.setNextEnabled(true);
+				win.members_tab.setPrevEnabled(false);
+				
+				List<MembersModel> Members_list = remote.getAllMembers(members_limit, members_offset);
+				win.members_tab.clearTable();
+				for(MembersModel member : Members_list){
+					Object[] row = new Object[9];
+					row[0] = member.getId();
+					row[1] = member.getFirst_name();
+					row[2] = member.getLast_name();
+					row[3] = member.getDate_birth();
+					row[4] = member.getEmail();
+					row[5] = member.getTelephone();
+					row[6] = member.getAddress();
+					row[7] = member.getMember_from();
+					row[8] = member.getNum_of_borrowed();
+					win.members_tab.addTableRow(row);
+				}
+			}
+			else {
+				filterRecords();
+			}
+		}
+		
+		public void filterRecords(){
 			MembersManagerRemote remote = null;
 			try {
 				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
@@ -231,8 +267,9 @@ public class Controller {
 			win.members_tab.setOffset(members_offset);
 			win.members_tab.setNextEnabled(true);
 			win.members_tab.setPrevEnabled(false);
+			int num = win.members_tab.getSelectedNum();
 			
-			List<MembersModel> Members_list = remote.getAllMembers(members_limit, members_offset);
+			List<MembersModel> Members_list = remote.filterByNumBorrowed(members_limit, members_offset, num);
 			win.members_tab.clearTable();
 			for(MembersModel member : Members_list){
 				Object[] row = new Object[9];
@@ -245,8 +282,8 @@ public class Controller {
 				row[6] = member.getAddress();
 				row[7] = member.getMember_from();
 				row[8] = member.getNum_of_borrowed();
-;				win.members_tab.addTableRow(row);
-			}
+				win.members_tab.addTableRow(row);
+			}			
 		}
 	}
 	
@@ -263,13 +300,51 @@ public class Controller {
 		}
 		
 		public void actionPerformed(ActionEvent e){
+			
+			if (!win.members_tab.isCheckBoxSelected()){
+				MembersManagerRemote remote = null;
+				try {
+					remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
+				} catch (NamingException e1) {
+					e1.printStackTrace();
+				}
+				
+				members_limit = win.members_tab.getLimit();
+				members_offset = win.members_tab.getOffset();
+				members_offset -= members_limit;	
+				win.members_tab.setOffset(members_offset);
+				if (members_offset < members_limit){
+					win.members_tab.setPrevEnabled(false);
+				}
+				
+				List<MembersModel> Members_list = remote.getAllMembers(members_limit, members_offset);
+				win.members_tab.clearTable();
+				for(MembersModel member : Members_list){
+					Object[] row = new Object[9];
+					row[0] = member.getId();
+					row[1] = member.getFirst_name();
+					row[2] = member.getLast_name();
+					row[3] = member.getDate_birth();
+					row[4] = member.getEmail();
+					row[5] = member.getTelephone();
+					row[6] = member.getAddress();
+					row[7] = member.getMember_from();
+					row[8] = member.getNum_of_borrowed();
+					win.members_tab.addTableRow(row);
+				}	
+			}
+			else{
+				filterRecords();
+			}
+		}
+		
+		public void filterRecords(){
 			MembersManagerRemote remote = null;
 			try {
 				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
 			} catch (NamingException e1) {
 				e1.printStackTrace();
 			}
-			
 			members_limit = win.members_tab.getLimit();
 			members_offset = win.members_tab.getOffset();
 			members_offset -= members_limit;	
@@ -277,8 +352,9 @@ public class Controller {
 			if (members_offset < members_limit){
 				win.members_tab.setPrevEnabled(false);
 			}
+			int num = win.members_tab.getSelectedNum();
 			
-			List<MembersModel> Members_list = remote.getAllMembers(members_limit, members_offset);
+			List<MembersModel> Members_list = remote.filterByNumBorrowed(members_limit, members_offset, num);
 			win.members_tab.clearTable();
 			for(MembersModel member : Members_list){
 				Object[] row = new Object[9];
@@ -291,7 +367,7 @@ public class Controller {
 				row[6] = member.getAddress();
 				row[7] = member.getMember_from();
 				row[8] = member.getNum_of_borrowed();
-;				win.members_tab.addTableRow(row);
+				win.members_tab.addTableRow(row);
 			}			
 		}
 	}
@@ -309,6 +385,42 @@ public class Controller {
 		}
 		
 		public void actionPerformed(ActionEvent e){
+			
+			if (!win.members_tab.isCheckBoxSelected()){
+				MembersManagerRemote remote = null;
+				try {
+					remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
+				} catch (NamingException e1) {
+					e1.printStackTrace();
+				}
+				members_limit = win.members_tab.getLimit();
+				members_offset = win.members_tab.getOffset();
+				members_offset += members_limit;
+				win.members_tab.setOffset(members_offset);
+				win.members_tab.setPrevEnabled(true);
+				
+				List<MembersModel> Members_list = remote.getAllMembers(members_limit, members_offset);
+				win.members_tab.clearTable();
+				for(MembersModel member : Members_list){
+					Object[] row = new Object[9];
+					row[0] = member.getId();
+					row[1] = member.getFirst_name();
+					row[2] = member.getLast_name();
+					row[3] = member.getDate_birth();
+					row[4] = member.getEmail();
+					row[5] = member.getTelephone();
+					row[6] = member.getAddress();
+					row[7] = member.getMember_from();
+					row[8] = member.getNum_of_borrowed();
+					win.members_tab.addTableRow(row);
+				}	
+			}
+			else {
+				filterRecords();
+			}
+		}
+		
+		public void filterRecords(){
 			MembersManagerRemote remote = null;
 			try {
 				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
@@ -320,8 +432,9 @@ public class Controller {
 			members_offset += members_limit;
 			win.members_tab.setOffset(members_offset);
 			win.members_tab.setPrevEnabled(true);
+			int num = win.members_tab.getSelectedNum();
 			
-			List<MembersModel> Members_list = remote.getAllMembers(members_limit, members_offset);
+			List<MembersModel> Members_list = remote.filterByNumBorrowed(members_limit, members_offset, num);
 			win.members_tab.clearTable();
 			for(MembersModel member : Members_list){
 				Object[] row = new Object[9];
@@ -334,8 +447,8 @@ public class Controller {
 				row[6] = member.getAddress();
 				row[7] = member.getMember_from();
 				row[8] = member.getNum_of_borrowed();
-;				win.members_tab.addTableRow(row);
-			}		
+				win.members_tab.addTableRow(row);
+			}			
 		}
 	}
 	
@@ -374,56 +487,13 @@ public class Controller {
 				row[5] = b_book.getState().getType_of_state();
 				row[6] = getFullName(b_book.getEmployee_id());
 				row[7] = b_book.getEmployee_id().getAdd_info();
-;				bb_win.addTableRow(row);
+				bb_win.addTableRow(row);
 			}			
 		}
 		
 		public String getFullName(EmployeesModel employee){
 			String fullname =  new StringBuilder().append(employee.getFirst_name()).append(" ").append(employee.getLast_name()).toString();
 			return fullname;
-		}
-	}
-	
-	private class FilterMembers implements ActionListener{
-		
-		private Context context;
-		private Window win;
-		private int members_limit;
-		private int members_offset;
-		
-		public FilterMembers(Context context, Window win){
-			this.context = context;
-			this.win = win;
-		}
-		
-		public void actionPerformed(ActionEvent e){
-			MembersManagerRemote remote = null;
-			try {
-				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
-			} catch (NamingException e1) {
-				e1.printStackTrace();
-			}
-			members_limit = win.members_tab.getLimit();
-			members_offset = 0;		
-			win.members_tab.setOffset(members_offset);
-			win.members_tab.setNextEnabled(true);
-			win.members_tab.setPrevEnabled(false);
-			
-			List<MembersModel> Members_list = remote.getAllMembers(members_limit, members_offset);
-			win.members_tab.clearTable();
-			for(MembersModel member : Members_list){
-				Object[] row = new Object[9];
-				row[0] = member.getId();
-				row[1] = member.getFirst_name();
-				row[2] = member.getLast_name();
-				row[3] = member.getDate_birth();
-				row[4] = member.getEmail();
-				row[5] = member.getTelephone();
-				row[6] = member.getAddress();
-				row[7] = member.getMember_from();
-				row[8] = member.getNum_of_borrowed();
-;				win.members_tab.addTableRow(row);
-			}
 		}
 	}
 	

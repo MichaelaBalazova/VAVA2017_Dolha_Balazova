@@ -161,7 +161,7 @@ public class MembersManagerBean implements MembersManagerRemote {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-		
+				
 		Statement stm = null;
 		
 		try{
@@ -179,7 +179,7 @@ public class MembersManagerBean implements MembersManagerRemote {
 			}
 			else if (num == 0){
 				
-				rs = stm.executeQuery("SELECT id, first_name, last_name, date_birth, email, telephone, member_from "
+				rs = stm.executeQuery("SELECT id, first_name, last_name, date_birth, email, telephone, address, member_from "
 		        	+ "FROM members WHERE id NOT IN (SELECT member_id AS cnt FROM borrowed_books GROUP BY member_id "
 		        	+ "HAVING COUNT(available_id) > " + num + ") ORDER BY id OFFSET " + offset + " LIMIT " + limit + ";");				
 			}
