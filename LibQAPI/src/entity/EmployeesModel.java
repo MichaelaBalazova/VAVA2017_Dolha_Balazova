@@ -29,9 +29,10 @@ public class EmployeesModel implements Serializable{
 		setAdd_info(add_info);
 	}
 	
-	public EmployeesModel(String first, String last) {
+	public EmployeesModel(String first, String last, String add_info) {
 		setFirst_name(first);
 		setLast_name(last);
+		setAdd_info(add_info);
 	}
 
 	public int getId() {
