@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -29,7 +30,7 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
-public class Borrow_selected_bookWindow extends JFrame{
+public class BorrowBookWindow extends JFrame{
 
 	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 	private JPanel panel = new JPanel();
@@ -61,7 +62,7 @@ public class Borrow_selected_bookWindow extends JFrame{
 	    }
 	};;
 	
-	public Borrow_selected_bookWindow(int available_id, Locale locale) {
+	public BorrowBookWindow(int available_id, Locale locale) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(50, 50, 1750, 1350);
 		setTitle("Borrow selected book");
@@ -137,12 +138,7 @@ public class Borrow_selected_bookWindow extends JFrame{
 		panel.add(commit);
 		find_member.setBounds(595, 100, 200, 30);
 		find_member.setFont(new Font("Sans Serif", Font.PLAIN, 20));
-		panel.add(find_member);
-		
-		find_member.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});				
+		panel.add(find_member);			
 		
 		TableRowSorter<TableModel> rowSorter_employees = new TableRowSorter<>(table_employees.getModel());
 		table_employees.setRowSorter(rowSorter_employees);
@@ -156,14 +152,66 @@ public class Borrow_selected_bookWindow extends JFrame{
 		datePicker_to.getModel().setDate(cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH), cal2.get(Calendar.DAY_OF_MONTH) + 30);
 		datePicker_to.getModel().setSelected(true);
 		
-		Date date_from = (Date) datePicker_from.getModel().getValue();
-		Date date_to = (Date) datePicker_to.getModel().getValue();
-		
-		commit.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});
-		
+	}
+	
+	public void addActions(ActionListener borrowBook, ActionListener findMember){
+		commit.addActionListener(borrowBook);
+		find_member.addActionListener(findMember);
+	}
+	
+	public void addMemberTableRow(Object[] row){
+		this.model_members.addRow(row);
+	}
+	
+	public void clearMemberTable(){
+		this.model_members.setRowCount(0);
+	}
+	
+	public void addEmployeeTableRow(Object[] row){
+		this.model_employees.addRow(row);
+	}
+	
+	public void clearEmployeeTable(){
+		this.model_employees.setRowCount(0);
+	}
+	
+	public int getSelectedRowMember(){
+		if (table_members.getSelectedRow() == -1) return -1;
+		else return (int) this.table_members.getValueAt(table_members.getSelectedRow(), 0);
+	}
+	
+	public int getSelectedRowEmloyee(){
+		if (table_employees.getSelectedRow() == -1) return -1;
+		else return (int) this.table_employees.getValueAt(table_employees.getSelectedRow(), 0);
+	}
+	
+	public Date getDateFrom(){
+		return (Date) this.datePicker_from.getModel().getValue();
+	}
+
+	public Date getDateTo(){
+		return (Date) this.datePicker_to.getModel().getValue();
+	}
+	
+	public void setWinVisible(boolean value){
+		this.setVisible(value);
+	}
+	
+	public String getFindMemberText(){
+		return this.member.getText();
+	}
+	
+	public void showActionResult(boolean value){
+		if (value){
+			JLabel label = new JLabel("Book was borrowed successfully.");
+			label.setFont(new Font("Sans Serif", Font.BOLD, 20));
+			JOptionPane.showMessageDialog(null,label,"Information",JOptionPane.INFORMATION_MESSAGE);
+		}
+		else{
+			JLabel label = new JLabel("Book was not borrowed to a member!");
+			label.setFont(new Font("Sans Serif", Font.BOLD, 20));
+			JOptionPane.showMessageDialog(null,label,"ERROR",JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	private void add_filter(JTextField txtfld, TableRowSorter<TableModel> rowSorter) {
@@ -196,20 +244,22 @@ public class Borrow_selected_bookWindow extends JFrame{
 	}
 	
 	private void setLanguage(){
+		/*
 		resourceBundle = ResourceBundle.getBundle("messages");
 		find_member.setText(resourceBundle.getString("Borrow_selected_bookWindow.btn.Find_member"));
 		label_from.setText(resourceBundle.getString("Borrow_selected_bookWindow.lbl.Label_from"));
 		label_to.setText(resourceBundle.getString("Borrow_selected_bookWindow.lbl.Label_to"));
 		commit.setText(resourceBundle.getString("Borrow_selected_bookWindow.btn.Commit"));
-		table_members.getColumnModel().getColumn(1).setHeaderValue(resourceBundle.getString("BooksTab.clmn.First_name"));
-		table_members.getColumnModel().getColumn(2).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Second_name"));
-		table_members.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Birthday"));
+		table_members.getColumnModel().getColumn(1).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.First_name"));
+		table_members.getColumnModel().getColumn(2).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Second_name"));
+		table_members.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Birthday"));
 		table_members.getTableHeader().repaint();
-		table_employees.getColumnModel().getColumn(1).setHeaderValue(resourceBundle.getString("BooksTab.clmn.First_name"));
-		table_employees.getColumnModel().getColumn(2).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Second_name"));
-		table_employees.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Birthday"));
-		table_employees.getColumnModel().getColumn(4).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Job_description"));
+		table_employees.getColumnModel().getColumn(1).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.First_name"));
+		table_employees.getColumnModel().getColumn(2).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Second_name"));
+		table_employees.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Birthday"));
+		table_employees.getColumnModel().getColumn(4).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Job_description"));
 		table_employees.getTableHeader().repaint();
+		*/
 	}
 }
 
