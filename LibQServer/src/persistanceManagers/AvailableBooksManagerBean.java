@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -35,6 +36,7 @@ import test.AvailableBooksManagerRemote;
 @TransactionManagement(TransactionManagementType.BEAN)
 public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
     
+	private static Logger LOG = Logger.getLogger(AvailableBooksManagerBean.class.getName());
 	@Resource javax.transaction.UserTransaction tx;
 	
     public List<Available_booksModel> getAllAvailableBooks(int limit, int offset){
@@ -47,7 +49,7 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
 			ctx = new InitialContext();
 			db = (DataSource) ctx.lookup("java:/PostgresDS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			LOG.severe("Error: "+e);
 		}
 		Statement stm = null;
 		
@@ -72,7 +74,7 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
 	        rs.close();
 		}
 		catch (SQLException e1) {
-				System.out.println("Error: " + e1);
+			LOG.severe("Error: "+e1);
 		}
 		finally {
 			try { if (stm != null) stm.close(); } catch (Exception e) {};
@@ -93,7 +95,7 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
 			ctx = new InitialContext();
 			db = (DataSource) ctx.lookup("java:/PostgresDS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			LOG.severe("Error: "+e);
 		}
 		Statement stmt_id = null;
 		PreparedStatement stmt1 = null;
@@ -101,8 +103,10 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
 		
 		try {
 			tx.begin();
-		} catch (NotSupportedException e2) { e2.printStackTrace();
-		} catch (SystemException e2) { e2.printStackTrace();
+		} catch (NotSupportedException e2) { 
+			LOG.severe("Error: "+e2);
+		} catch (SystemException e2) { 
+			LOG.severe("Error: "+e2);
 		}
 		
 		try{
@@ -134,12 +138,18 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
 
 			try {
 				tx.commit();
-			} catch (SecurityException e) { e.printStackTrace();
-			} catch (IllegalStateException e) { e.printStackTrace();
-			} catch (RollbackException e) { e.printStackTrace();
-			} catch (HeuristicMixedException e) { e.printStackTrace();
-			} catch (HeuristicRollbackException e) { e.printStackTrace();
-			} catch (SystemException e) { e.printStackTrace();
+			} catch (SecurityException e) { 
+				LOG.severe("Error: "+e);
+			} catch (IllegalStateException e) { 
+				LOG.severe("Error: "+e);
+			} catch (RollbackException e) { 
+				LOG.severe("Error: "+e);
+			} catch (HeuristicMixedException e) { 
+				LOG.severe("Error: "+e);
+			} catch (HeuristicRollbackException e) { 
+				LOG.severe("Error: "+e);
+			} catch (SystemException e) { 
+				LOG.severe("Error: "+e);
 			}
 			
 			res = true;
@@ -147,8 +157,10 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
 		} catch (SQLException e) {
 			try {
 				tx.setRollbackOnly();
-			} catch (IllegalStateException e1) { e1.printStackTrace();
-			} catch (SystemException e1) { e1.printStackTrace();
+			} catch (IllegalStateException e1) {
+				LOG.severe("Error: "+e1);
+			} catch (SystemException e1) { 
+				LOG.severe("Error: "+e1);
 			}
 			res = false;
 		} finally {

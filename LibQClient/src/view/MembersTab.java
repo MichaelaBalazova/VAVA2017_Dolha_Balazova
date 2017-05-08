@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,12 +41,13 @@ import org.jdatepicker.impl.UtilDateModel;
 
 public class MembersTab {
 	
+	private static Logger LOG = Logger.getLogger(MembersTab.class.getName());
 	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 	private ImageIcon imgSK = new ImageIcon("img/sk-flag.png");
 	private ImageIcon imgEN = new ImageIcon("img/en-flag.png");
 	private JButton langSK = new JButton(imgSK);
 	private JButton langEN = new JButton(imgEN);
-  private int offset = 0;
+	private int offset = 0;
 	private JCheckBox checkbox = new JCheckBox("Enable filter");
 	private JButton all_members = new JButton("Show all members");
 	private JButton filter_records = new JButton("Filter Records");
@@ -124,12 +126,12 @@ public class MembersTab {
 		change_person.setBounds(26, 470, 210, 35);
 		//filter1.setBounds(26, 187, 220, 22);
 		filter1.setBounds(26, 187, 220, 22);
-    filter2.setBounds(26, 202, 200, 22);
-  	filter3.setBounds(26, 285, 220, 22);
-  	person_borrowed.setBounds(26, 545, 210, 35);
-  	change_label.setBounds(26, 438, 230, 22);
-  	find_l.setBounds(26, 625, 220, 20);
-  	find.setBounds(26, 645, 200, 35);
+	    filter2.setBounds(26, 202, 200, 22);
+	  	filter3.setBounds(26, 285, 220, 22);
+	  	person_borrowed.setBounds(26, 545, 210, 35);
+	  	change_label.setBounds(26, 438, 230, 22);
+	  	find_l.setBounds(26, 625, 220, 20);
+	  	find.setBounds(26, 645, 200, 35);
 		langSK.setBounds(26, 300, 60, 35);
 		langEN.setBounds(106, 300, 60, 35);
 		
@@ -182,7 +184,7 @@ public class MembersTab {
 		panel.add(find);
 		panel.add(find_l);
 		panel.add(checkbox);
-    panel.add(langSK);
+		panel.add(langSK);
 		panel.add(langEN);
 			
 		change_person.addActionListener(new ActionListener() { 
@@ -232,7 +234,7 @@ public class MembersTab {
 		}
 		resourceBundle = ResourceBundle.getBundle("messages");
 		all_members.setText(resourceBundle.getString("MembersTab.btn.All_members"));
-    filter_records.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
+		filter_records.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
 		members_per_page.setText(resourceBundle.getString("MembersTab.lbl.Members_Per_Page"));
 		change_person.setText(resourceBundle.getString("MembersTab.btn.Change_person"));
 		prev.setText(resourceBundle.getString("MembersTab.btn.PREV"));
@@ -281,7 +283,7 @@ public class MembersTab {
 			}
 		}
 		catch(NumberFormatException e){
-			System.out.println("Error : " + e.getMessage());			
+			LOG.severe("Error: "+e);			
 		}
 		return limit;
 	}
