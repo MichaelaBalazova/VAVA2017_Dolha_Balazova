@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Available_booksTab {
 
+	private int offset = 0;
 	private ImageIcon imgSK = new ImageIcon("img/sk-flag.png");
 	private ImageIcon imgEN = new ImageIcon("img/en-flag.png");
 	private JButton langSK = new JButton(imgSK);
@@ -34,7 +36,7 @@ public class Available_booksTab {
 	private JButton prev = new JButton(resourceBundle.getString("Available_booksTab.btn.PREW")); 
 	private JButton next = new JButton(resourceBundle.getString("Available_booksTab.btn.NEXT")); 
 	private String[] columns_available_books = {"ID", "State", "Identifier", "Title", "Publisher"};
-	private JTextField offset_txt = new JTextField();
+	private JTextField limit_txt = new JTextField();
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
 	private DefaultTableModel model= new DefaultTableModel(){
@@ -102,40 +104,79 @@ public class Available_booksTab {
 		panel.add(langEN);
 		
 		//textfield pre zadanie offsetu
-		offset_txt.setText("30"); 
-		offset_txt.setBounds(26, 116, 120, 39);
-		offset_txt.setColumns(10);
-		offset_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20)); 
-		panel.add(offset_txt);
+		limit_txt.setText("30"); 
+		limit_txt.setBounds(26, 116, 120, 39);
+		limit_txt.setColumns(10);
+		limit_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20)); 
+		panel.add(limit_txt);
 		
-		all_available_books.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});
-		
-		next.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});
-		
-		prev.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
-		});
-		
-		ListSelectionModel listSelectionModel = table.getSelectionModel();
-		listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+		ListSelectionModel lsm = table.getSelectionModel();
+		lsm.addListSelectionListener(new ListSelectionListener() {
 		        public void valueChanged(ListSelectionEvent e) { 
-		            
+		            borrow_book.setEnabled(!lsm.isSelectionEmpty());
 		        }
 		});
-		
-		borrow_book.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-					
-			}
-		});
 	}
+	
+	public void addActions(ActionListener showAllAvailableBooks, ActionListener prevAvailableBooks, 
+			ActionListener nextAvailableBooks, ActionListener borrowBook1){
+		all_available_books.addActionListener(showAllAvailableBooks);
+		prev.addActionListener(prevAvailableBooks);
+		next.addActionListener(nextAvailableBooks);
+		borrow_book.addActionListener(borrowBook1);
+	}
+	
+	public void addTableRow(Object[] row){
+		this.model.addRow(row);
+	}
+	
+	public void clearTable(){
+		this.model.setRowCount(0);
+	}
+	
+	public int getLimit(){
+		int limit = 0;
+		try{
+			limit = Integer.parseInt(limit_txt.getText());
+			if (limit < 1){
+				JOptionPane.showMessageDialog(null,"The number is invalid","Error",JOptionPane.ERROR_MESSAGE);
+				return -1;
+			}
+		}
+		catch(NumberFormatException e){
+			System.out.println("Error : " + e.getMessage());			
+		}
+		return limit;
+	}
+	
+	public void setNextEnabled(boolean enabled){
+		next.setEnabled(enabled);
+	}
+	
+	public void setPrevEnabled(boolean enabled){
+		prev.setEnabled(enabled);
+	}
+	
+	public void setOffset(int offset){
+		this.offset = offset;
+	}
+	
+	public int getOffset(){
+		return this.offset;
+	}
+	
+	public Locale getLocale(){
+		return this.resourceBundle.getLocale();
+	}
+		
+	public int getSelectedRowAvailableBook(){		
+		int selected_row = (int) this.table.getValueAt(table.getSelectedRow(), 0);
+		return selected_row;
+	}
+	
+	public JButton getRefreshButton(){
+		return this.all_available_books;
+	}	
 	
 	private void setLanguage(ActionEvent a){
 		String actionCommand = a.getActionCommand();

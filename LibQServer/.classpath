@@ -14,5 +14,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/LibQAPI"/>
+	<classpathentry kind="lib" path="C:/Users/Michaela/wildfly-10.1.0.Final/bin/client/jboss-client.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
