@@ -70,8 +70,6 @@ public class Borrow_selected_bookWindow extends JFrame{
 		panel.setBackground(new Color(204,229,255));
 		setContentPane(panel);
 		panel.setLayout(null);
-		Locale.setDefault(locale);
-		setLanguage();
 		
 		UtilDateModel model1 = new UtilDateModel();
 		Properties p1 = new Properties();
@@ -159,6 +157,9 @@ public class Borrow_selected_bookWindow extends JFrame{
 		Date date_from = (Date) datePicker_from.getModel().getValue();
 		Date date_to = (Date) datePicker_to.getModel().getValue();
 		
+		Locale.setDefault(locale);
+		setLanguage();
+		
 		commit.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
 			    } 
@@ -201,14 +202,14 @@ public class Borrow_selected_bookWindow extends JFrame{
 		label_from.setText(resourceBundle.getString("Borrow_selected_bookWindow.lbl.Label_from"));
 		label_to.setText(resourceBundle.getString("Borrow_selected_bookWindow.lbl.Label_to"));
 		commit.setText(resourceBundle.getString("Borrow_selected_bookWindow.btn.Commit"));
-		table_members.getColumnModel().getColumn(1).setHeaderValue(resourceBundle.getString("BooksTab.clmn.First_name"));
-		table_members.getColumnModel().getColumn(2).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Second_name"));
-		table_members.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Birthday"));
+		table_members.getColumnModel().getColumn(1).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.First_name"));
+		table_members.getColumnModel().getColumn(2).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Second_name"));
+		table_members.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Birthday"));
 		table_members.getTableHeader().repaint();
-		table_employees.getColumnModel().getColumn(1).setHeaderValue(resourceBundle.getString("BooksTab.clmn.First_name"));
-		table_employees.getColumnModel().getColumn(2).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Second_name"));
-		table_employees.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Birthday"));
-		table_employees.getColumnModel().getColumn(4).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Job_description"));
+		table_employees.getColumnModel().getColumn(1).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.First_name"));
+		table_employees.getColumnModel().getColumn(2).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Second_name"));
+		table_employees.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Birthday"));
+		table_employees.getColumnModel().getColumn(4).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Job_description"));
 		table_employees.getTableHeader().repaint();
 	}
 }
