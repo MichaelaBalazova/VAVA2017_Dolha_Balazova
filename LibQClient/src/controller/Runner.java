@@ -9,5 +9,5 @@ public class Runner {
 		Window win = new Window();
 		Controller controller = new Controller(win);		
 	}
-
 }
+	

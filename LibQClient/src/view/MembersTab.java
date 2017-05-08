@@ -22,6 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -29,6 +31,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.undo.CompoundEdit;
 
 import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -42,11 +45,11 @@ public class MembersTab {
 	private ImageIcon imgEN = new ImageIcon("img/en-flag.png");
 	private JButton langSK = new JButton(imgSK);
 	private JButton langEN = new JButton(imgEN);
-	public int offset = 0;
+  private int offset = 0;
+	private JCheckBox checkbox = new JCheckBox("Enable filter");
 	private JButton all_members = new JButton("Show all members");
 	private JButton filter_records = new JButton("Filter Records");
 	private JLabel members_per_page = new JLabel("Members Per Page");
-	private JCheckBox checkbox = new JCheckBox("Enable filter");
 	private JPanel panel;
 	private JButton prev = new JButton("PREV");
 	private JButton next = new JButton("NEXT");
@@ -65,6 +68,8 @@ public class MembersTab {
 	private JButton person_borrowed = new JButton("Show list of borrowed books");
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
+	private String[] options = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };		
+	private JComboBox comboBox = new JComboBox(options);
 	private DefaultTableModel model= new DefaultTableModel(){
 		@Override
 	    public boolean isCellEditable(int row, int column) {
@@ -93,8 +98,6 @@ public class MembersTab {
 		panel.add(scroll);
 		
 		//combobox pre filtrovanie podla poctu pozicanych knih
-		String[] options = { "---", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };		
-		JComboBox comboBox = new JComboBox(options);
 		comboBox.setBounds(26, 310, 209, 39);
 		comboBox.setFont(new Font("Sans Serif", Font.PLAIN, 18));
 		panel.add(comboBox);
@@ -113,20 +116,20 @@ public class MembersTab {
 		all_members.setBounds(26, 28, 209, 41);
 		members_per_page.setBounds(26, 86, 197, 33);
 		filter_records.setBounds(26, 375, 210, 41);
-		prev.setBounds(280, 1270, 120, 35);		
-		next.setBounds(2357, 1270, 120, 35);
+		prev.setBounds(280, 1270, 200, 35);		
+		next.setBounds(2277, 1270, 200, 35);
 		separator1.setBounds(10, 183, 260, 20);
 		separator2.setBounds(10, 435, 260, 20);
 		separator3.setBounds(10, 525, 260, 20);
 		change_person.setBounds(26, 470, 210, 35);
 		//filter1.setBounds(26, 187, 220, 22);
 		filter1.setBounds(26, 187, 220, 22);
-		filter2.setBounds(26, 202, 200, 22);
-		filter3.setBounds(26, 240, 220, 22);
-		person_borrowed.setBounds(26, 515, 210, 35);
-		change_label.setBounds(26, 408, 230, 22);
-		find_l.setBounds(26, 595, 220, 20);
-		find.setBounds(26, 615, 200, 35);
+    filter2.setBounds(26, 202, 200, 22);
+  	filter3.setBounds(26, 285, 220, 22);
+  	person_borrowed.setBounds(26, 545, 210, 35);
+  	change_label.setBounds(26, 438, 230, 22);
+  	find_l.setBounds(26, 625, 220, 20);
+  	find.setBounds(26, 645, 200, 35);
 		langSK.setBounds(26, 300, 60, 35);
 		langEN.setBounds(106, 300, 60, 35);
 		
@@ -157,6 +160,8 @@ public class MembersTab {
 		change_person.setEnabled(false);
 		person_borrowed.setEnabled(false);
 		find.setEditable(false);
+		filter_records.setEnabled(false);
+		comboBox.setEnabled(false);
 		
 		//pridavanie komponentov na panel
 		panel.add(members_per_page);
@@ -199,6 +204,22 @@ public class MembersTab {
 		        }
 		});
 		
+		checkbox.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(checkbox.isSelected()){
+					filter_records.setEnabled(true);
+					comboBox.setEnabled(true);
+					all_members.setEnabled(false);
+				}
+				else {
+					filter_records.setEnabled(false);
+					comboBox.setEnabled(false);
+					all_members.setEnabled(true);
+				}
+			}
+		});
+		
 	}
 	
 	private void setLanguage(ActionEvent a){
@@ -211,7 +232,7 @@ public class MembersTab {
 		}
 		resourceBundle = ResourceBundle.getBundle("messages");
 		all_members.setText(resourceBundle.getString("MembersTab.btn.All_members"));
-		filter_records.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
+    filter_records.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
 		members_per_page.setText(resourceBundle.getString("MembersTab.lbl.Members_Per_Page"));
 		change_person.setText(resourceBundle.getString("MembersTab.btn.Change_person"));
 		prev.setText(resourceBundle.getString("MembersTab.btn.PREV"));
@@ -234,12 +255,12 @@ public class MembersTab {
 	}
 	
 	public void addActions(ActionListener showAllMembers, ActionListener prevMembers, ActionListener nextMembers, 
-			ActionListener memberListOfBorrowedBooks, ActionListener filterRecords){
+			ActionListener memberListOfBorrowedBooks){
 		all_members.addActionListener(showAllMembers);
+		filter_records.addActionListener(showAllMembers);
 		prev.addActionListener(prevMembers);
 		next.addActionListener(nextMembers);
 		person_borrowed.addActionListener(memberListOfBorrowedBooks);
-		filter_records.addActionListener(filterRecords);
 	}
 	
 	public void addTableRow(Object[] row){
@@ -292,5 +313,16 @@ public class MembersTab {
 	
 	public String getSelectedRowSecondname(){
 		return this.table.getValueAt(table.getSelectedRow(), 2).toString();
+	}
+	
+	public boolean isCheckBoxSelected(){
+		if (checkbox.isSelected()){
+			return true;
+		}
+		else return false;
+	}
+	
+	public int getSelectedNum(){
+		return Integer.parseInt((String)comboBox.getSelectedItem());
 	}
 }

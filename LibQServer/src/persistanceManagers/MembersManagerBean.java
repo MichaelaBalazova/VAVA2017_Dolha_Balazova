@@ -161,7 +161,7 @@ public class MembersManagerBean implements MembersManagerRemote {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-		
+				
 		Statement stm = null;
 		
 		try{
@@ -179,7 +179,7 @@ public class MembersManagerBean implements MembersManagerRemote {
 			}
 			else if (num == 0){
 				
-				rs = stm.executeQuery("SELECT id, first_name, last_name, date_birth, email, telephone, member_from "
+				rs = stm.executeQuery("SELECT id, first_name, last_name, date_birth, email, telephone, address, member_from "
 		        	+ "FROM members WHERE id NOT IN (SELECT member_id AS cnt FROM borrowed_books GROUP BY member_id "
 		        	+ "HAVING COUNT(available_id) > " + num + ") ORDER BY id OFFSET " + offset + " LIMIT " + limit + ";");				
 			}
@@ -195,6 +195,49 @@ public class MembersManagerBean implements MembersManagerRemote {
 				           rs.getDate("member_from"),
 				           num
 			        			));
+			}
+	        rs.close();
+		}
+		catch (SQLException e1) {
+				System.out.println("Error: " + e1);
+		}	
+		finally {
+			try { if (stm != null) stm.close(); } catch (Exception e) {};
+		    try { if (conn != null) conn.close(); } catch (Exception e) {};
+		}
+		
+		return list;
+	}
+    
+    public List<MembersModel> findMember(String find){
+		
+    	Context ctx;
+    	DataSource db = null;
+    	Connection conn = null;
+    	List<MembersModel> list = new ArrayList<MembersModel>();
+		try {
+			ctx = new InitialContext();
+			db = (DataSource) ctx.lookup("java:/PostgresDS");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+				
+		Statement stm = null;
+		
+		try{
+			conn = db.getConnection();
+			if (conn == null) System.out.println("Failed to make connection!");
+			
+			stm = conn.createStatement();
+			ResultSet rs = stm.executeQuery("SELECT id, first_name, last_name, date_birth FROM members "
+					+ "WHERE first_name LIKE '%" + find + "%' OR last_name LIKE '%" + find + "%' ORDER BY id;" );
+					
+			while ( rs.next() ) {
+					list.add(new MembersModel(rs.getInt("id"),
+						           rs.getString("first_name"),
+						           rs.getString("last_name"),
+						           rs.getDate("date_birth")
+						           ));
 			}
 	        rs.close();
 		}
