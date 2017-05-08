@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.naming.Context;
@@ -22,6 +23,8 @@ import test.EmployeeManagerRemote;
 @Stateless
 public class EmployeeManagerBean implements EmployeeManagerRemote {
 
+	private static Logger LOG = Logger.getLogger(EmployeeManagerBean.class.getName());
+	
     public String tstPlus(String str1, String str2){
     	return (str1 + " " + str2 + "!!!");
     }
@@ -36,13 +39,15 @@ public class EmployeeManagerBean implements EmployeeManagerRemote {
 			ctx = new InitialContext();
 			db = (DataSource) ctx.lookup("java:/PostgresDS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			LOG.severe("Error: "+e);
 		}
 		Statement stm = null;
 		
 		try{
 			conn = db.getConnection();
-			if (conn == null) System.out.println("Failed to make connection!");
+			if (conn == null) {
+				LOG.severe("Failed to make connection in EmployeeManagerBean.getAllEmployees!");
+			}
 			
 			stm = conn.createStatement();
 	        ResultSet rs = stm.executeQuery("SELECT id, first_name, last_name, date_birth, add_info FROM employees ORDER BY id;");
@@ -58,7 +63,7 @@ public class EmployeeManagerBean implements EmployeeManagerRemote {
 	        rs.close();
 		}
 		catch (SQLException e1) {
-				System.out.println("Error: " + e1);
+			LOG.severe("Error: "+e1);
 		}
 		finally {
 			try { if (stm != null) stm.close(); } catch (Exception e) {};

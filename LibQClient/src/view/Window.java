@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -33,14 +34,15 @@ public class Window extends JFrame implements ActionListener {
 	private File configFile = new File("resources/config.xml");	 
 	private InputStream inputStream;
 	private Properties props = new Properties();
+	private static Logger LOG = Logger.getLogger(Window.class.getName());
 	
 	public Window() {
 		try {
 			inputStream = new FileInputStream(configFile);
 			props.loadFromXML(inputStream);
+			LOG.info("Successfuly opened xml config file");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.severe("Error: "+e);
 		}
 		
 		setVisible(true);

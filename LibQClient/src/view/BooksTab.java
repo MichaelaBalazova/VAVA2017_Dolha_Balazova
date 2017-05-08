@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -27,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class BooksTab {
 	
+	private static Logger LOG = Logger.getLogger(BooksTab.class.getName());
 	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 	public int offset = 0;
 	private ImageIcon imgSK = new ImageIcon("img/sk-flag.png");
@@ -158,7 +160,7 @@ public class BooksTab {
 			}
 		}
 		catch(NumberFormatException e){
-			System.out.println("Error : " + e.getMessage());	
+			LOG.severe("Error: "+e);	
 		}
 		return limit;
 	}

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -20,12 +21,14 @@ import test.BooksManagerRemote;
 import test.EmployeeManagerRemote;
 import test.AvailableBooksManagerRemote;
 import test.MembersManagerRemote;
+import view.Available_booksTab;
 import view.BorrowBookWindow;
 import view.MemberListOfBorrowedBooksWindow;
 import view.Window;
 
 public class Controller {
 	
+	private static Logger LOG = Logger.getLogger(Controller.class.getName());
 	private Window win;
 	private Context context;
 
@@ -33,8 +36,9 @@ public class Controller {
 		this.win = window;
 		try {
 			context = createRemoteEjbContext("localhost", "8080");
+			LOG.info("Successful creation of context in Controller class.");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			LOG.severe("Error: "+e);
 		}
 		
 		ShowAllBooks showAllBooks = new ShowAllBooks(context, win);		
@@ -73,7 +77,7 @@ public class Controller {
 			try {
 				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e);
 			}
 			books_limit = win.books_tab.getLimit();
 			books_offset = 0;		
@@ -125,7 +129,7 @@ public class Controller {
 			try {
 				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			
 			books_limit = win.books_tab.getLimit();
@@ -180,7 +184,7 @@ public class Controller {
 			try {
 				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			books_limit = win.books_tab.getLimit();
 			books_offset = win.books_tab.getOffset();
@@ -234,7 +238,7 @@ public class Controller {
 				try {
 					remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
 				} catch (NamingException e1) {
-					e1.printStackTrace();
+					LOG.severe("Error: "+e1);
 				}
 				members_limit = win.members_tab.getLimit();
 				members_offset = 0;		
@@ -268,7 +272,7 @@ public class Controller {
 			try {
 				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			members_limit = win.members_tab.getLimit();
 			members_offset = 0;		
@@ -314,7 +318,7 @@ public class Controller {
 				try {
 					remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
 				} catch (NamingException e1) {
-					e1.printStackTrace();
+					LOG.severe("Error: "+e1);
 				}
 				
 				members_limit = win.members_tab.getLimit();
@@ -351,7 +355,7 @@ public class Controller {
 			try {
 				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			members_limit = win.members_tab.getLimit();
 			members_offset = win.members_tab.getOffset();
@@ -399,7 +403,7 @@ public class Controller {
 				try {
 					remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
 				} catch (NamingException e1) {
-					e1.printStackTrace();
+					LOG.severe("Error: "+e1);
 				}
 				members_limit = win.members_tab.getLimit();
 				members_offset = win.members_tab.getOffset();
@@ -433,7 +437,7 @@ public class Controller {
 			try {
 				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			members_limit = win.members_tab.getLimit();
 			members_offset = win.members_tab.getOffset();
@@ -475,7 +479,7 @@ public class Controller {
 			try {
 				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			
 			int member_id = win.members_tab.getSelectedRowMember_id();
@@ -523,7 +527,7 @@ public class Controller {
 			try {
 				remote = (AvailableBooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//AvailableBooksManagerBean!test.AvailableBooksManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			av_books_limit = win.available_books_tab.getLimit();
 			av_books_offset = 0;		
@@ -562,7 +566,7 @@ public class Controller {
 			try {
 				remote = (AvailableBooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//AvailableBooksManagerBean!test.AvailableBooksManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			
 			av_books_limit = win.available_books_tab.getLimit();
@@ -604,7 +608,7 @@ public class Controller {
 			try {
 				remote = (AvailableBooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//AvailableBooksManagerBean!test.AvailableBooksManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			av_books_limit = win.available_books_tab.getLimit();
 			av_books_offset = win.available_books_tab.getOffset();
@@ -641,7 +645,7 @@ public class Controller {
 			try {
 				remote = (EmployeeManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//EmployeeManagerBean!test.EmployeeManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			Locale locale = win.available_books_tab.getLocale();
 			int available_id = win.available_books_tab.getSelectedRowAvailableBook();
@@ -681,7 +685,7 @@ public class Controller {
 			try {
 				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			String find = borrowBook.getFindMemberText();
 			
@@ -716,7 +720,7 @@ public class Controller {
 			try {
 				remote = (AvailableBooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//AvailableBooksManagerBean!test.AvailableBooksManagerRemote");
 			} catch (NamingException e1) {
-				e1.printStackTrace();
+				LOG.severe("Error: "+e1);
 			}
 			int member_id = borrowBook.getSelectedRowMember();
 			int employee_id = borrowBook.getSelectedRowEmloyee();

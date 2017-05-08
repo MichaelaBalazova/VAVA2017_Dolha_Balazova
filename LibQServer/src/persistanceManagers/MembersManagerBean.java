@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.naming.Context;
@@ -26,6 +27,8 @@ import test.MembersManagerRemote;
  */
 @Stateless
 public class MembersManagerBean implements MembersManagerRemote {
+	
+	private static Logger LOG = Logger.getLogger(MembersManagerBean.class.getName());
     
     public List<MembersModel> getAllMembers(int limit, int offset){
     	
@@ -37,7 +40,7 @@ public class MembersManagerBean implements MembersManagerRemote {
 			ctx = new InitialContext();
 			db = (DataSource) ctx.lookup("java:/PostgresDS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			LOG.severe("Error: "+e);
 		}
 		Statement stm1 = null;
 		Statement stm2 = null;
@@ -45,7 +48,9 @@ public class MembersManagerBean implements MembersManagerRemote {
 		
 		try{
 			conn = db.getConnection();
-			if (conn == null) System.out.println("Failed to make connection!");
+			if (conn == null) {
+				LOG.severe("Failed to make connection in MembersManagerBean.getAllMembers!");
+			}
 			
 			stm1 = conn.createStatement();
 	        ResultSet rs1 = stm1.executeQuery("SELECT id, first_name, last_name, date_birth, email, telephone, address, member_from "
@@ -84,7 +89,7 @@ public class MembersManagerBean implements MembersManagerRemote {
 	        rs2.close();
 		}
 		catch (SQLException e1) {
-				System.out.println("Error: " + e1);
+			LOG.severe("Error: "+e1);
 		}
 		finally {
 			try { if (stm1 != null) stm1.close(); } catch (Exception e) {};
@@ -105,14 +110,16 @@ public class MembersManagerBean implements MembersManagerRemote {
 			ctx = new InitialContext();
 			db = (DataSource) ctx.lookup("java:/PostgresDS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			LOG.severe("Error: "+e);
 		}
 		
 		Statement stm = null;
 		
 		try{
 			conn = db.getConnection();
-			if (conn == null) System.out.println("Failed to make connection!");
+			if (conn == null) {
+				LOG.severe("Failed to make connection in MembersManagerBean.getMemberListOfBorrowedBooks!");
+			}
 				
 			stm = conn.createStatement();
 			ResultSet rs = null;
@@ -139,7 +146,7 @@ public class MembersManagerBean implements MembersManagerRemote {
 			rs.close();
 			}
 		catch (SQLException e1) {
-				System.out.println("Error: " + e1);
+			LOG.severe("Error: "+e1);
 		}	
 		finally {
 			try { if (stm != null) stm.close(); } catch (Exception e) {};
@@ -159,14 +166,16 @@ public class MembersManagerBean implements MembersManagerRemote {
 			ctx = new InitialContext();
 			db = (DataSource) ctx.lookup("java:/PostgresDS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			LOG.severe("Error: "+e);
 		}
 				
 		Statement stm = null;
 		
 		try{
 			conn = db.getConnection();
-			if (conn == null) System.out.println("Failed to make connection!");
+			if (conn == null) {
+				LOG.severe("Failed to make connection in MembersManagerBean.filterByNumBorrowed!");
+			}
 			
 			stm = conn.createStatement();
 			ResultSet rs = null;
@@ -199,7 +208,7 @@ public class MembersManagerBean implements MembersManagerRemote {
 	        rs.close();
 		}
 		catch (SQLException e1) {
-				System.out.println("Error: " + e1);
+			LOG.severe("Error: "+e1);
 		}	
 		finally {
 			try { if (stm != null) stm.close(); } catch (Exception e) {};
@@ -219,14 +228,16 @@ public class MembersManagerBean implements MembersManagerRemote {
 			ctx = new InitialContext();
 			db = (DataSource) ctx.lookup("java:/PostgresDS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			LOG.severe("Error: "+e);
 		}
 				
 		Statement stm = null;
 		
 		try{
 			conn = db.getConnection();
-			if (conn == null) System.out.println("Failed to make connection!");
+			if (conn == null) {
+				LOG.severe("Failed to make connection in MembersManagerBean.findMember!");
+			}
 			
 			stm = conn.createStatement();
 			ResultSet rs = stm.executeQuery("SELECT id, first_name, last_name, date_birth FROM members "
@@ -242,7 +253,7 @@ public class MembersManagerBean implements MembersManagerRemote {
 	        rs.close();
 		}
 		catch (SQLException e1) {
-				System.out.println("Error: " + e1);
+			LOG.severe("Error: "+e1);
 		}	
 		finally {
 			try { if (stm != null) stm.close(); } catch (Exception e) {};
