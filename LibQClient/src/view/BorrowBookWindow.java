@@ -71,8 +71,6 @@ public class BorrowBookWindow extends JFrame{
 		panel.setBackground(new Color(204,229,255));
 		setContentPane(panel);
 		panel.setLayout(null);
-		Locale.setDefault(locale);
-		setLanguage();
 		
 		UtilDateModel model1 = new UtilDateModel();
 		Properties p1 = new Properties();
@@ -139,7 +137,7 @@ public class BorrowBookWindow extends JFrame{
 		find_member.setBounds(595, 100, 200, 30);
 		find_member.setFont(new Font("Sans Serif", Font.PLAIN, 20));
 		panel.add(find_member);			
-		
+    
 		TableRowSorter<TableModel> rowSorter_employees = new TableRowSorter<>(table_employees.getModel());
 		table_employees.setRowSorter(rowSorter_employees);
 		add_filter(employee, rowSorter_employees);
@@ -152,7 +150,9 @@ public class BorrowBookWindow extends JFrame{
 		datePicker_to.getModel().setDate(cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH), cal2.get(Calendar.DAY_OF_MONTH) + 30);
 		datePicker_to.getModel().setSelected(true);
 		
-	}
+		Locale.setDefault(locale);
+		setLanguage();
+  }
 	
 	public void addActions(ActionListener borrowBook, ActionListener findMember){
 		commit.addActionListener(borrowBook);
@@ -244,7 +244,6 @@ public class BorrowBookWindow extends JFrame{
 	}
 	
 	private void setLanguage(){
-		/*
 		resourceBundle = ResourceBundle.getBundle("messages");
 		find_member.setText(resourceBundle.getString("Borrow_selected_bookWindow.btn.Find_member"));
 		label_from.setText(resourceBundle.getString("Borrow_selected_bookWindow.lbl.Label_from"));
@@ -259,7 +258,6 @@ public class BorrowBookWindow extends JFrame{
 		table_employees.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Birthday"));
 		table_employees.getColumnModel().getColumn(4).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Job_description"));
 		table_employees.getTableHeader().repaint();
-		*/
 	}
 }
 
