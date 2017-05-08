@@ -211,7 +211,7 @@ public class MembersTab {
 		}
 		resourceBundle = ResourceBundle.getBundle("messages");
 		all_members.setText(resourceBundle.getString("MembersTab.btn.All_members"));
-		filter_recods.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
+		filter_records.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
 		members_per_page.setText(resourceBundle.getString("MembersTab.lbl.Members_Per_Page"));
 		change_person.setText(resourceBundle.getString("MembersTab.btn.Change_person"));
 		prev.setText(resourceBundle.getString("MembersTab.btn.PREV"));

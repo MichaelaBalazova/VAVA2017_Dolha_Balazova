@@ -29,7 +29,7 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
-public class Borrow_selected_bookWindow extends JFrame{
+public class BorrowBookWindow extends JFrame{
 
 	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 	private JPanel panel = new JPanel();
@@ -61,7 +61,7 @@ public class Borrow_selected_bookWindow extends JFrame{
 	    }
 	};;
 	
-	public Borrow_selected_bookWindow(int available_id, Locale locale) {
+	public BorrowBookWindow(int available_id, Locale locale) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(50, 50, 1750, 1350);
 		setTitle("Borrow selected book");
