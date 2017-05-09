@@ -37,7 +37,10 @@ public class Available_booksTab {
 	private JButton borrow_book = new JButton(resourceBundle.getString("Available_booksTab.btn.Borrow_selected_book")); 
 	private JButton prev = new JButton(resourceBundle.getString("Available_booksTab.btn.PREW")); 
 	private JButton next = new JButton(resourceBundle.getString("Available_booksTab.btn.NEXT")); 
-	private String[] columns_available_books = {"ID", "State", "Identifier", "Title", "Publisher"};
+	private String[] columns_available_books = {"ID", resourceBundle.getString("Available_booksTab.clmn.State"),
+			resourceBundle.getString("Available_booksTab.clmn.Identifier"),
+			resourceBundle.getString("Available_booksTab.clmn.Title"),
+			resourceBundle.getString("Available_booksTab.clmn.Publisher")};
 	private JTextField limit_txt = new JTextField();
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);

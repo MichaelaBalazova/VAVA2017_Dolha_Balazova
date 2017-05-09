@@ -35,21 +35,28 @@ public class BorrowBookWindow extends JFrame{
 
 	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 	private JPanel panel = new JPanel();
-	private JButton find_member = new JButton("Find a member");
+	private JButton find_member = new JButton(resourceBundle.getString("Borrow_selected_bookWindow.btn.Find_member"));
 	private JDatePickerImpl datePicker_from;
 	private JDatePickerImpl datePicker_to;
-	private JLabel label_from = new JLabel("Borrowed from");
-	private JLabel label_to = new JLabel("Borrowed to");
+	private JLabel label_from = new JLabel(resourceBundle.getString("Borrow_selected_bookWindow.lbl.Label_from"));
+	private JLabel label_to = new JLabel(resourceBundle.getString("Borrow_selected_bookWindow.lbl.Label_to"));
 	private JTextField member = new JTextField();
 	private JTextField employee = new JTextField();
 	private JTable table_members  = new JTable();
 	private JTable table_employees  = new JTable();
-	private String[] columns_members = {"ID", "First Name", "Second Name", "Birthday" };
-	private String[] columns_employees = {"ID", "First Name", "Second Name", "Birthday", "Job description" };
+	private String[] columns_members = {"ID", 
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.First_name"),
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.Second_name"),
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.Birthday")};
+	private String[] columns_employees = {"ID", 
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.First_name"), 
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.Second_name"),
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.Birthday"),
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.Job_description")};
 	private TableRowSorter<TableModel> rowSorter_employees;
 	private JScrollPane scroll_members = new JScrollPane(table_members);
 	private JScrollPane scroll_employees = new JScrollPane(table_employees);
-	private JButton commit = new JButton("Borrow a book!");
+	private JButton commit = new JButton(resourceBundle.getString("Borrow_selected_bookWindow.btn.Commit"));
 	private DefaultTableModel model_members = new DefaultTableModel(){
 		@Override
 	    public boolean isCellEditable(int row, int column) {
