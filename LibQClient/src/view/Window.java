@@ -9,7 +9,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -47,7 +49,6 @@ public class Window extends JFrame implements ActionListener {
 		
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		System.out.println(props.getProperty("begin_x"));
 		setBounds(Integer.parseInt(props.getProperty("begin_x")), Integer.parseInt(props.getProperty("begin_y")),
 				Integer.parseInt(props.getProperty("width")), Integer.parseInt(props.getProperty("height")));
 		setTitle("Library Management System");

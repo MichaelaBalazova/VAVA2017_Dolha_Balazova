@@ -42,7 +42,13 @@ public class BooksTab {
 	private JPanel panel;
 	private JButton prev = new JButton(resourceBundle.getString("BooksTab.btn.PREV"));
 	private JButton next = new JButton(resourceBundle.getString("BooksTab.btn.NEXT"));
-	private String[] columns_books = {"ID", "Title", "Publisher", "Pages", "Pieces", "EAN_code", "Book genre"}; 
+	private String[] columns_books = {"ID", 
+			resourceBundle.getString("BooksTab.clmn.Title"), 
+			resourceBundle.getString("BooksTab.clmn.Publisher"), 
+			resourceBundle.getString("BooksTab.clmn.Pages"), 
+			resourceBundle.getString("BooksTab.clmn.Pieces"), 
+			resourceBundle.getString("BooksTab.clmn.EAN_Code"), 
+			resourceBundle.getString("BooksTab.clmn.Book_genre")}; 
 	private JTextField limit_txt = new JTextField();;
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
@@ -198,6 +204,8 @@ public class BooksTab {
 			}
 		}
 		while (!good_suffix){
+			JOptionPane.showMessageDialog(null,"Please enter a name of file to save in form"
+					+ " NAME.FILETYPE FILETYPES: [png,jpg,jpeg,bmp,gif,wbmp]","ERROR",JOptionPane.ERROR_MESSAGE);
 			if (file_chooser.showSaveDialog(this.panel) == JFileChooser.APPROVE_OPTION){
 				file = file_chooser.getSelectedFile();
 			}

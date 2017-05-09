@@ -48,26 +48,34 @@ public class MembersTab {
 	private JButton langSK = new JButton(imgSK);
 	private JButton langEN = new JButton(imgEN);
 	private int offset = 0;
-	private JCheckBox checkbox = new JCheckBox("Enable filter");
-	private JButton all_members = new JButton("Show all members");
-	private JButton filter_records = new JButton("Filter Records");
-	private JLabel members_per_page = new JLabel("Members Per Page");
+	private JCheckBox checkbox = new JCheckBox(resourceBundle.getString("MembersTab.chckbx.Enable_filter"));
+	private JButton all_members = new JButton(resourceBundle.getString("MembersTab.btn.All_members"));
+	private JButton filter_records = new JButton(resourceBundle.getString("MembersTab.btn.Filter_records"));
+	private JLabel members_per_page = new JLabel(resourceBundle.getString("MembersTab.lbl.Members_Per_Page"));
 	private JPanel panel;
-	private JButton prev = new JButton("PREV");
-	private JButton next = new JButton("NEXT");
-	private JButton change_person = new JButton("Update selected person");
-	private String[] columns_members = {"ID", "First Name", "Second Name", "Birthday", "Email", "Telephone", "Address","Member from", "Borrowed Books" };
+	private JButton prev = new JButton(resourceBundle.getString("MembersTab.btn.PREV"));
+	private JButton next = new JButton(resourceBundle.getString("MembersTab.btn.NEXT"));
+	private JButton change_person = new JButton(resourceBundle.getString("MembersTab.btn.Change_person"));
+	private String[] columns_members = {"ID",
+			resourceBundle.getString("MembersTab.clmn.First_name"),
+			resourceBundle.getString("MembersTab.clmn.Second_name"),
+			resourceBundle.getString("MembersTab.clmn.Birthday"),
+			resourceBundle.getString("MembersTab.clmn.Email"),
+			resourceBundle.getString("MembersTab.clmn.Telephone"),
+			resourceBundle.getString("MembersTab.clmn.Address"),
+			resourceBundle.getString("MembersTab.clmn.Member_from"),
+			resourceBundle.getString("MembersTab.clmn.Borrowed_books")};
 	private JTextField limit_txt = new JTextField();;
 	private JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JSeparator separator3 = new JSeparator(SwingConstants.HORIZONTAL);
-	private JLabel filter1 = new JLabel("Filter for borrowed books");
-	private JLabel filter2 = new JLabel("and date of membership");
-	private JLabel filter3 = new JLabel("Select number of borrowed books");
-	private JLabel change_label = new JLabel("Change personal info of person");
+	private JLabel filter1 = new JLabel(resourceBundle.getString("MembersTab.lbl.Filter1"));
+	private JLabel filter2 = new JLabel(resourceBundle.getString("MembersTab.lbl.Filter2"));
+	private JLabel filter3 = new JLabel(resourceBundle.getString("MembersTab.lbl.Filter3"));
+	private JLabel change_label = new JLabel(resourceBundle.getString("MembersTab.lbl.Change_label"));
 	private JTextField find = new JTextField();
-	private JLabel find_l = new JLabel("Find a person in table");
-	private JButton person_borrowed = new JButton("Show list of borrowed books");
+	private JLabel find_l = new JLabel(resourceBundle.getString("MembersTab.lbl.Find_l"));
+	private JButton person_borrowed = new JButton(resourceBundle.getString("MembersTab.btn.Person_borrowed"));
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
 	private String[] options = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };		
@@ -233,6 +241,7 @@ public class MembersTab {
 			Locale.setDefault(new Locale("en","EN"));
 		}
 		resourceBundle = ResourceBundle.getBundle("messages");
+		checkbox.setText(resourceBundle.getString("MembersTab.chckbx.Enable_filter"));
 		all_members.setText(resourceBundle.getString("MembersTab.btn.All_members"));
 		filter_records.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
 		members_per_page.setText(resourceBundle.getString("MembersTab.lbl.Members_Per_Page"));
