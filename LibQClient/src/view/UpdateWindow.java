@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,22 +23,23 @@ import org.jdatepicker.impl.UtilDateModel;
 
 public class UpdateWindow extends JFrame {
 
+	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 	private JPanel panel = new JPanel();
-	private JButton update = new JButton("Update record!");
+	private JButton update = new JButton(resourceBundle.getString("UpdateWindow.btn.Update"));
 	public JTextField id = new JTextField();
 	public JTextField first_name = new JTextField();
 	public JTextField last_name = new JTextField();
 	public JTextField email = new JTextField();
 	public JTextField telephone = new JTextField();
 	public JTextField address = new JTextField();
-	private JLabel id_l = new JLabel("Member ID");
-	private JLabel first_name_l = new JLabel("First name");
-	private JLabel last_name_l = new JLabel("Last name");
-	private JLabel birthday_l = new JLabel("Birthday");
-	private JLabel email_l = new JLabel("E-mail address");
-	private JLabel telephone_l = new JLabel("Telephone number");
-	private JLabel address_l = new JLabel("Address");
-	private JLabel member_from_l = new JLabel("Member in library since");
+	private JLabel id_l = new JLabel(resourceBundle.getString("UpdateWindow.lbl.Id_l"));
+	private JLabel first_name_l = new JLabel(resourceBundle.getString("UpdateWindow.lbl.First_name_l"));
+	private JLabel last_name_l = new JLabel(resourceBundle.getString("UpdateWindow.lbl.Last_name_l"));
+	private JLabel birthday_l = new JLabel(resourceBundle.getString("UpdateWindow.lbl.Birthday_l"));
+	private JLabel email_l = new JLabel(resourceBundle.getString("UpdateWindow.lbl.Email_l"));
+	private JLabel telephone_l = new JLabel(resourceBundle.getString("UpdateWindow.lbl.Telephone_l"));
+	private JLabel address_l = new JLabel(resourceBundle.getString("UpdateWindow.lbl.Address_l"));
+	private JLabel member_from_l = new JLabel(resourceBundle.getString("UpdateWindow.lbl.Member_from_l"));
 	private JDatePickerImpl datePicker_birthday;
 	private JDatePickerImpl datePicker_member_from;
 

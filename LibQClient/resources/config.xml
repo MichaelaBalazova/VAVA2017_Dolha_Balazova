@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>window size settings of Window class</comment>
+	<entry key="begin_x">50</entry>
+	<entry key="begin_y">50</entry>
+	<entry key="width">2584</entry>
+	<entry key="height">1480</entry>
+</properties>

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -27,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class BooksTab {
 	
+	private static Logger LOG = Logger.getLogger(BooksTab.class.getName());
 	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 	public int offset = 0;
 	private ImageIcon imgSK = new ImageIcon("img/sk-flag.png");
@@ -40,7 +42,13 @@ public class BooksTab {
 	private JPanel panel;
 	private JButton prev = new JButton(resourceBundle.getString("BooksTab.btn.PREV"));
 	private JButton next = new JButton(resourceBundle.getString("BooksTab.btn.NEXT"));
-	private String[] columns_books = {"ID", "Title", "Publisher", "Pages", "Pieces", "EAN_code", "Book genre"}; 
+	private String[] columns_books = {"ID", 
+			resourceBundle.getString("BooksTab.clmn.Title"), 
+			resourceBundle.getString("BooksTab.clmn.Publisher"), 
+			resourceBundle.getString("BooksTab.clmn.Pages"), 
+			resourceBundle.getString("BooksTab.clmn.Pieces"), 
+			resourceBundle.getString("BooksTab.clmn.EAN_Code"), 
+			resourceBundle.getString("BooksTab.clmn.Book_genre")}; 
 	private JTextField limit_txt = new JTextField();;
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
@@ -158,7 +166,7 @@ public class BooksTab {
 			}
 		}
 		catch(NumberFormatException e){
-			System.out.println("Error : " + e.getMessage());	
+			LOG.severe("Error: "+e);	
 		}
 		return limit;
 	}
@@ -196,6 +204,8 @@ public class BooksTab {
 			}
 		}
 		while (!good_suffix){
+			JOptionPane.showMessageDialog(null,"Please enter a name of file to save in form"
+					+ " NAME.FILETYPE FILETYPES: [png,jpg,jpeg,bmp,gif,wbmp]","ERROR",JOptionPane.ERROR_MESSAGE);
 			if (file_chooser.showSaveDialog(this.panel) == JFileChooser.APPROVE_OPTION){
 				file = file_chooser.getSelectedFile();
 			}

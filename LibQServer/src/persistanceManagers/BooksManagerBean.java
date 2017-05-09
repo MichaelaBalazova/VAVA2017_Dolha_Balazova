@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.naming.Context;
@@ -23,6 +24,8 @@ import test.BooksManagerRemote;
 @Stateless
 public class BooksManagerBean implements BooksManagerRemote {
     
+	private static Logger LOG = Logger.getLogger(BooksManagerBean.class.getName());
+	
     public List<BooksModel> getAllBooks(int limit, int offset){
     	
     	Context ctx;
@@ -33,13 +36,15 @@ public class BooksManagerBean implements BooksManagerRemote {
 			ctx = new InitialContext();
 			db = (DataSource) ctx.lookup("java:/PostgresDS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			LOG.severe("Error: "+e);
 		}
 		Statement stm = null;
 		
 		try{
 			conn = db.getConnection();
-			if (conn == null) System.out.println("Failed to make connection!");
+			if (conn == null) {
+				LOG.severe("Failed to make connection in BooksManagerBean.getAllBooks!");
+			}
 			
 			stm = conn.createStatement();
 	        ResultSet rs = stm.executeQuery("SELECT books.id AS id, title, publisher, no_pages, no_pieces, "
@@ -61,7 +66,7 @@ public class BooksManagerBean implements BooksManagerRemote {
 	        rs.close();
 		}
 		catch (SQLException e1) {
-				System.out.println("Error: " + e1);
+			LOG.severe("Error: "+e1);
 		}
 		finally {
 			try { if (stm != null) stm.close(); } catch (Exception e) {};

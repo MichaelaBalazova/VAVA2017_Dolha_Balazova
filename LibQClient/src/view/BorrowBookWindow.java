@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,21 +35,28 @@ public class BorrowBookWindow extends JFrame{
 
 	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 	private JPanel panel = new JPanel();
-	private JButton find_member = new JButton("Find a member");
+	private JButton find_member = new JButton(resourceBundle.getString("Borrow_selected_bookWindow.btn.Find_member"));
 	private JDatePickerImpl datePicker_from;
 	private JDatePickerImpl datePicker_to;
-	private JLabel label_from = new JLabel("Borrowed from");
-	private JLabel label_to = new JLabel("Borrowed to");
+	private JLabel label_from = new JLabel(resourceBundle.getString("Borrow_selected_bookWindow.lbl.Label_from"));
+	private JLabel label_to = new JLabel(resourceBundle.getString("Borrow_selected_bookWindow.lbl.Label_to"));
 	private JTextField member = new JTextField();
 	private JTextField employee = new JTextField();
 	private JTable table_members  = new JTable();
 	private JTable table_employees  = new JTable();
-	private String[] columns_members = {"ID", "First Name", "Second Name", "Birthday" };
-	private String[] columns_employees = {"ID", "First Name", "Second Name", "Birthday", "Job description" };
+	private String[] columns_members = {"ID", 
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.First_name"),
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.Second_name"),
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.Birthday")};
+	private String[] columns_employees = {"ID", 
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.First_name"), 
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.Second_name"),
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.Birthday"),
+			resourceBundle.getString("Borrow_selected_bookWindow.clmn.Job_description")};
 	private TableRowSorter<TableModel> rowSorter_employees;
 	private JScrollPane scroll_members = new JScrollPane(table_members);
 	private JScrollPane scroll_employees = new JScrollPane(table_employees);
-	private JButton commit = new JButton("Borrow a book!");
+	private JButton commit = new JButton(resourceBundle.getString("Borrow_selected_bookWindow.btn.Commit"));
 	private DefaultTableModel model_members = new DefaultTableModel(){
 		@Override
 	    public boolean isCellEditable(int row, int column) {
@@ -71,8 +79,6 @@ public class BorrowBookWindow extends JFrame{
 		panel.setBackground(new Color(204,229,255));
 		setContentPane(panel);
 		panel.setLayout(null);
-		Locale.setDefault(locale);
-		setLanguage();
 		
 		UtilDateModel model1 = new UtilDateModel();
 		Properties p1 = new Properties();
@@ -139,7 +145,7 @@ public class BorrowBookWindow extends JFrame{
 		find_member.setBounds(595, 100, 200, 30);
 		find_member.setFont(new Font("Sans Serif", Font.PLAIN, 20));
 		panel.add(find_member);			
-		
+    
 		TableRowSorter<TableModel> rowSorter_employees = new TableRowSorter<>(table_employees.getModel());
 		table_employees.setRowSorter(rowSorter_employees);
 		add_filter(employee, rowSorter_employees);
@@ -152,7 +158,9 @@ public class BorrowBookWindow extends JFrame{
 		datePicker_to.getModel().setDate(cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH), cal2.get(Calendar.DAY_OF_MONTH) + 30);
 		datePicker_to.getModel().setSelected(true);
 		
-	}
+		Locale.setDefault(locale);
+		setLanguage();
+  }
 	
 	public void addActions(ActionListener borrowBook, ActionListener findMember){
 		commit.addActionListener(borrowBook);
@@ -244,7 +252,6 @@ public class BorrowBookWindow extends JFrame{
 	}
 	
 	private void setLanguage(){
-		/*
 		resourceBundle = ResourceBundle.getBundle("messages");
 		find_member.setText(resourceBundle.getString("Borrow_selected_bookWindow.btn.Find_member"));
 		label_from.setText(resourceBundle.getString("Borrow_selected_bookWindow.lbl.Label_from"));
@@ -259,7 +266,6 @@ public class BorrowBookWindow extends JFrame{
 		table_employees.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Birthday"));
 		table_employees.getColumnModel().getColumn(4).setHeaderValue(resourceBundle.getString("Borrow_selected_bookWindow.clmn.Job_description"));
 		table_employees.getTableHeader().repaint();
-		*/
 	}
 }
 
