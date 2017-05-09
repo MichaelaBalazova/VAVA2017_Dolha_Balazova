@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,36 +41,41 @@ import org.jdatepicker.impl.UtilDateModel;
 
 public class MembersTab {
 	
+	private static Logger LOG = Logger.getLogger(MembersTab.class.getName());
 	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 	private ImageIcon imgSK = new ImageIcon("img/sk-flag.png");
 	private ImageIcon imgEN = new ImageIcon("img/en-flag.png");
 	private JButton langSK = new JButton(imgSK);
 	private JButton langEN = new JButton(imgEN);
-<<<<<<< HEAD
 	private int offset = 0;
-=======
-  private int offset = 0;
->>>>>>> 7759b93eee0236276c452ea53aba17137ea3249e
-	private JCheckBox checkbox = new JCheckBox("Enable filter");
-	private JButton all_members = new JButton("Show all members");
-	private JButton filter_records = new JButton("Filter Records");
-	private JLabel members_per_page = new JLabel("Members Per Page");
+	private JCheckBox checkbox = new JCheckBox(resourceBundle.getString("MembersTab.chckbx.Enable_filter"));
+	private JButton all_members = new JButton(resourceBundle.getString("MembersTab.btn.All_members"));
+	private JButton filter_records = new JButton(resourceBundle.getString("MembersTab.btn.Filter_records"));
+	private JLabel members_per_page = new JLabel(resourceBundle.getString("MembersTab.lbl.Members_Per_Page"));
 	private JPanel panel;
-	private JButton prev = new JButton("PREV");
-	private JButton next = new JButton("NEXT");
-	private JButton change_person = new JButton("Update selected person");
-	private String[] columns_members = {"ID", "First Name", "Second Name", "Birthday", "Email", "Telephone", "Address","Member from", "Borrowed Books" };
+	private JButton prev = new JButton(resourceBundle.getString("MembersTab.btn.PREV"));
+	private JButton next = new JButton(resourceBundle.getString("MembersTab.btn.NEXT"));
+	private JButton change_person = new JButton(resourceBundle.getString("MembersTab.btn.Change_person"));
+	private String[] columns_members = {"ID",
+			resourceBundle.getString("MembersTab.clmn.First_name"),
+			resourceBundle.getString("MembersTab.clmn.Second_name"),
+			resourceBundle.getString("MembersTab.clmn.Birthday"),
+			resourceBundle.getString("MembersTab.clmn.Email"),
+			resourceBundle.getString("MembersTab.clmn.Telephone"),
+			resourceBundle.getString("MembersTab.clmn.Address"),
+			resourceBundle.getString("MembersTab.clmn.Member_from"),
+			resourceBundle.getString("MembersTab.clmn.Borrowed_books")};
 	private JTextField limit_txt = new JTextField();;
 	private JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JSeparator separator3 = new JSeparator(SwingConstants.HORIZONTAL);
-	private JLabel filter1 = new JLabel("Filter for borrowed books");
-	private JLabel filter2 = new JLabel("and date of membership");
-	private JLabel filter3 = new JLabel("Select number of borrowed books");
-	private JLabel change_label = new JLabel("Change personal info of person");
+	private JLabel filter1 = new JLabel(resourceBundle.getString("MembersTab.lbl.Filter1"));
+	private JLabel filter2 = new JLabel(resourceBundle.getString("MembersTab.lbl.Filter2"));
+	private JLabel filter3 = new JLabel(resourceBundle.getString("MembersTab.lbl.Filter3"));
+	private JLabel change_label = new JLabel(resourceBundle.getString("MembersTab.lbl.Change_label"));
 	private JTextField find = new JTextField();
-	private JLabel find_l = new JLabel("Find a person in table");
-	private JButton person_borrowed = new JButton("Show list of borrowed books");
+	private JLabel find_l = new JLabel(resourceBundle.getString("MembersTab.lbl.Find_l"));
+	private JButton person_borrowed = new JButton(resourceBundle.getString("MembersTab.btn.Person_borrowed"));
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
 	private String[] options = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };		
@@ -128,21 +134,12 @@ public class MembersTab {
 		change_person.setBounds(26, 470, 210, 35);
 		//filter1.setBounds(26, 187, 220, 22);
 		filter1.setBounds(26, 187, 220, 22);
-<<<<<<< HEAD
-  		filter2.setBounds(26, 202, 200, 22);
-  		filter3.setBounds(26, 285, 220, 22);
-  		person_borrowed.setBounds(26, 545, 210, 35);
-  		change_label.setBounds(26, 438, 230, 22);
-  		find_l.setBounds(26, 625, 220, 20);
-  		find.setBounds(26, 645, 200, 35);
-=======
     filter2.setBounds(26, 202, 200, 22);
   	filter3.setBounds(26, 285, 220, 22);
   	person_borrowed.setBounds(26, 545, 210, 35);
   	change_label.setBounds(26, 438, 230, 22);
   	find_l.setBounds(26, 625, 220, 20);
   	find.setBounds(26, 645, 200, 35);
->>>>>>> 7759b93eee0236276c452ea53aba17137ea3249e
 		langSK.setBounds(26, 300, 60, 35);
 		langEN.setBounds(106, 300, 60, 35);
 		
@@ -195,11 +192,7 @@ public class MembersTab {
 		panel.add(find);
 		panel.add(find_l);
 		panel.add(checkbox);
-<<<<<<< HEAD
 		panel.add(langSK);
-=======
-    panel.add(langSK);
->>>>>>> 7759b93eee0236276c452ea53aba17137ea3249e
 		panel.add(langEN);
 			
 		change_person.addActionListener(new ActionListener() { 
@@ -248,12 +241,9 @@ public class MembersTab {
 			Locale.setDefault(new Locale("en","EN"));
 		}
 		resourceBundle = ResourceBundle.getBundle("messages");
+		checkbox.setText(resourceBundle.getString("MembersTab.chckbx.Enable_filter"));
 		all_members.setText(resourceBundle.getString("MembersTab.btn.All_members"));
-<<<<<<< HEAD
-		filter_records.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
-=======
     filter_records.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
->>>>>>> 7759b93eee0236276c452ea53aba17137ea3249e
 		members_per_page.setText(resourceBundle.getString("MembersTab.lbl.Members_Per_Page"));
 		change_person.setText(resourceBundle.getString("MembersTab.btn.Change_person"));
 		prev.setText(resourceBundle.getString("MembersTab.btn.PREV"));
@@ -302,7 +292,7 @@ public class MembersTab {
 			}
 		}
 		catch(NumberFormatException e){
-			System.out.println("Error : " + e.getMessage());			
+			LOG.severe("Error: "+e);			
 		}
 		return limit;
 	}

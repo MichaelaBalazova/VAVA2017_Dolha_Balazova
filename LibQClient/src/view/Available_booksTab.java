@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 public class Available_booksTab {
 
 	private int offset = 0;
+	private static Logger LOG = Logger.getLogger(Available_booksTab.class.getName());
 	private ImageIcon imgSK = new ImageIcon("img/sk-flag.png");
 	private ImageIcon imgEN = new ImageIcon("img/en-flag.png");
 	private JButton langSK = new JButton(imgSK);
@@ -35,7 +37,10 @@ public class Available_booksTab {
 	private JButton borrow_book = new JButton(resourceBundle.getString("Available_booksTab.btn.Borrow_selected_book")); 
 	private JButton prev = new JButton(resourceBundle.getString("Available_booksTab.btn.PREW")); 
 	private JButton next = new JButton(resourceBundle.getString("Available_booksTab.btn.NEXT")); 
-	private String[] columns_available_books = {"ID", "State", "Identifier", "Title", "Publisher"};
+	private String[] columns_available_books = {"ID", resourceBundle.getString("Available_booksTab.clmn.State"),
+			resourceBundle.getString("Available_booksTab.clmn.Identifier"),
+			resourceBundle.getString("Available_booksTab.clmn.Title"),
+			resourceBundle.getString("Available_booksTab.clmn.Publisher")};
 	private JTextField limit_txt = new JTextField();
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
@@ -144,7 +149,7 @@ public class Available_booksTab {
 			}
 		}
 		catch(NumberFormatException e){
-			System.out.println("Error : " + e.getMessage());			
+			LOG.severe("Error: "+e);			
 		}
 		return limit;
 	}

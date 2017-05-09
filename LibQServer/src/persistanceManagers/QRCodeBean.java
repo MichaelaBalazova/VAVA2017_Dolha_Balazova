@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.imageio.ImageIO;
@@ -25,6 +26,8 @@ import test.QRCodeBeanRemote;
  */
 @Stateless
 public class QRCodeBean implements QRCodeBeanRemote {
+	
+	private static Logger LOG = Logger.getLogger(QRCodeBean.class.getName());
 
     public int createQRCode(File saveFile, String stringToEncode){
 		int size = 250;
@@ -62,15 +65,13 @@ public class QRCodeBean implements QRCodeBeanRemote {
 			}
 			ImageIO.write(image, fileType, saveFile);
 		} catch (WriterException e) {
-			e.printStackTrace();
-			//log unsuccessful creation of QR
+			LOG.severe("Error: "+e);
 			return -1;
 		} catch (IOException e) {
-			e.printStackTrace();
-			//log unsuccessful creation of QR
+			LOG.severe("Error: "+e);
 			return -1;
 		}
-		//log successful creation of QR
+		LOG.info("Successfuly created QR code!");
 		return 0;
     }
 

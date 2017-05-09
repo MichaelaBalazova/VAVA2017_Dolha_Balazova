@@ -4,7 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.postgresql.ds.PGPoolingDataSource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,11 +33,24 @@ public class Window extends JFrame implements ActionListener {
 	public MembersTab members_tab;
 	public Available_booksTab available_books_tab;
 	public ReservationsTab reservations_tab;
+	private File configFile = new File("resources/config.xml");	 
+	private InputStream inputStream;
+	private Properties props = new Properties();
+	private static Logger LOG = Logger.getLogger(Window.class.getName());
 	
 	public Window() {
+		try {
+			inputStream = new FileInputStream(configFile);
+			props.loadFromXML(inputStream);
+			LOG.info("Successfuly opened xml config file");
+		} catch (IOException e) {
+			LOG.severe("Error: "+e);
+		}
+		
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(50, 50, 2584, 1480);
+		setBounds(Integer.parseInt(props.getProperty("begin_x")), Integer.parseInt(props.getProperty("begin_y")),
+				Integer.parseInt(props.getProperty("width")), Integer.parseInt(props.getProperty("height")));
 		setTitle("Library Management System");
 		setResizable(false);
 		setLocationRelativeTo(null);
