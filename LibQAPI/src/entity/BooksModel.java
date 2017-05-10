@@ -16,6 +16,7 @@ public class BooksModel implements Serializable{
 	private GenresModel genre_id;
 	private LocationModel location_id;
 	private List<AuthorsModel> authors_list;
+	private AuthorsModel author;
 	
 	public BooksModel(int id, String title, String publisher, Date publication_date, int no_pages, int no_pieces, String ean_code, GenresModel genre_id, LocationModel location_id) {
 		setId(id);
@@ -37,6 +38,16 @@ public class BooksModel implements Serializable{
 		setNo_pieces(no_pieces);
 		setEan_code(ean_code);
 		setGenre_id(genre);
+	}
+	
+	public BooksModel(int id, String title, String publisher, int no_pages, int no_pieces, String ean_code, AuthorsModel author){
+		setId(id);
+		setTitle(title);
+		setPublisher(publisher);
+		setNo_pages(no_pages);
+		setNo_pieces(no_pieces);
+		setEan_code(ean_code);
+		setAuthor(author);
 	}
 	
 	public BooksModel(String title, String publisher) {
@@ -122,5 +133,13 @@ public class BooksModel implements Serializable{
 	
 	public void setAuthors_list(List<AuthorsModel> authors_list) {
 		this.authors_list = authors_list;
+	}
+	
+	public AuthorsModel getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(AuthorsModel author) {
+		this.author = author;
 	}
 }

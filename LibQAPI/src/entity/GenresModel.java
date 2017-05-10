@@ -19,6 +19,10 @@ public class GenresModel implements Serializable{
 		setAdd_text(add_text);
 	}
 	
+	public GenresModel(String name) {
+		setName(name);
+	}
+	
 	public int getId() {
 		return id;
 	}
