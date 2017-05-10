@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * trieda reprezentujuca udaje ulozene vo tabulke Books
+ * jedna kniha moze mat viacerych autorov, co reprezentuje vazobna tabulka authors_books
+ * katalog knih, teda vsetky tituly knih ktore kniznica vlastni, jeden titul moze mat viacero kusov
+ * @author Michaela, Domca
+ */
 public class BooksModel implements Serializable{
 	
 	private int id;

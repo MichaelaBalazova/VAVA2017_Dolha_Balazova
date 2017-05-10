@@ -2,6 +2,11 @@ package entity;
 
 import java.io.Serializable;
 
+/**
+ * trieda reprezentujuca udaje ulozene v tabulke Authors
+ * zoskupuje vsetkych autorov knih, ktore sa nachadzaju v kniznici
+ * @author Michaela, Domca
+ */
 public class AuthorsModel implements Serializable{
 
 	private int id;

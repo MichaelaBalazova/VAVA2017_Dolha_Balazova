@@ -2,6 +2,11 @@ package entity;
 
 import java.io.Serializable;
 
+/**
+ * trieda reprezentujuca udaje ulozene v tabulke Genres
+ * zoskupujuca vsetky zanre knih
+ * @author Michaela, Domca
+ */
 public class GenresModel implements Serializable{
 
 	private int id;
