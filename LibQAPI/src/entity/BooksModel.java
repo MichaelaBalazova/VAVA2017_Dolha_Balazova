@@ -50,6 +50,16 @@ public class BooksModel implements Serializable{
 		setAuthor(author);
 	}
 	
+	public BooksModel(int id, String title, String publisher, int no_pages, int no_pieces, String ean_code, Date date){
+		setId(id);
+		setTitle(title);
+		setPublisher(publisher);
+		setNo_pages(no_pages);
+		setNo_pieces(no_pieces);
+		setEan_code(ean_code);
+		setPublication_date(date);
+	}
+	
 	public BooksModel(String title, String publisher) {
 		setTitle(title);
 		setPublisher(publisher);

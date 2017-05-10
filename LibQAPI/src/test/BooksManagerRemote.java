@@ -1,5 +1,6 @@
 package test;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Remote;
@@ -13,6 +14,8 @@ public interface BooksManagerRemote {
 	public List<BooksModel> getAllBooks(int limit, int offset);
 	public List<BooksModel> findAuthor(String name);
 	public List<GenresModel> fillComboBox();
+	public List<BooksModel> findGenre(String genre);
+	public List<BooksModel> findPublicationDate(Date date);
 	
 }
 	
