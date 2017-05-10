@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -135,67 +137,74 @@ public class UpdateWindow extends JFrame {
 
 	}
 		
-	public JTextField getId() {
-		return id;
+	public int getId() {		
+		return Integer.parseInt(this.id.getText());
 	}
 
-	public void setId(JTextField id) {
-		this.id = id;
+	public void setId(int id) {
+		String id_str = Integer.toString(id);
+		this.id.setText(id_str);
 	}
 
-	public JTextField getFirst_name() {
-		return first_name;
+	public String getFirst_name() {
+		return this.first_name.getText();
 	}
 
-	public void setFirst_name(JTextField first_name) {
-		this.first_name = first_name;
+	public void setFirst_name(String first_name) {
+		this.first_name.setText(first_name);
 	}
 
-	public JTextField getLast_name() {
-		return last_name;
+	public String getLast_name() {
+		return this.last_name.getText();
 	}
 
-	public void setLast_name(JTextField last_name) {
-		this.last_name = last_name;
+	public void setLast_name(String last_name) {
+		this.last_name.setText(last_name);
 	}
 
-	public JTextField getEmail() {
-		return email;
+	public String getEmail() {
+		return this.email.getText();
 	}
 
-	public void setEmail(JTextField email) {
-		this.email = email;
+	public void setEmail(String email) {
+		this.email.setText(email);
 	}
 
-	public JTextField getTelephone() {
-		return telephone;
+	public String getTelephone() {
+		return this.telephone.getText();
 	}
 
-	public void setTelephone(JTextField telephone) {
-		this.telephone = telephone;
+	public void setTelephone(String telephone) {
+		this.telephone.setText(telephone);
 	}
 	
-	public JDatePickerImpl getDatePicker_birthday() {
-		return datePicker_birthday;
+	public Date getDatePicker_birthday() {
+		return (Date) this.datePicker_birthday.getModel().getValue();
 	}
 
-	public void setDatePicker_birthday(JDatePickerImpl datePicker_birthday) {
-		this.datePicker_birthday = datePicker_birthday;
+	public void setDatePicker_birthday(Calendar cal) {
+		this.datePicker_birthday.getModel().setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 	}
 
-	public JDatePickerImpl getDatePicker_member_from() {
-		return datePicker_member_from;
+	public Date getDatePicker_member_from() {
+		return (Date) this.datePicker_member_from.getModel().getValue();
 	}
 
-	public void setDatePicker_member_from(JDatePickerImpl datePicker_member_from) {
-		this.datePicker_member_from = datePicker_member_from;
+	public void setDatePicker_member_from(Calendar cal) {
+		this.datePicker_member_from.getModel().setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 	}
 	
-	public JTextField getAddress() {
-		return address;
+	public String getAddress() {
+		return this.address.getText();
 	}
 
-	public void setAddress(JTextField address) {
-		this.address = address;
+	public void setAddress(String address) {
+		this.address.setText(address);
 	}
+	
+	public void setWinVisible(boolean value){
+		this.setVisible(value);
+	}
+	
+	
 }

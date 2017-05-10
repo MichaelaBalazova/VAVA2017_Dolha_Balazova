@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -73,8 +78,6 @@ public class MembersTab {
 	private JLabel filter2 = new JLabel(resourceBundle.getString("MembersTab.lbl.Filter2"));
 	private JLabel filter3 = new JLabel(resourceBundle.getString("MembersTab.lbl.Filter3"));
 	private JLabel change_label = new JLabel(resourceBundle.getString("MembersTab.lbl.Change_label"));
-	private JTextField find = new JTextField();
-	private JLabel find_l = new JLabel(resourceBundle.getString("MembersTab.lbl.Find_l"));
 	private JButton person_borrowed = new JButton(resourceBundle.getString("MembersTab.btn.Person_borrowed"));
 	private JTable table = new JTable();
 	private JScrollPane scroll = new JScrollPane(table);
@@ -132,16 +135,13 @@ public class MembersTab {
 		separator2.setBounds(10, 435, 260, 20);
 		separator3.setBounds(10, 525, 260, 20);
 		change_person.setBounds(26, 470, 210, 35);
-		//filter1.setBounds(26, 187, 220, 22);
 		filter1.setBounds(26, 187, 220, 22);
-    filter2.setBounds(26, 202, 200, 22);
-  	filter3.setBounds(26, 285, 220, 22);
-  	person_borrowed.setBounds(26, 545, 210, 35);
-  	change_label.setBounds(26, 438, 230, 22);
-  	find_l.setBounds(26, 625, 220, 20);
-  	find.setBounds(26, 645, 200, 35);
-		langSK.setBounds(26, 300, 60, 35);
-		langEN.setBounds(106, 300, 60, 35);
+		filter2.setBounds(26, 202, 200, 22);
+		filter3.setBounds(26, 285, 220, 22);
+		person_borrowed.setBounds(26, 545, 210, 35);
+		change_label.setBounds(26, 438, 230, 22);
+		langSK.setBounds(26, 800, 60, 35);
+		langEN.setBounds(106, 800, 60, 35);
 		
 		//nastavovanie pisma komponentov
 		filter_records.setFont(new Font("Sans Serif", Font.PLAIN, 18));
@@ -150,13 +150,11 @@ public class MembersTab {
 		next.setFont(new Font("Sans Serif", Font.PLAIN, 20));
 		change_person.setFont(new Font("Sans Serif", Font.PLAIN, 17));
 		person_borrowed.setFont(new Font("Sans Serif", Font.PLAIN, 14));
-		find.setFont(new Font("Sans Serif", Font.PLAIN, 20));
 		change_label.setFont(new Font("Sans Serif", Font.BOLD, 15));
 		filter1.setFont(new Font("Sans Serif", Font.BOLD, 16));
 		filter2.setFont(new Font("Sans Serif", Font.BOLD, 16));
 		filter3.setFont(new Font("Sans Serif", Font.PLAIN, 14));
 		members_per_page.setFont(new Font("Sans Serif", Font.PLAIN, 18));
-		find_l.setFont(new Font("Sans Serif", Font.PLAIN, 18));
 		langSK.setActionCommand("setLangSK");
 		langEN.setActionCommand("setLangEN");
 		
@@ -169,7 +167,6 @@ public class MembersTab {
 		next.setEnabled(false);		
 		change_person.setEnabled(false);
 		person_borrowed.setEnabled(false);
-		find.setEditable(false);
 		filter_records.setEnabled(false);
 		comboBox.setEnabled(false);
 		
@@ -189,27 +186,15 @@ public class MembersTab {
 		panel.add(filter_records);
 		panel.add(all_members);
 		panel.add(limit_txt);		
-		panel.add(find);
-		panel.add(find_l);
 		panel.add(checkbox);
 		panel.add(langSK);
 		panel.add(langEN);
 			
-		change_person.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 					
-				}
-		});
-		
-		person_borrowed.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-				}
-		});
-		
 		ListSelectionModel listSelectionModel = table.getSelectionModel();
 		listSelectionModel.addListSelectionListener(new ListSelectionListener() {
 		        public void valueChanged(ListSelectionEvent e) { 
 		            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-		            //change_person.setEnabled(!lsm.isSelectionEmpty());
+		            change_person.setEnabled(!lsm.isSelectionEmpty());
 		            person_borrowed.setEnabled(!lsm.isSelectionEmpty());
 		        }
 		});
@@ -243,7 +228,7 @@ public class MembersTab {
 		resourceBundle = ResourceBundle.getBundle("messages");
 		checkbox.setText(resourceBundle.getString("MembersTab.chckbx.Enable_filter"));
 		all_members.setText(resourceBundle.getString("MembersTab.btn.All_members"));
-    filter_records.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
+		filter_records.setText(resourceBundle.getString("MembersTab.btn.Filter_records"));
 		members_per_page.setText(resourceBundle.getString("MembersTab.lbl.Members_Per_Page"));
 		change_person.setText(resourceBundle.getString("MembersTab.btn.Change_person"));
 		prev.setText(resourceBundle.getString("MembersTab.btn.PREV"));
@@ -261,17 +246,17 @@ public class MembersTab {
 		filter2.setText(resourceBundle.getString("MembersTab.lbl.Filter2"));
 		filter3.setText(resourceBundle.getString("MembersTab.lbl.Filter3"));
 		change_label.setText(resourceBundle.getString("MembersTab.lbl.Change_label"));
-		find_l.setText(resourceBundle.getString("MembersTab.lbl.Find_l"));
 		person_borrowed.setText(resourceBundle.getString("MembersTab.btn.Person_borrowed"));
 	}
 	
 	public void addActions(ActionListener showAllMembers, ActionListener prevMembers, ActionListener nextMembers, 
-			ActionListener memberListOfBorrowedBooks){
+			ActionListener memberListOfBorrowedBooks, ActionListener changeMember){
 		all_members.addActionListener(showAllMembers);
 		filter_records.addActionListener(showAllMembers);
 		prev.addActionListener(prevMembers);
 		next.addActionListener(nextMembers);
 		person_borrowed.addActionListener(memberListOfBorrowedBooks);
+		change_person.addActionListener(changeMember);
 	}
 	
 	public void addTableRow(Object[] row){
@@ -336,4 +321,56 @@ public class MembersTab {
 	public int getSelectedNum(){
 		return Integer.parseInt((String)comboBox.getSelectedItem());
 	}
+	
+	public String getSelectedFirst_name(){
+		return this.table.getValueAt(table.getSelectedRow(), 1).toString();
+	}
+	
+	public String getSelectedLast_name(){
+		return this.table.getValueAt(table.getSelectedRow(), 2).toString();
+	}
+	
+	public String getSelectedEmail(){
+		return this.table.getValueAt(table.getSelectedRow(), 4).toString();
+	}
+	
+	public String getSelectedTelephone(){
+		String result = this.table.getValueAt(table.getSelectedRow(), 5).toString();
+		if (result != null && result.equals("")) return result;
+		else return null;
+	}
+	
+	public String getSelectedAddress(){
+		if (table.getSelectedRow() == -1) return null;
+		else{
+			return this.table.getValueAt(table.getSelectedRow(), 6).toString();
+		}
+	}
+	
+	public Calendar getSelectedBirthday(){
+		Calendar cal = Calendar.getInstance();
+		String date_string = this.table.getValueAt(table.getSelectedRow(), 3).toString();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		try {
+			cal.setTime(sdf.parse(date_string));
+		} catch (ParseException e) {
+			System.out.println(e.getMessage());
+			LOG.severe("Error: "+e);	
+		}  
+		return cal;
+	}
+	
+	public Calendar getSelectedMemberfrom(){
+		Calendar cal = Calendar.getInstance();
+		String date_string = this.table.getValueAt(table.getSelectedRow(), 7).toString();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		try {
+			cal.setTime(sdf.parse(date_string));
+		} catch (ParseException e) {
+			System.out.println(e.getMessage());
+			LOG.severe("Error: "+e);	
+		}  
+		return cal;
+	}
+
 }
