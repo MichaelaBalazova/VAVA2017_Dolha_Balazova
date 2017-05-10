@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
@@ -168,5 +169,106 @@ public class BooksManagerBean implements BooksManagerRemote {
 		
 		return list;	
     }
+    
+    public List<BooksModel> findGenre(String genre){
+    	
+    	Context ctx;
+    	DataSource db = null;
+    	Connection conn = null;
+    	List<BooksModel> list = new ArrayList<BooksModel>();
+		try {
+			ctx = new InitialContext();
+			db = (DataSource) ctx.lookup("java:/PostgresDS");
+		} catch (NamingException e) {
+			LOG.severe("Error: "+e);
+		}
+		Statement stm = null;
+		
+		try{
+			conn = db.getConnection();
+			if (conn == null) {
+				LOG.severe("Failed to make connection in BooksManagerBean.getAllBooks!");
+			}
+			
+			stm = conn.createStatement();
+	        ResultSet rs = stm.executeQuery("SELECT books.id AS b_id, books.title AS b_title, "
+	        		+ "books.publisher AS b_publisher, books.publication_date AS b_date, books.no_pages AS b_pgs, "
+	        		+ "books.no_pieces AS b_pcs, books.ean_code AS b_ean, genres.name AS g_name, "
+	        		+ "genres.add_text AS g_text "
+	        		+ "FROM books "
+	        		+ "JOIN genres ON genres.id = books.genre_id "
+	        		+ "WHERE genres.name LIKE '%" + genre + "%' ORDER BY books.id");
+	        
+	        while ( rs.next() ) {
+	        	list.add(new BooksModel(rs.getInt("b_id"), 
+	        			rs.getString("b_title"),
+		          		rs.getString("b_publisher"),
+		          		rs.getInt("b_pgs"),
+		          		rs.getInt("b_pcs"),
+		          		rs.getString("b_ean"),
+		          		new GenresModel(rs.getString("g_name"), rs.getString("g_text"))
+		          		));
+	        }
+	        rs.close();
+		}
+		catch (SQLException e1) {
+			LOG.severe("Error: "+e1);
+		}
+		finally {
+			try { if (stm != null) stm.close(); } catch (Exception e) {};
+		    try { if (conn != null) conn.close(); } catch (Exception e) {};
+		}
+		
+		return list;	
+    }
+    
+    public List<BooksModel> findPublicationDate(Date date){
+    	
+    	Context ctx;
+    	DataSource db = null;
+    	Connection conn = null;
+    	List<BooksModel> list = new ArrayList<BooksModel>();
+		try {
+			ctx = new InitialContext();
+			db = (DataSource) ctx.lookup("java:/PostgresDS");
+		} catch (NamingException e) {
+			LOG.severe("Error: "+e);
+		}
+		Statement stm = null;
+		
+		try{
+			conn = db.getConnection();
+			if (conn == null) {
+				LOG.severe("Failed to make connection in BooksManagerBean.getAllBooks!");
+			}
+			
+			stm = conn.createStatement();
+	        ResultSet rs = stm.executeQuery("SELECT books.id AS b_id, books.title AS b_title, "
+	        		+ "books.publisher AS b_publisher, books.publication_date AS b_date, "
+	        		+ "books.no_pages AS b_pgs, books.no_pieces AS b_pcs, books.ean_code AS b_ean "
+	        		+ "FROM books WHERE books.publication_date >= '" + date + "' ORDER BY books.id");
+	        
+	        while ( rs.next() ) {
+	        	list.add(new BooksModel(rs.getInt("b_id"), 
+	        			rs.getString("b_title"),
+		          		rs.getString("b_publisher"),
+		          		rs.getInt("b_pgs"),
+		          		rs.getInt("b_pcs"),
+		          		rs.getString("b_ean"),
+		          		rs.getDate("b_date")
+		          		));
+	        }
+	        rs.close();
+		}
+		catch (SQLException e1) {
+			LOG.severe("Error: "+e1);
+		}
+		finally {
+			try { if (stm != null) stm.close(); } catch (Exception e) {};
+		    try { if (conn != null) conn.close(); } catch (Exception e) {};
+		}
+		
+		return list;		
+	}
     
 }
