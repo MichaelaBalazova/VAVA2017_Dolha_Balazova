@@ -22,6 +22,11 @@ public class AuthorsModel implements Serializable{
 		setAdd_text(add_text);
 	}
 	
+	public AuthorsModel(String first_name, String last_name) {
+		setFirst_name(first_name);
+		setLast_name(last_name);
+	}
+	
 	public int getId() {
 		return id;
 	}
