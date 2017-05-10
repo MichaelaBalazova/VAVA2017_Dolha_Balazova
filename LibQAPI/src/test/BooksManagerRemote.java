@@ -12,10 +12,11 @@ import entity.GenresModel;
 public interface BooksManagerRemote {
 
 	public List<BooksModel> getAllBooks(int limit, int offset);
-	public List<BooksModel> findAuthor(String name);
+	public List<BooksModel> findAuthor(String name, int limit, int offset);
 	public List<GenresModel> fillComboBox();
-	public List<BooksModel> findGenre(String genre);
-	public List<BooksModel> findPublicationDate(Date date);
+	public List<BooksModel> findGenre(String genre, int limit, int offset);
+	public List<BooksModel> findPublicationDate(Date date, int limit, int offset);
+	public BooksModel getDetail(int book_id);
 	
 }
 	
