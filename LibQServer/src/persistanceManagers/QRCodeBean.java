@@ -30,7 +30,7 @@ public class QRCodeBean implements QRCodeBeanRemote {
 	private static Logger LOG = Logger.getLogger(QRCodeBean.class.getName());
 
     public int createQRCode(File saveFile, String stringToEncode){
-		int size = 250;
+		int size = 400;
 		String fileType = null;
 		for (String suff : ImageIO.getWriterFileSuffixes()){
 			if (saveFile.getName().endsWith("."+suff)){

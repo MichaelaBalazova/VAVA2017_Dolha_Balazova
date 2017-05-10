@@ -30,7 +30,8 @@ import entity.Available_booksModel;
 import test.AvailableBooksManagerRemote;
 
 /**
- * Session Bean implementation class TestBean
+ * Session Beana, ktora pracuje s DB tabulkou Available Books
+ * @author Michaela, Domca
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.BEAN)
@@ -39,6 +40,10 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
 	private static Logger LOG = Logger.getLogger(AvailableBooksManagerBean.class.getName());
 	@Resource javax.transaction.UserTransaction tx;
 	
+	/**
+	 * metoda ktora vykonava select vsetkych dostupnych knih (state == Available) a strankuje zaznamy
+	 * @author Michaela, Domca
+	 */
     public List<Available_booksModel> getAllAvailableBooks(int limit, int offset){
     	
     	Context ctx;
@@ -84,6 +89,11 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
 		return list;	
     }
     
+    /**
+	 * metoda ktora vykonava insert do tabulky Borrowed Books a updatuje stav knihy z Available na Borrowed 
+	 * v tabulke Available Books
+	 * @author Michaela, Domca
+	 */
 	public boolean borrowBook(Date date_from, Date date_to, int available_id, int member_id, int employee_id){
 		
 		Context ctx;
