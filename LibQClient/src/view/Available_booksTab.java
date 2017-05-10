@@ -76,8 +76,8 @@ public class Available_booksTab {
 		prev.setBounds(280, 1270, 200, 35);		
 		next.setBounds(2277, 1270, 200, 35);
 		borrow_book.setBounds(26, 183, 227, 41);
-		langSK.setBounds(26, 300, 60, 35);
-		langEN.setBounds(106, 300, 60, 35);
+		langSK.setBounds(26, 650, 60, 35);
+		langEN.setBounds(106, 650, 60, 35);
 		
 		//nastavovanie pisma pre komponenty
 		all_available_books.setFont(new Font("Sans Serif", Font.PLAIN, 15));
@@ -87,8 +87,8 @@ public class Available_booksTab {
 		next.setFont(new Font("Sans Serif", Font.PLAIN, 20)); 
 		borrow_book.setFont(new Font("Sans Serif", Font.PLAIN, 18)); 
 		borrow_book.setMargin(new Insets(0,0,0,0));
-		langSK.setActionCommand("setLangSK");
-		langEN.setActionCommand("setLangEN");
+		langSK.setBounds(26, 800, 60, 35);
+		langEN.setBounds(106, 800, 60, 35);
 		
 		//nastavenie funkcionality jazykovych zmien
 		langSK.addActionListener(e -> setLanguage(e));

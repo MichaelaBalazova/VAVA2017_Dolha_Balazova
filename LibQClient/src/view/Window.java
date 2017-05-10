@@ -32,7 +32,6 @@ public class Window extends JFrame implements ActionListener {
 	public BooksTab books_tab;
 	public MembersTab members_tab;
 	public Available_booksTab available_books_tab;
-	public ReservationsTab reservations_tab;
 	private File configFile = new File("resources/config.xml");	 
 	private InputStream inputStream;
 	private Properties props = new Properties();
@@ -81,11 +80,6 @@ public class Window extends JFrame implements ActionListener {
 		panel_3.setLayout(null);				
 		available_books_tab = new Available_booksTab(panel_3);
 		
-		//panel Reservations
-		JPanel panel_4 = new JPanel();
-		tabbedPane.addTab("Reservations", null, panel_4, null);
-		panel_4.setLayout(null);			
-		reservations_tab = new ReservationsTab(panel_4);
 	}
 
 	@Override

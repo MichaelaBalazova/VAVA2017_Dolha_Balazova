@@ -12,14 +12,20 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
@@ -34,11 +40,25 @@ public class BooksTab {
 	private ImageIcon imgSK = new ImageIcon("img/sk-flag.png");
 	private ImageIcon imgEN = new ImageIcon("img/en-flag.png");
 	private JButton langSK = new JButton(imgSK);
-	private JButton langEN = new JButton(imgEN);
-	private JButton print_QR = new JButton(resourceBundle.getString("BooksTab.btn.Print_QR"));
-	private JButton all_books = new JButton(resourceBundle.getString("BooksTab.btn.Show_all_books")); 
+	private JButton langEN =  new JButton(imgEN);
+	private JButton print_QR =  new JButton(resourceBundle.getString("BooksTab.btn.Print_QR"));
+	private JButton all_books =  new JButton(resourceBundle.getString("BooksTab.btn.Show_all_books")); 
 	private JButton detail_books = new JButton(resourceBundle.getString("BooksTab.btn.Detail_of_selected_book"));
-	private JLabel books_per_page = new JLabel(resourceBundle.getString("BooksTab.lbl.Books_per_page"));
+	private JLabel books_per_page = new JLabel (resourceBundle.getString("BooksTab.lbl.Books_per_page"));
+	private JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
+	private JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
+	private JSeparator separator3 = new JSeparator(SwingConstants.HORIZONTAL);
+	private JLabel l_filter_by_author =  new JLabel("Enable filter by author");
+	private JLabel l_filter_by_genre = new JLabel("Enable filter by genre");
+	private JLabel l_filter_by_publication_date = new JLabel("Enable filter by publication date");
+	private JButton filter_by_author = new JButton("Filter by author");
+	private JButton filter_by_genre = new JButton("Filter by genre");
+	private JButton filter_by_publication_date = new JButton("Filter by date");
+	private JCheckBox check_filter_by_author = new JCheckBox();
+	private JCheckBox check_filter_by_genre = new JCheckBox();
+	private JCheckBox check_publication_date =  new JCheckBox();
+	private JTextField text_filter_by_author = new JTextField();
+	private JComboBox text_filter_by_genre = new JComboBox();
 	private JPanel panel;
 	private JButton prev = new JButton(resourceBundle.getString("BooksTab.btn.PREV"));
 	private JButton next = new JButton(resourceBundle.getString("BooksTab.btn.NEXT"));
@@ -87,9 +107,23 @@ public class BooksTab {
 		books_per_page.setBounds(26, 86, 197, 33);
 		prev.setBounds(280, 1270, 200, 35);		
 		next.setBounds(2277, 1270, 200, 35);
-		langSK.setBounds(26, 300, 60, 35);
-		langEN.setBounds(106, 300, 60, 35);
-		print_QR.setBounds(26, 350, 209, 41);
+		print_QR.setBounds(26, 250, 209, 41);
+		separator1.setBounds(10, 320, 260, 41);
+		check_filter_by_author.setBounds(26, 330, 30, 30);
+		l_filter_by_author.setBounds(60, 330, 200, 30);
+		text_filter_by_author.setBounds(26, 365, 180, 30);
+		filter_by_author.setBounds(26, 405, 120, 30);
+		separator2.setBounds(10, 460, 260, 41);
+		check_filter_by_genre.setBounds(26, 470, 30, 30);
+		l_filter_by_genre .setBounds(60, 470, 200, 30);
+		text_filter_by_genre.setBounds(26, 505, 180, 30);
+		filter_by_genre.setBounds(26, 545, 120, 30);
+		separator3.setBounds(10, 590, 260, 41);
+		check_publication_date.setBounds(26, 600, 30, 30);
+		l_filter_by_publication_date.setBounds(60, 600, 200, 30);
+		filter_by_publication_date.setBounds(26, 675, 120, 30);
+		langSK.setBounds(26, 800, 60, 35);
+		langEN.setBounds(106, 800, 60, 35);
 		
 		//nastavovanie pisma pre komponenty
 		all_books.setFont(new Font("Sans Serif", Font.PLAIN, 20));
@@ -110,6 +144,11 @@ public class BooksTab {
 		next.setEnabled(false);
 		detail_books.setEnabled(false);
 		print_QR.setEnabled(false);
+		filter_by_author.setEnabled(false);
+		filter_by_genre.setEnabled(false);
+		filter_by_publication_date.setEnabled(false);
+		text_filter_by_author.setEditable(false);
+		text_filter_by_genre.setEditable(false);
 
 		//pridavanie komponentov na panel
 		panel.add(next);
@@ -120,6 +159,20 @@ public class BooksTab {
 		panel.add(langSK);
 		panel.add(langEN);
 		panel.add(books_per_page);
+		panel.add(separator1);
+		panel.add(check_filter_by_author);
+		panel.add(l_filter_by_author);
+		panel.add(text_filter_by_author);
+		panel.add(filter_by_author);
+		panel.add(separator2);
+		panel.add(check_filter_by_genre);
+		panel.add(l_filter_by_genre);
+		panel.add(text_filter_by_genre);
+		panel.add(filter_by_genre);
+		panel.add(separator3);
+		panel.add(check_publication_date);
+		panel.add(l_filter_by_publication_date);
+		panel.add(filter_by_publication_date);
 		
 		limit_txt.setText("30"); 
 		limit_txt.setBounds(26, 116, 120, 39);
@@ -140,12 +193,76 @@ public class BooksTab {
 			    } 
 		});
 		
+		check_filter_by_author.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(check_filter_by_author.isSelected()){
+					check_publication_date.setSelected(false);
+					check_filter_by_genre.setSelected(false);
+					filter_by_author.setEnabled(true);
+					text_filter_by_author.setEditable(true);	
+					all_books.setEnabled(false);
+					filter_by_genre.setEnabled(false);
+					filter_by_publication_date.setEnabled(false);
+				}
+				else {
+					filter_by_author.setEnabled(false);
+					text_filter_by_author.setEditable(false);				
+					all_books.setEnabled(true);
+					filter_by_genre.setEnabled(false);
+					filter_by_publication_date.setEnabled(false);
+				}
+			}
+		});
+		check_filter_by_genre.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(check_filter_by_genre.isSelected()){
+					check_filter_by_author.setSelected(false);
+					check_publication_date.setSelected(false);
+					filter_by_author.setEnabled(false);
+					all_books.setEnabled(false);
+					filter_by_genre.setEnabled(true);
+					text_filter_by_genre.setEditable(true);
+					filter_by_publication_date.setEnabled(false);
+				}
+				else {
+					filter_by_author.setEnabled(false);
+					all_books.setEnabled(true);
+					text_filter_by_genre.setEditable(false);
+					filter_by_genre.setEnabled(false);
+					filter_by_publication_date.setEnabled(false);
+				}
+			}
+		});
+		check_publication_date.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(check_publication_date.isSelected()){
+					check_filter_by_genre.setSelected(false);
+					check_filter_by_author.setSelected(false);
+					filter_by_author.setEnabled(false);
+					all_books.setEnabled(false);
+					filter_by_genre.setEnabled(false);
+					filter_by_publication_date.setEnabled(true);
+				}
+				else {
+					filter_by_author.setEnabled(false);
+					all_books.setEnabled(true);
+					filter_by_genre.setEnabled(false);
+					filter_by_publication_date.setEnabled(false);
+				}
+			}
+		});
+		
 	}
 	
-	public void addActions(ActionListener showAllBooks, ActionListener prevBooks, ActionListener nextBooks){
+	public void addActions(ActionListener showAllBooks, ActionListener prevBooks, ActionListener nextBooks,
+			ActionListener findAuthor){
 		all_books.addActionListener(showAllBooks);
 		prev.addActionListener(prevBooks);
 		next.addActionListener(nextBooks);
+		filter_by_author.addActionListener(findAuthor);
 	}
 	
 	public void addTableRow(Object[] row){
@@ -185,6 +302,18 @@ public class BooksTab {
 	
 	public int getOffset(){
 		return this.offset;
+	}
+	
+	public String getFindAuthorText(){
+		return this.text_filter_by_author.getText();
+	}
+	
+	public void addComboBoxItem(String item){
+		this.text_filter_by_genre.addItem(makeObj(item));
+	}
+	
+	private Object makeObj(final String item)  {
+	     return new Object() { public String toString() { return item; } };
 	}
 	
 	public File getSaveFilePath(){
