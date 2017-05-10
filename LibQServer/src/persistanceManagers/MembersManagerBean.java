@@ -32,7 +32,8 @@ import entity.StateModel;
 import test.MembersManagerRemote;
 
 /**
- * Session Bean implementation class TestBean
+ * Session Beana, ktora pracuje s DB tabulkou Members
+ * @author Michaela, Domca
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.BEAN)
@@ -41,6 +42,9 @@ public class MembersManagerBean implements MembersManagerRemote {
 	private static Logger LOG = Logger.getLogger(MembersManagerBean.class.getName());
 	@Resource javax.transaction.UserTransaction tx;
     
+	/**
+	 * metoda ktora vykonava select vsetkych clenov kniznice a strankuje ich
+	 */
     public List<MembersModel> getAllMembers(int limit, int offset){
     	
     	Context ctx;
@@ -111,6 +115,9 @@ public class MembersManagerBean implements MembersManagerRemote {
 		return list;	
     }
     
+    /**
+	 * metoda ktora vykonava select vsetkych pozicanych knih vybraneho clena kniznice
+	 */
     public List<Borrowed_booksModel> getMemberListOfBorrowedBooks(int member_id){	
 
     	Context ctx;
@@ -167,6 +174,10 @@ public class MembersManagerBean implements MembersManagerRemote {
 		return list;
 	}
     
+    /**
+	 * metoda ktora vykonava select vsetkych takych clenov, ktory maju aktulne pozicany vybrany pocet knih
+	 * pocet knih sa vybera z comboboxu 
+	 */
     public List<MembersModel> filterByNumBorrowed(int limit, int offset, int num){
 		
     	Context ctx;
@@ -229,6 +240,9 @@ public class MembersManagerBean implements MembersManagerRemote {
 		return list;
 	}
     
+    /**
+	 * metoda ktora vykonava select vsetkych clenov, kde krstne meno alebo priezvisko obsahuje hladany string 
+	 */
     public List<MembersModel> findMember(String find){
 		
     	Context ctx;
@@ -274,6 +288,10 @@ public class MembersManagerBean implements MembersManagerRemote {
 		return list;
 	}
     
+    /**
+	 * metoda ktora vykonava update clena kniznice, teda meni jeho osobne udaje
+	 * pouzivane transakcie
+	 */
     public boolean changeMember(int member_id, String first, String last, Date birthday, String email,
     		String telephone, String address, Date member_from){
     	Context ctx;

@@ -18,7 +18,8 @@ import entity.EmployeesModel;
 import test.EmployeeManagerRemote;
 
 /**
- * Session Bean implementation class TestBean
+ * Session Beana, ktora pracuje s DB tabulkou Employees
+ * @author Michaela, Domca
  */
 @Stateless
 public class EmployeeManagerBean implements EmployeeManagerRemote {
@@ -29,6 +30,9 @@ public class EmployeeManagerBean implements EmployeeManagerRemote {
     	return (str1 + " " + str2 + "!!!");
     }
     
+    /**
+	 * metoda ktora vykonava select vsetkych zamestnancov a strankuje ich
+	 */
     public List<EmployeesModel> getAllEmployees(){
     	
     	Context ctx;

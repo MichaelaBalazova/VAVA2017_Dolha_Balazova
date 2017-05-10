@@ -42,7 +42,6 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
 	
 	/**
 	 * metoda ktora vykonava select vsetkych dostupnych knih (state == Available) a strankuje zaznamy
-	 * @author Michaela, Domca
 	 */
     public List<Available_booksModel> getAllAvailableBooks(int limit, int offset){
     	
@@ -92,7 +91,7 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
     /**
 	 * metoda ktora vykonava insert do tabulky Borrowed Books a updatuje stav knihy z Available na Borrowed 
 	 * v tabulke Available Books
-	 * @author Michaela, Domca
+	 * pouzivane transakcie
 	 */
 	public boolean borrowBook(Date date_from, Date date_to, int available_id, int member_id, int employee_id){
 		
