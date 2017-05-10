@@ -2,6 +2,8 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -48,7 +50,9 @@ public class Controller {
 		PrevBooks prevBooks = new PrevBooks(context, win);
 		NextBooks nextBooks = new NextBooks(context, win);
 		FilterAuthor filterAuthor = new FilterAuthor(context, win);
-		win.books_tab.addActions(showAllBooks, prevBooks, nextBooks, filterAuthor);
+		FilterGenre filterGenre = new FilterGenre(context, win);
+		FilterPublicationDate filterPublicationDate = new FilterPublicationDate(context, win);
+		win.books_tab.addActions(showAllBooks, prevBooks, nextBooks, filterAuthor, filterGenre, filterPublicationDate);
 		
 		ShowAllMembers showAllMembers = new ShowAllMembers(context, win);		
 		PrevMembers prevMembers = new PrevMembers(context, win);
@@ -772,19 +776,12 @@ public class Controller {
 		}
 		
 		public void actionPerformed(ActionEvent e){
-			MembersManagerRemote remote = null;
-			try {
-				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
-			} catch (NamingException e1) {
-				LOG.severe("Error: "+e1);
-			}
 			UpdateWindow update = new UpdateWindow();
 			update.setWinVisible(true);
 			update.setId(win.members_tab.getSelectedRowMember_id());
 			update.setFirst_name(win.members_tab.getSelectedFirst_name());
-			update.setLast_name(win.members_tab.getSelectedLast_name());
-			System.out.println("birthday : " + win.members_tab.getSelectedBirthday());
-			update.setDatePicker_birthday(win.members_tab.getSelectedBirthday());
+			update.setLast_name(win.members_tab.getSelectedLast_name());			
+			update.setDatePicker_birthday(win.members_tab.getSelectedBirthday());			
 			if (win.members_tab.getSelectedEmail() != null){
 				update.setEmail(win.members_tab.getSelectedEmail());
 			}
@@ -794,24 +791,44 @@ public class Controller {
 			if (win.members_tab.getSelectedAddress() != null){
 				update.setAddress(win.members_tab.getSelectedAddress());
 			}
-			System.out.println("member from " + win.members_tab.getSelectedMemberfrom());
-			update.setDatePicker_member_from(win.members_tab.getSelectedMemberfrom());
-			//update.set
-			/*
-			int member_id = win.getSelectedRowMember();
-			
-			if(member_id == -1 || employee_id == -1 || dateFrom == null || dateTo == null){
-				borrowBook.showActionResult(false);
-			}
-			else{			
-				boolean result = remote.borrowBook(dateFrom, dateTo, available_id, member_id, employee_id);
-				borrowBook.showActionResult(result);
-				if (result){
-					win.available_books_tab.getRefreshButton().doClick();
-					borrowBook.setWinVisible(false);
-				}
-			}*/
+			update.setDatePicker_member_from(win.members_tab.getSelectedMemberfrom());	
+			ChangeMemberCOMMIT commit = new ChangeMemberCOMMIT(context, win, update);
+			update.addActions(commit);
 		}
+	}
+	
+	private class ChangeMemberCOMMIT implements ActionListener{
+		
+		private Context context;
+		private Window win;
+		private UpdateWindow update;
+		
+		public ChangeMemberCOMMIT(Context context, Window win, UpdateWindow update){
+			this.context = context;
+			this.win = win;
+			this.update = update;
+		}
+		
+		public void actionPerformed(ActionEvent e){
+			MembersManagerRemote remote = null;
+			try {
+				remote = (MembersManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//MembersManagerBean!test.MembersManagerRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e1);
+			}
+			boolean result = remote.changeMember(update.getId(), 
+					update.getFirst_name(), 
+					update.getLast_name(), 
+					update.getDatePicker_birthday(), 
+					update.getEmail(),
+		    		update.getTelephone(), 
+		    		update.getAddress(), 
+		    		update.getDatePicker_member_from());
+			update.showActionResult(result);
+			
+			win.members_tab.update();
+		}
+		
 	}
 	
 	private class FilterAuthor implements ActionListener{
@@ -853,6 +870,82 @@ public class Controller {
 		
 	}
 	
+	private class FilterGenre implements ActionListener{
+		
+		private Context context;
+		private Window win;
+		
+		public FilterGenre(Context context, Window win){
+			this.context = context;
+			this.win = win;
+		}
+		
+		public void actionPerformed(ActionEvent e){
+			BooksManagerRemote remote = null;
+			try {
+				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e1);
+			}
+			List<BooksModel> books_list = remote.findGenre(win.books_tab.getSelectedGenre());
+			win.books_tab.clearTable();
+			for(BooksModel book : books_list){
+				Object[] row = new Object[7];
+				row[0] = book.getId();
+				row[1] = book.getTitle();
+				row[2] = book.getPublisher();
+				row[3] = book.getNo_pages();
+				row[4] = book.getNo_pieces();
+				row[5] = book.getEan_code();
+				row[6] = getGenreText(book);
+				win.books_tab.addTableRow(row);
+			}		
+		}
+		
+		public String getGenreText(BooksModel book){
+			String genre;
+			if (book.getGenre_id().getAdd_text() != null){
+				genre =  new StringBuilder().append(book.getGenre_id().getName()).append(" (").append(book.getGenre_id().getAdd_text()).append(")").toString();
+			}
+			else {
+				genre =  new StringBuilder().append(book.getGenre_id().getName()).toString();				
+			}
+			return genre;
+		}
+	}
+	
+	private class FilterPublicationDate implements ActionListener{
+		
+		private Context context;
+		private Window win;
+		
+		public FilterPublicationDate(Context context, Window win){
+			this.context = context;
+			this.win = win;
+		}
+		
+		public void actionPerformed(ActionEvent e){
+			BooksManagerRemote remote = null;
+			try {
+				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e1);
+			}
+			List<BooksModel> books_list = remote.findPublicationDate(win.books_tab.getPublicationDate());
+			win.books_tab.clearTable();
+			for(BooksModel book : books_list){
+				Object[] row = new Object[7];
+				row[0] = book.getId();
+				row[1] = book.getTitle();
+				row[2] = book.getPublisher();
+				row[3] = book.getNo_pages();
+				row[4] = book.getNo_pieces();
+				row[5] = book.getEan_code();
+				row[6] = book.getPublication_date();
+				win.books_tab.addTableRow(row);
+			}		
+		}
+	}
 	
 	private static Context createRemoteEjbContext(String host, String port) throws NamingException {
 		Hashtable<Object, Object> props = new Hashtable<Object, Object>();
