@@ -22,6 +22,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Zalozka hlavneho okna pre zobrazenie zaznamov aktualne volnych knih 
+ * k zapozicaniu a pre pracu s nimi 
+ * @author Michaela, Domca
+ *
+ */
 public class Available_booksTab {
 
 	private int offset = 0;
@@ -183,6 +189,10 @@ public class Available_booksTab {
 		return this.all_available_books;
 	}	
 	
+	/**
+	 * Metoda, ktora nastavuje popisy komponentov pre aktualne zvoleny jazyk
+	 *
+	 */
 	private void setLanguage(ActionEvent a){
 		String actionCommand = a.getActionCommand();
 		if (actionCommand.equals(langSK.getActionCommand())){

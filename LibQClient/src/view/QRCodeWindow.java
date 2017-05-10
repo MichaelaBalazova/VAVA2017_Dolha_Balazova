@@ -16,6 +16,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+/**
+ * Okno, ktore zobrazuje vytvoreny QR kod o detaile knihy
+ * @author Michaela, Domca
+ *
+ */
 public class QRCodeWindow extends JFrame {
 
 	private static Logger LOG = Logger.getLogger(QRCodeWindow.class.getName());

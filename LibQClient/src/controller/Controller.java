@@ -35,6 +35,12 @@ import view.QRCodeWindow;
 import view.UpdateWindow;
 import view.Window;
 
+/**
+ * Trieda, ktora sprostredkovava funkcionalitu tlacitok a inych
+ * komponentov programu
+ * @author Michaela, Domca
+ *
+ */
 public class Controller {
 	
 	private static Logger LOG = Logger.getLogger(Controller.class.getName());
@@ -75,6 +81,11 @@ public class Controller {
 		win.available_books_tab.addActions(showAllAvailableBooks, prevAvailableBooks, nextAvailableBooks, borrowBook1);
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku knih v zaloze BooksTab prvou strankou
+	 * zaznamov (defaultne prvych 30)
+	 *
+	 */
 	private class ShowAllBooks implements ActionListener{
 		
 		private Context context;
@@ -144,6 +155,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku knih v zalozke BooksTab 
+	 * predoslou strankou zaznamov
+	 *
+	 */
 	private class PrevBooks implements ActionListener{
 		
 		private Context context;
@@ -303,6 +319,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku knih v zalozke BooksTab 
+	 * nasledujucou strankou zaznamov
+	 *
+	 */
 	private class NextBooks implements ActionListener{
 		
 		private Context context;
@@ -454,6 +475,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku clenov v zalozke MembersTab 
+	 * prvou strankou zaznamov (default 30 zaznamov)
+	 *
+	 */
 	private class ShowAllMembers implements ActionListener{
 		
 		private Context context;
@@ -534,6 +560,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku clenov v zalozke MembersTab 
+	 * predoslou strankou zaznamov
+	 *
+	 */
 	private class PrevMembers implements ActionListener{
 		
 		private Context context;
@@ -619,6 +650,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku clenov v zalozke MembersTab 
+	 * nasledujucou strankou zaznamov
+	 *
+	 */
 	private class NextMembers implements ActionListener{
 		
 		private Context context;
@@ -699,6 +735,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku vypozicanych knih zvoleneho clena 
+	 *
+	 */
 	private class MemberListOfBorrowedBooks implements ActionListener{
 		
 		private Context context;
@@ -744,6 +784,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku dostupnych knih v zalozke AvailableBooksTab 
+	 * prvou strankou zaznamov (default 30 zaznamov)
+	 *
+	 */
 	private class ShowAllAvailableBooks implements ActionListener{
 		
 		private Context context;
@@ -784,6 +829,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku dostupnych knih v zalozke AvaiBooksTab 
+	 * predoslou strankou zaznamov
+	 *
+	 */
 	private class PrevAvailableBooks implements ActionListener{
 		
 		private Context context;
@@ -826,6 +876,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku dostupnych knih v zalozke AvailableBooksTab 
+	 * nasledujucou strankou zaznamov
+	 *
+	 */
 	private class NextAvailableBooks implements ActionListener{
 		
 		private Context context;
@@ -865,6 +920,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda ktora otvara okno umoznujuce zapozicanie knihy
+	 *
+	 */
 	private class BorrowBook1 implements ActionListener{
 		
 		private Context context;
@@ -903,6 +962,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda hladajuca clena pre zapozicanie knihy
+	 *
+	 */
 	private class FindMember implements ActionListener{
 		
 		private Context context;
@@ -936,6 +999,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda volajuca vytvorenie zaznamu o zapozicani knihy
+	 *
+	 */
 	private class BorrowBookCommit implements ActionListener{
 		
 		private Context context;
@@ -976,6 +1043,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda nacitava udaje pre zmenu zaznamu clena 
+	 * a volajuca update zaznamu zvoleneho clena
+	 *
+	 */
 	private class ChangeMember implements ActionListener{
 		
 		private Context context;
@@ -1008,6 +1080,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda ktora vola update clena
+	 *
+	 */
 	private class ChangeMemberCOMMIT implements ActionListener{
 		
 		private Context context;
@@ -1089,6 +1165,11 @@ public class Controller {
 		
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku knih v zalozke BooksTab 
+	 * podla filtru zanru
+	 *
+	 */
 	private class FilterGenre implements ActionListener{
 		
 		private Context context;
@@ -1141,6 +1222,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda naplnajuca tabulku knih v zalozke BooksTab 
+	 * podla filtru datumu vydania
+	 *
+	 */
 	private class FilterPublicationDate implements ActionListener{
 		
 		private Context context;
@@ -1182,6 +1268,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda volajuca select pre detail knihy a nasledne
+	 * zobrazenie okna s detailom o knihe
+	 *
+	 */
 	private class DetailBook implements ActionListener{
 		
 		private Context context;
@@ -1238,6 +1329,12 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda volajuca select pre detail o knihe, 
+	 * nasledne vytvorenie QR kodu s danym detailom
+	 * a nakoniec zobrazenie okna s vytvorenym QR kodom
+	 *
+	 */
 	private class QRCode implements ActionListener{
 		
 		private Context context;
@@ -1305,6 +1402,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Metoda vytvarajuca properties pre spojenie so serverom
+	 *
+	 */
 	private static Context createRemoteEjbContext(String host, String port) throws NamingException {
 		Hashtable<Object, Object> props = new Hashtable<Object, Object>();
 		props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");

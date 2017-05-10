@@ -7,7 +7,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-
+/**
+ * Okno zobrazujuce detail o zvolenej knihe
+ * @author Michaela, Domca
+ *
+ */
 public class DetailWindow extends JFrame {
 
 	private JPanel panel = new JPanel();

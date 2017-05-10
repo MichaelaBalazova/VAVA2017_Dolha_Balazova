@@ -31,6 +31,11 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+/**
+ * Okno kde su potrebne tabulky a komponenty pre use case zapocania knihy
+ * @author Michaela, Domca
+ *
+ */
 public class BorrowBookWindow extends JFrame{
 
 	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
@@ -251,6 +256,10 @@ public class BorrowBookWindow extends JFrame{
         });
 	}
 	
+	/**
+	 * Metoda nastavujuca popisy komponentov pre aktualne zvoleny jazyk 
+	 *
+	 */
 	private void setLanguage(){
 		resourceBundle = ResourceBundle.getBundle("messages");
 		find_member.setText(resourceBundle.getString("Borrow_selected_bookWindow.btn.Find_member"));

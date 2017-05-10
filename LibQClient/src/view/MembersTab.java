@@ -44,6 +44,12 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+/**
+ * Zalozka, kde je tabulka so zaznamami clenov a zakladnymi komponentami
+ * pre pracu s nimi
+ * @author Michaela, Domca
+ *
+ */
 public class MembersTab {
 	
 	private static Logger LOG = Logger.getLogger(MembersTab.class.getName());
@@ -217,6 +223,10 @@ public class MembersTab {
 		
 	}
 	
+	/**
+	 * Metoda ktora nastavuje aktualne zvoleny jazyk pre vsetky pomenovane komponenty
+	 *
+	 */
 	private void setLanguage(ActionEvent a){
 		String actionCommand = a.getActionCommand();
 		if (actionCommand.equals(langSK.getActionCommand())){
