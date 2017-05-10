@@ -22,7 +22,11 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
-
+/**
+ * Okno pre aktualizaciu zaznamu o clenovi kniznice
+ * @author Michaela, Domca
+ *
+ */
 public class UpdateWindow extends JFrame {
 
 	private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");

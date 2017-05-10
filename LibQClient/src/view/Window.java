@@ -26,6 +26,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JLabel;
 
+/**
+ * Trieda vytvarajuca hlavne okno,
+ * kde su vsetky komponenty grafickeho rozhrania
+ * @author Michaela, Domca
+ *
+ */
 public class Window extends JFrame implements ActionListener {
 	
 	private JPanel panel = new JPanel();

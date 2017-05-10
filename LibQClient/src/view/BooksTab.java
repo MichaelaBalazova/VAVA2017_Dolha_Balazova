@@ -39,6 +39,11 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+/**
+ * Zalozka hlavneho okna pre zobrazenie zaznamov knih a pracu s nimi
+ * @author Michaela, Domca
+ *
+ */
 public class BooksTab {
 	
 	private static Logger LOG = Logger.getLogger(BooksTab.class.getName());
@@ -371,6 +376,10 @@ public class BooksTab {
 		else return false;
 	}
 	
+	/**
+	 * Metoda ktora otvara dialogove okno pre vytvorenie cesty k suboru
+	 * na ulozenie QR kodu a ktora zaroven kontroluje spravnost zadanej cesty
+	 */
 	public File getSaveFilePath(){
 		Boolean good_suffix = false;
 		File file = null;
@@ -403,6 +412,10 @@ public class BooksTab {
 		return file;
 	}
 	
+	/**
+	 * Metoda nastavujuca popisy komponentov pre aktualne zvoleny jazyk
+	 *
+	 */
 	private void setLanguage(ActionEvent a){
 		String actionCommand = a.getActionCommand();
 		if (actionCommand.equals(langSK.getActionCommand())){

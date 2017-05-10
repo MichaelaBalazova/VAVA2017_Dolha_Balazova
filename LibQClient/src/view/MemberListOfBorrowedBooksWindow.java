@@ -12,6 +12,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Okno, ktore zobrazuje pre daneho pouzivatela jeho aktualne pozicane knihy
+ * @author Michaela, Domca
+ *
+ */
 public class MemberListOfBorrowedBooksWindow extends JFrame{
 	
 	private JPanel panel = new JPanel();
