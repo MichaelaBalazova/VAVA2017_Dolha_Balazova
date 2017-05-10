@@ -262,5 +262,9 @@ public class MembersManagerBean implements MembersManagerRemote {
 		
 		return list;
 	}
+    
+    public boolean changeMember(int member_id){
+    	return false;
+    }
 
 }
