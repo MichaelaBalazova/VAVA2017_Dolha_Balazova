@@ -1,6 +1,7 @@
 package persistanceManagers;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,11 +10,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 
 import entity.BooksModel;
 import entity.Borrowed_booksModel;
@@ -26,9 +35,11 @@ import test.MembersManagerRemote;
  * Session Bean implementation class TestBean
  */
 @Stateless
+@TransactionManagement(TransactionManagementType.BEAN)
 public class MembersManagerBean implements MembersManagerRemote {
 	
 	private static Logger LOG = Logger.getLogger(MembersManagerBean.class.getName());
+	@Resource javax.transaction.UserTransaction tx;
     
     public List<MembersModel> getAllMembers(int limit, int offset){
     	
@@ -263,8 +274,78 @@ public class MembersManagerBean implements MembersManagerRemote {
 		return list;
 	}
     
-    public boolean changeMember(int member_id){
-    	return false;
+    public boolean changeMember(int member_id, String first, String last, Date birthday, String email,
+    		String telephone, String address, Date member_from){
+    	Context ctx;
+    	DataSource db = null;
+    	Connection conn = null;
+    	boolean res = false;
+    	
+		try {
+			ctx = new InitialContext();
+			db = (DataSource) ctx.lookup("java:/PostgresDS");
+		} catch (NamingException e) {
+			LOG.severe("Error: "+e);
+		}
+		PreparedStatement stmt = null;
+		
+		try {
+			tx.begin();
+		} catch (NotSupportedException e2) { 
+			LOG.severe("Error: "+e2);
+		} catch (SystemException e2) { 
+			LOG.severe("Error: "+e2);
+		}
+		
+		try{
+			conn = db.getConnection();
+			if (conn == null) System.out.println("Failed to make connection!");	
+			
+			String update_stm = "UPDATE members SET first_name = '" + first 
+					+ "', last_name = '" + last
+					+ "', email = '" + email
+					+ "', telephone = '" + telephone
+					+ "', date_birth = '" + birthday
+					+ "', address = '" + address
+					+ "', member_from = '" + member_from
+					+ "' WHERE id = " + member_id + ";";
+			
+			stmt = (PreparedStatement) conn.prepareStatement(update_stm);			
+			stmt.executeUpdate();
+
+			try {
+				tx.commit();
+			} catch (SecurityException e) { 
+				LOG.severe("Error: "+e);
+			} catch (IllegalStateException e) { 
+				LOG.severe("Error: "+e);
+			} catch (RollbackException e) { 
+				LOG.severe("Error: "+e);
+			} catch (HeuristicMixedException e) { 
+				LOG.severe("Error: "+e);
+			} catch (HeuristicRollbackException e) { 
+				LOG.severe("Error: "+e);
+			} catch (SystemException e) { 
+				LOG.severe("Error: "+e);
+			}
+			
+			res = true;
+
+		} catch (SQLException e) {
+			try {
+				tx.setRollbackOnly();
+			} catch (IllegalStateException e1) {
+				LOG.severe("Error: "+e1);
+			} catch (SystemException e1) { 
+				LOG.severe("Error: "+e1);
+			}
+			res = false;
+		} finally {
+			try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+		    try { if (conn != null) conn.close(); } catch (Exception e) {};
+		}
+		
+		return res;
     }
 
 }

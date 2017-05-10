@@ -90,7 +90,7 @@ public class AvailableBooksManagerBean implements AvailableBooksManagerRemote {
     	DataSource db = null;
     	Connection conn = null;
     	boolean res = false;
-    	List<Available_booksModel> list = new ArrayList<Available_booksModel>();
+    	
 		try {
 			ctx = new InitialContext();
 			db = (DataSource) ctx.lookup("java:/PostgresDS");
