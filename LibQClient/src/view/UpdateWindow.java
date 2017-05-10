@@ -136,6 +136,10 @@ public class UpdateWindow extends JFrame {
 		panel.add(update);
 
 	}
+	
+	public void addActions(ActionListener changeMemberCOMMIT){
+		update.addActionListener(changeMemberCOMMIT);
+	}
 		
 	public int getId() {		
 		return Integer.parseInt(this.id.getText());
@@ -184,6 +188,7 @@ public class UpdateWindow extends JFrame {
 
 	public void setDatePicker_birthday(Calendar cal) {
 		this.datePicker_birthday.getModel().setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+		this.datePicker_birthday.getModel().setSelected(true);
 	}
 
 	public Date getDatePicker_member_from() {
@@ -192,6 +197,7 @@ public class UpdateWindow extends JFrame {
 
 	public void setDatePicker_member_from(Calendar cal) {
 		this.datePicker_member_from.getModel().setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+		this.datePicker_member_from.getModel().setSelected(true);
 	}
 	
 	public String getAddress() {
@@ -206,5 +212,17 @@ public class UpdateWindow extends JFrame {
 		this.setVisible(value);
 	}
 	
+	public void showActionResult(boolean value){
+		if (value){
+			JLabel label = new JLabel("Member was changed successfully.");
+			label.setFont(new Font("Sans Serif", Font.BOLD, 20));
+			JOptionPane.showMessageDialog(null,label,"Information",JOptionPane.INFORMATION_MESSAGE);
+		}
+		else{
+			JLabel label = new JLabel("Member was not changes!");
+			label.setFont(new Font("Sans Serif", Font.BOLD, 20));
+			JOptionPane.showMessageDialog(null,label,"ERROR",JOptionPane.ERROR_MESSAGE);
+		}
+	}	
 	
 }

@@ -5,7 +5,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
@@ -31,6 +33,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+
+import org.jdatepicker.impl.DateComponentFormatter;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 public class BooksTab {
 	
@@ -59,6 +66,7 @@ public class BooksTab {
 	private JCheckBox check_publication_date =  new JCheckBox();
 	private JTextField text_filter_by_author = new JTextField();
 	private JComboBox text_filter_by_genre = new JComboBox();
+	private JDatePickerImpl datePicker;
 	private JPanel panel;
 	private JButton prev = new JButton(resourceBundle.getString("BooksTab.btn.PREV"));
 	private JButton next = new JButton(resourceBundle.getString("BooksTab.btn.NEXT"));
@@ -179,6 +187,18 @@ public class BooksTab {
 		limit_txt.setColumns(10);
 		limit_txt.setFont(new Font("Sans Serif", Font.PLAIN, 20)); 
 		panel.add(limit_txt);
+		
+		UtilDateModel model1 = new UtilDateModel();
+		Properties p1 = new Properties();
+		p1.put("text.today", "Today");
+		p1.put("text.month", "Month");
+		p1.put("text.year", "Year");
+		JDatePanelImpl datePanel1 = new JDatePanelImpl(model1, p1);
+		datePicker = new JDatePickerImpl(datePanel1, new DateComponentFormatter());
+		
+		datePicker.setBounds(26, 635, 120, 30);
+		panel.add(datePicker);
+		
 				
 		ListSelectionModel listSelectionModel = table.getSelectionModel();
 		listSelectionModel.addListSelectionListener(new ListSelectionListener() {
@@ -258,11 +278,13 @@ public class BooksTab {
 	}
 	
 	public void addActions(ActionListener showAllBooks, ActionListener prevBooks, ActionListener nextBooks,
-			ActionListener findAuthor){
+			ActionListener findAuthor, ActionListener findGenre, ActionListener findPublicationDate){
 		all_books.addActionListener(showAllBooks);
 		prev.addActionListener(prevBooks);
 		next.addActionListener(nextBooks);
 		filter_by_author.addActionListener(findAuthor);
+		filter_by_genre.addActionListener(findGenre);
+		filter_by_publication_date.addActionListener(findPublicationDate);
 	}
 	
 	public void addTableRow(Object[] row){
@@ -314,6 +336,14 @@ public class BooksTab {
 	
 	private Object makeObj(final String item)  {
 	     return new Object() { public String toString() { return item; } };
+	}
+	
+	public String getSelectedGenre(){
+		return this.text_filter_by_genre.getSelectedItem().toString();
+	}
+	
+	public Date getPublicationDate(){
+		return (Date) this.datePicker.getModel().getValue();
 	}
 	
 	public File getSaveFilePath(){

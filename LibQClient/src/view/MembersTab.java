@@ -335,16 +335,21 @@ public class MembersTab {
 	}
 	
 	public String getSelectedTelephone(){
-		String result = this.table.getValueAt(table.getSelectedRow(), 5).toString();
-		if (result != null && result.equals("")) return result;
+		if (this.table.getValueAt(table.getSelectedRow(), 5) != null) {
+			return this.table.getValueAt(table.getSelectedRow(), 5).toString();
+		}
 		else return null;
 	}
 	
 	public String getSelectedAddress(){
-		if (table.getSelectedRow() == -1) return null;
-		else{
+		if (this.table.getValueAt(table.getSelectedRow(), 6) != null) {
 			return this.table.getValueAt(table.getSelectedRow(), 6).toString();
 		}
+		else return null;
+	}
+	
+	public void update(){
+		all_members.doClick();
 	}
 	
 	public Calendar getSelectedBirthday(){
