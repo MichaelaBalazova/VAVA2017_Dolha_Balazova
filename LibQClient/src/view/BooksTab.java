@@ -55,12 +55,12 @@ public class BooksTab {
 	private JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
 	private JSeparator separator3 = new JSeparator(SwingConstants.HORIZONTAL);
-	private JLabel l_filter_by_author =  new JLabel("Enable filter by author");
-	private JLabel l_filter_by_genre = new JLabel("Enable filter by genre");
-	private JLabel l_filter_by_publication_date = new JLabel("Enable filter by publication date");
-	private JButton filter_by_author = new JButton("Filter by author");
-	private JButton filter_by_genre = new JButton("Filter by genre");
-	private JButton filter_by_publication_date = new JButton("Filter by date");
+	private JLabel l_filter_by_author =  new JLabel(resourceBundle.getString("BooksTab.lbl.L_filter_by_author"));
+	private JLabel l_filter_by_genre = new JLabel(resourceBundle.getString("BooksTab.lbl.L_filter_by_genre"));
+	private JLabel l_filter_by_publication_date = new JLabel(resourceBundle.getString("BooksTab.lbl.L_filter_by_publication_date"));
+	private JButton filter_by_author = new JButton(resourceBundle.getString("BooksTab.btn.Filter_by_author"));
+	private JButton filter_by_genre = new JButton(resourceBundle.getString("BooksTab.btn.Filter_by_genre"));
+	private JButton filter_by_publication_date = new JButton(resourceBundle.getString("BooksTab.btn.Filter_by_publication_date"));
 	private JCheckBox check_filter_by_author = new JCheckBox();
 	private JCheckBox check_filter_by_genre = new JCheckBox();
 	private JCheckBox check_publication_date =  new JCheckBox();
@@ -205,12 +205,8 @@ public class BooksTab {
 		        public void valueChanged(ListSelectionEvent e) { 
 		            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 		            detail_books.setEnabled(!lsm.isSelectionEmpty());
+		            print_QR.setEnabled(!lsm.isSelectionEmpty());
 		        }
-		});
-			
-		detail_books.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-			    } 
 		});
 		
 		check_filter_by_author.addChangeListener(new ChangeListener() {
@@ -278,13 +274,16 @@ public class BooksTab {
 	}
 	
 	public void addActions(ActionListener showAllBooks, ActionListener prevBooks, ActionListener nextBooks,
-			ActionListener findAuthor, ActionListener findGenre, ActionListener findPublicationDate){
+			ActionListener findAuthor, ActionListener findGenre, ActionListener findPublicationDate,
+			ActionListener detailBook, ActionListener qrcode){
 		all_books.addActionListener(showAllBooks);
 		prev.addActionListener(prevBooks);
 		next.addActionListener(nextBooks);
 		filter_by_author.addActionListener(findAuthor);
 		filter_by_genre.addActionListener(findGenre);
 		filter_by_publication_date.addActionListener(findPublicationDate);
+		detail_books.addActionListener(detailBook);
+		print_QR.addActionListener(qrcode);
 	}
 	
 	public void addTableRow(Object[] row){
@@ -346,6 +345,32 @@ public class BooksTab {
 		return (Date) this.datePicker.getModel().getValue();
 	}
 	
+	public int getSelectedBook(){
+		int selected_row = (int) this.table.getValueAt(table.getSelectedRow(), 0);
+		return selected_row;
+	}
+	
+	public boolean isAuthorFilterSelected(){
+		if(check_filter_by_author.isSelected()){
+			return true;
+		}
+		else return false;
+	}
+	
+	public boolean isGenreFilterSelected(){
+		if(check_filter_by_genre.isSelected()){
+			return true;
+		}
+		else return false;
+	}
+	
+	public boolean isDateFilterSelected(){
+		if(check_publication_date.isSelected()){
+			return true;
+		}
+		else return false;
+	}
+	
 	public File getSaveFilePath(){
 		Boolean good_suffix = false;
 		File file = null;
@@ -393,6 +418,12 @@ public class BooksTab {
 		books_per_page.setText(resourceBundle.getString("BooksTab.lbl.Books_per_page")); 
 		prev.setText(resourceBundle.getString("BooksTab.btn.PREV"));
 		next.setText(resourceBundle.getString("BooksTab.btn.NEXT"));
+		l_filter_by_author.setText(resourceBundle.getString("BooksTab.lbl.L_filter_by_author"));
+		l_filter_by_genre.setText(resourceBundle.getString("BooksTab.lbl.L_filter_by_genre"));
+		l_filter_by_publication_date.setText(resourceBundle.getString("BooksTab.lbl.L_filter_by_publication_date"));
+		filter_by_author.setText(resourceBundle.getString("BooksTab.btn.Filter_by_author"));
+		filter_by_genre.setText(resourceBundle.getString("BooksTab.btn.Filter_by_genre"));
+		filter_by_publication_date.setText(resourceBundle.getString("BooksTab.btn.Filter_by_publication_date"));
 		table.getColumnModel().getColumn(1).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Title"));
 		table.getColumnModel().getColumn(2).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Publisher"));
 		table.getColumnModel().getColumn(3).setHeaderValue(resourceBundle.getString("BooksTab.clmn.Pages"));

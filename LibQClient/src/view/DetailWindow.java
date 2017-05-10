@@ -13,7 +13,7 @@ public class DetailWindow extends JFrame {
 	private JPanel panel = new JPanel();
 	public JTextArea txt = new JTextArea();
 	
-	public DetailWindow(int selected_row) {
+	public DetailWindow(String str) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(50, 50, 900, 750);
 		setTitle("Detail of selected book");
@@ -27,5 +27,11 @@ public class DetailWindow extends JFrame {
 		txt.setFont(new Font("Sans Serif", Font.BOLD, 21));
 		txt.setBackground(new Color(204,229,255));
 		panel.add(txt);
+		
+		txt.append(str);
+	}
+	
+	public void setWinVisible(boolean value){
+		this.setVisible(value);
 	}
 }

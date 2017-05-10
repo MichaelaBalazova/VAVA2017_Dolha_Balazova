@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,9 +26,12 @@ import test.BooksManagerRemote;
 import test.EmployeeManagerRemote;
 import test.AvailableBooksManagerRemote;
 import test.MembersManagerRemote;
+import test.QRCodeBeanRemote;
 import view.Available_booksTab;
 import view.BorrowBookWindow;
+import view.DetailWindow;
 import view.MemberListOfBorrowedBooksWindow;
+import view.QRCodeWindow;
 import view.UpdateWindow;
 import view.Window;
 
@@ -52,7 +56,10 @@ public class Controller {
 		FilterAuthor filterAuthor = new FilterAuthor(context, win);
 		FilterGenre filterGenre = new FilterGenre(context, win);
 		FilterPublicationDate filterPublicationDate = new FilterPublicationDate(context, win);
-		win.books_tab.addActions(showAllBooks, prevBooks, nextBooks, filterAuthor, filterGenre, filterPublicationDate);
+		DetailBook detailBook = new DetailBook(context, win);	
+		QRCode qrcode = new QRCode(context, win);	
+		win.books_tab.addActions(showAllBooks, prevBooks, nextBooks, filterAuthor, filterGenre, 
+				filterPublicationDate, detailBook, qrcode);
 		
 		ShowAllMembers showAllMembers = new ShowAllMembers(context, win);		
 		PrevMembers prevMembers = new PrevMembers(context, win);
@@ -82,31 +89,32 @@ public class Controller {
 		
 		public void actionPerformed(ActionEvent e){
 			fillComboBox();
-			BooksManagerRemote remote = null;
-			try {
-				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
-			} catch (NamingException e1) {
-				LOG.severe("Error: "+e);
-			}
-			books_limit = win.books_tab.getLimit();
-			books_offset = 0;		
-			win.books_tab.setOffset(books_offset);
-			win.books_tab.setNextEnabled(true);
-			win.books_tab.setPrevEnabled(false);
+				BooksManagerRemote remote = null;
+				try {
+					remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+				} catch (NamingException e1) {
+					LOG.severe("Error: "+e);
+				}
+				books_limit = win.books_tab.getLimit();
+				books_offset = 0;		
+				win.books_tab.setOffset(books_offset);
+				win.books_tab.setNextEnabled(true);
+				win.books_tab.setPrevEnabled(false);
+				
+				List<BooksModel> books_list = remote.getAllBooks(books_limit, books_offset);
+				win.books_tab.clearTable();
+				for(BooksModel book : books_list){
+					Object[] row = new Object[7];
+					row[0] = book.getId();
+					row[1] = book.getTitle();
+					row[2] = book.getPublisher();
+					row[3] = book.getNo_pages();
+					row[4] = book.getNo_pieces();
+					row[5] = book.getEan_code();
+					row[6] = getGenreText(book);
+					win.books_tab.addTableRow(row);
+				}
 			
-			List<BooksModel> books_list = remote.getAllBooks(books_limit, books_offset);
-			win.books_tab.clearTable();
-			for(BooksModel book : books_list){
-				Object[] row = new Object[7];
-				row[0] = book.getId();
-				row[1] = book.getTitle();
-				row[2] = book.getPublisher();
-				row[3] = book.getNo_pages();
-				row[4] = book.getNo_pieces();
-				row[5] = book.getEan_code();
-				row[6] = getGenreText(book);
-				win.books_tab.addTableRow(row);
-			}
 		}
 		
 		public String getGenreText(BooksModel book){
@@ -149,34 +157,44 @@ public class Controller {
 		}
 		
 		public void actionPerformed(ActionEvent e){
-			BooksManagerRemote remote = null;
-			try {
-				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
-			} catch (NamingException e1) {
-				LOG.severe("Error: "+e1);
+			if(win.books_tab.isAuthorFilterSelected()){
+				filterAuthorsAll();
 			}
-			
-			books_limit = win.books_tab.getLimit();
-			books_offset = win.books_tab.getOffset();
-			books_offset -= books_limit;	
-			win.books_tab.setOffset(books_offset);
-			if (books_offset < books_limit){
-				win.books_tab.setPrevEnabled(false);
+			else if(win.books_tab.isGenreFilterSelected()){
+				filterGenresAll();
 			}
-			
-			List<BooksModel> books_list = remote.getAllBooks(books_limit, books_offset);
-			win.books_tab.clearTable();
-			for(BooksModel book : books_list){
-				Object[] row = new Object[7];
-				row[0] = book.getId();
-				row[1] = book.getTitle();
-				row[2] = book.getPublisher();
-				row[3] = book.getNo_pages();
-				row[4] = book.getNo_pieces();
-				row[5] = book.getEan_code();
-				row[6] = getGenreText(book);
-				win.books_tab.addTableRow(row);
-			}			
+			else if(win.books_tab.isDateFilterSelected()){
+				filterDateAll();
+			}
+			else{
+				BooksManagerRemote remote = null;
+				try {
+					remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+				} catch (NamingException e1) {
+					LOG.severe("Error: "+e1);
+				}
+				books_limit = win.books_tab.getLimit();
+				books_offset = win.books_tab.getOffset();
+				books_offset -= books_limit;	
+				win.books_tab.setOffset(books_offset);
+				if (books_offset < books_limit){
+					win.books_tab.setPrevEnabled(false);
+				}
+				
+				List<BooksModel> books_list = remote.getAllBooks(books_limit, books_offset);
+				win.books_tab.clearTable();
+				for(BooksModel book : books_list){
+					Object[] row = new Object[7];
+					row[0] = book.getId();
+					row[1] = book.getTitle();
+					row[2] = book.getPublisher();
+					row[3] = book.getNo_pages();
+					row[4] = book.getNo_pieces();
+					row[5] = book.getEan_code();
+					row[6] = getGenreText(book);
+					win.books_tab.addTableRow(row);
+				}		
+			}	
 		}
 	
 		public String getGenreText(BooksModel book){
@@ -188,6 +206,100 @@ public class Controller {
 				genre =  new StringBuilder().append(book.getGenre_id().getName()).toString();				
 			}
 			return genre;
+		}
+		
+		public void filterAuthorsAll(){
+			BooksManagerRemote remote = null;
+			try {
+				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e1);
+			}
+			books_limit = win.books_tab.getLimit();
+			books_offset = win.books_tab.getOffset();
+			books_offset -= books_limit;	
+			win.books_tab.setOffset(books_offset);
+			if (books_offset < books_limit){
+				win.books_tab.setPrevEnabled(false);
+			}
+			
+			List<BooksModel> books_list = remote.findAuthor(win.books_tab.getFindAuthorText(), books_limit, books_offset);
+			win.books_tab.clearTable();
+			for(BooksModel book : books_list){
+				Object[] row = new Object[7];
+				row[0] = book.getId();
+				row[1] = book.getTitle();
+				row[2] = book.getPublisher();
+				row[3] = book.getNo_pages();
+				row[4] = book.getNo_pieces();
+				row[5] = book.getEan_code();
+				row[6] = getFullName(book.getAuthor());
+				win.books_tab.addTableRow(row);
+			}		
+		}
+		
+		public void filterGenresAll(){
+			BooksManagerRemote remote = null;
+			try {
+				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e1);
+			}
+			books_limit = win.books_tab.getLimit();
+			books_offset = win.books_tab.getOffset();
+			books_offset -= books_limit;	
+			win.books_tab.setOffset(books_offset);
+			if (books_offset < books_limit){
+				win.books_tab.setPrevEnabled(false);
+			}
+			
+			List<BooksModel> books_list = remote.findGenre(win.books_tab.getSelectedGenre(), books_limit, books_offset);
+			win.books_tab.clearTable();
+			for(BooksModel book : books_list){
+				Object[] row = new Object[7];
+				row[0] = book.getId();
+				row[1] = book.getTitle();
+				row[2] = book.getPublisher();
+				row[3] = book.getNo_pages();
+				row[4] = book.getNo_pieces();
+				row[5] = book.getEan_code();
+				row[6] = getGenreText(book);
+				win.books_tab.addTableRow(row);
+			}	
+		}
+		public void filterDateAll(){
+			BooksManagerRemote remote = null;
+			try {
+				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e1);
+			}
+			books_limit = win.books_tab.getLimit();
+			books_offset = win.books_tab.getOffset();
+			books_offset -= books_limit;	
+			win.books_tab.setOffset(books_offset);
+			if (books_offset < books_limit){
+				win.books_tab.setPrevEnabled(false);
+			}
+			
+			List<BooksModel> books_list = remote.findPublicationDate(win.books_tab.getPublicationDate(), books_limit, books_offset);
+			win.books_tab.clearTable();
+			for(BooksModel book : books_list){
+				Object[] row = new Object[7];
+				row[0] = book.getId();
+				row[1] = book.getTitle();
+				row[2] = book.getPublisher();
+				row[3] = book.getNo_pages();
+				row[4] = book.getNo_pieces();
+				row[5] = book.getEan_code();
+				row[6] = book.getPublication_date();
+				win.books_tab.addTableRow(row);
+			}	
+		}
+		
+		public String getFullName(AuthorsModel author){
+			String fullname =  new StringBuilder().append(author.getFirst_name()).append(" ").append(author.getLast_name()).toString();
+			return fullname;
 		}
 	}
 	
@@ -204,6 +316,56 @@ public class Controller {
 		}
 		
 		public void actionPerformed(ActionEvent e){
+			if(win.books_tab.isAuthorFilterSelected()){
+				filterAuthorsAll();
+			}
+			else if(win.books_tab.isGenreFilterSelected()){
+				filterGenresAll();
+			}
+			else if(win.books_tab.isDateFilterSelected()){
+				filterDateAll();
+			}
+			else{
+				BooksManagerRemote remote = null;
+				try {
+					remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+				} catch (NamingException e1) {
+					LOG.severe("Error: "+e1);
+				}
+				books_limit = win.books_tab.getLimit();
+				books_offset = win.books_tab.getOffset();
+				books_offset += books_limit;
+				win.books_tab.setOffset(books_offset);
+				win.books_tab.setPrevEnabled(true);
+				
+				List<BooksModel> books_list = remote.getAllBooks(books_limit, books_offset);
+				win.books_tab.clearTable();
+				for(BooksModel book : books_list){
+					Object[] row = new Object[7];
+					row[0] = book.getId();
+					row[1] = book.getTitle();
+					row[2] = book.getPublisher();
+					row[3] = book.getNo_pages();
+					row[4] = book.getNo_pieces();
+					row[5] = book.getEan_code();
+					row[6] = getGenreText(book);
+					win.books_tab.addTableRow(row);
+				}	
+			}		
+		}
+	
+		public String getGenreText(BooksModel book){
+			String genre;
+			if (book.getGenre_id().getAdd_text() != null){
+				genre =  new StringBuilder().append(book.getGenre_id().getName()).append(" (").append(book.getGenre_id().getAdd_text()).append(")").toString();
+			}
+			else {
+				genre =  new StringBuilder().append(book.getGenre_id().getName()).toString();				
+			}
+			return genre;
+		}
+		
+		public void filterAuthorsAll(){
 			BooksManagerRemote remote = null;
 			try {
 				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
@@ -216,7 +378,35 @@ public class Controller {
 			win.books_tab.setOffset(books_offset);
 			win.books_tab.setPrevEnabled(true);
 			
-			List<BooksModel> books_list = remote.getAllBooks(books_limit, books_offset);
+			List<BooksModel> books_list = remote.findAuthor(win.books_tab.getFindAuthorText(), books_limit, books_offset);
+			win.books_tab.clearTable();
+			for(BooksModel book : books_list){
+				Object[] row = new Object[7];
+				row[0] = book.getId();
+				row[1] = book.getTitle();
+				row[2] = book.getPublisher();
+				row[3] = book.getNo_pages();
+				row[4] = book.getNo_pieces();
+				row[5] = book.getEan_code();
+				row[6] = getFullName(book.getAuthor());
+				win.books_tab.addTableRow(row);
+			}		
+		}
+		
+		public void filterGenresAll(){
+			BooksManagerRemote remote = null;
+			try {
+				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e1);
+			}
+			books_limit = win.books_tab.getLimit();
+			books_offset = win.books_tab.getOffset();
+			books_offset += books_limit;
+			win.books_tab.setOffset(books_offset);
+			win.books_tab.setPrevEnabled(true);
+			
+			List<BooksModel> books_list = remote.findGenre(win.books_tab.getSelectedGenre(), books_limit, books_offset);
 			win.books_tab.clearTable();
 			for(BooksModel book : books_list){
 				Object[] row = new Object[7];
@@ -228,18 +418,39 @@ public class Controller {
 				row[5] = book.getEan_code();
 				row[6] = getGenreText(book);
 				win.books_tab.addTableRow(row);
-			}			
+			}	
 		}
-	
-		public String getGenreText(BooksModel book){
-			String genre;
-			if (book.getGenre_id().getAdd_text() != null){
-				genre =  new StringBuilder().append(book.getGenre_id().getName()).append(" (").append(book.getGenre_id().getAdd_text()).append(")").toString();
+		public void filterDateAll(){
+			BooksManagerRemote remote = null;
+			try {
+				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e1);
 			}
-			else {
-				genre =  new StringBuilder().append(book.getGenre_id().getName()).toString();				
-			}
-			return genre;
+			books_limit = win.books_tab.getLimit();
+			books_offset = win.books_tab.getOffset();
+			books_offset += books_limit;
+			win.books_tab.setOffset(books_offset);
+			win.books_tab.setPrevEnabled(true);
+			
+			List<BooksModel> books_list = remote.findPublicationDate(win.books_tab.getPublicationDate(), books_limit, books_offset);
+			win.books_tab.clearTable();
+			for(BooksModel book : books_list){
+				Object[] row = new Object[7];
+				row[0] = book.getId();
+				row[1] = book.getTitle();
+				row[2] = book.getPublisher();
+				row[3] = book.getNo_pages();
+				row[4] = book.getNo_pieces();
+				row[5] = book.getEan_code();
+				row[6] = book.getPublication_date();
+				win.books_tab.addTableRow(row);
+			}	
+		}
+		
+		public String getFullName(AuthorsModel author){
+			String fullname =  new StringBuilder().append(author.getFirst_name()).append(" ").append(author.getLast_name()).toString();
+			return fullname;
 		}
 	}
 	
@@ -835,6 +1046,8 @@ public class Controller {
 		
 		private Context context;
 		private Window win;
+		private int books_limit;
+		private int books_offset;
 		
 		public FilterAuthor(Context context, Window win){
 			this.context = context;
@@ -848,7 +1061,13 @@ public class Controller {
 			} catch (NamingException e1) {
 				LOG.severe("Error: "+e1);
 			}
-			List<BooksModel> books_list = remote.findAuthor(win.books_tab.getFindAuthorText());
+			books_limit = win.books_tab.getLimit();
+			books_offset = 0;		
+			win.books_tab.setOffset(books_offset);
+			win.books_tab.setNextEnabled(true);
+			win.books_tab.setPrevEnabled(false);
+			
+			List<BooksModel> books_list = remote.findAuthor(win.books_tab.getFindAuthorText(), books_limit, books_offset);
 			win.books_tab.clearTable();
 			for(BooksModel book : books_list){
 				Object[] row = new Object[7];
@@ -874,6 +1093,8 @@ public class Controller {
 		
 		private Context context;
 		private Window win;
+		private int books_limit;
+		private int books_offset;
 		
 		public FilterGenre(Context context, Window win){
 			this.context = context;
@@ -887,7 +1108,13 @@ public class Controller {
 			} catch (NamingException e1) {
 				LOG.severe("Error: "+e1);
 			}
-			List<BooksModel> books_list = remote.findGenre(win.books_tab.getSelectedGenre());
+			books_limit = win.books_tab.getLimit();
+			books_offset = 0;		
+			win.books_tab.setOffset(books_offset);
+			win.books_tab.setNextEnabled(true);
+			win.books_tab.setPrevEnabled(false);
+			
+			List<BooksModel> books_list = remote.findGenre(win.books_tab.getSelectedGenre(), books_limit, books_offset);
 			win.books_tab.clearTable();
 			for(BooksModel book : books_list){
 				Object[] row = new Object[7];
@@ -918,6 +1145,8 @@ public class Controller {
 		
 		private Context context;
 		private Window win;
+		private int books_limit;
+		private int books_offset;
 		
 		public FilterPublicationDate(Context context, Window win){
 			this.context = context;
@@ -931,7 +1160,13 @@ public class Controller {
 			} catch (NamingException e1) {
 				LOG.severe("Error: "+e1);
 			}
-			List<BooksModel> books_list = remote.findPublicationDate(win.books_tab.getPublicationDate());
+			books_limit = win.books_tab.getLimit();
+			books_offset = 0;		
+			win.books_tab.setOffset(books_offset);
+			win.books_tab.setNextEnabled(true);
+			win.books_tab.setPrevEnabled(false);
+			
+			List<BooksModel> books_list = remote.findPublicationDate(win.books_tab.getPublicationDate(), books_limit, books_offset);
 			win.books_tab.clearTable();
 			for(BooksModel book : books_list){
 				Object[] row = new Object[7];
@@ -944,6 +1179,129 @@ public class Controller {
 				row[6] = book.getPublication_date();
 				win.books_tab.addTableRow(row);
 			}		
+		}
+	}
+	
+	private class DetailBook implements ActionListener{
+		
+		private Context context;
+		private Window win;
+		
+		public DetailBook(Context context, Window win){
+			this.context = context;
+			this.win = win;
+		}
+		
+		public void actionPerformed(ActionEvent e){
+			BooksManagerRemote remote = null;
+			try {
+				remote = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e);
+			}
+			int book_id = win.books_tab.getSelectedBook();
+			BooksModel book = remote.getDetail(book_id);
+			String str = getDetailString(book);
+			DetailWindow detail = new DetailWindow(str);
+			detail.setWinVisible(true);			
+		}
+		
+		public String getDetailString(BooksModel book){
+			StringBuilder tmp = new StringBuilder(); // Using default 16 character size
+			tmp.append("ID : \t" + book.getId() + "\n");
+			tmp.append("TITLE : \t" +book.getTitle() + "\n");
+			tmp.append("PUBLISHER : \t" +book.getPublisher() + "\n");
+			tmp.append("PAGES: \t" + book.getNo_pages() + "\n");
+			tmp.append("PIECES : \t" + book.getNo_pieces() + "\n");
+			tmp.append("EAN CODE : \t" + book.getEan_code() + "\n\n");
+			
+			tmp.append("GENRE : \t" + book.getGenre_id().getName() + "\n");
+			if (book.getGenre_id().getAdd_text() != null){
+				tmp.append("SUBGENRE: \t" + book.getGenre_id().getAdd_text() + "\n\n");
+			}
+			else tmp.append("\n");
+			
+			tmp.append("LOCATION: \tfloor: " + book.getLocation_id().getFloor()
+	        		+ " ||| room: " + book.getLocation_id().getRoom()
+	        		+ " ||| row: " + book.getLocation_id().getRow()
+	        		+ " ||| shelf: " + book.getLocation_id().getShelf() + "\n\n");
+			
+			for(AuthorsModel aut : book.getAuthors_list()){
+	        	tmp.append("AUTHOR: \t" + aut.getFirst_name() + " " + aut.getLast_name());
+	        	if (aut.getAdd_text() != null){
+	        		tmp.append(" (" + aut.getAdd_text() + ")\n");
+	        	}
+	        	else  tmp.append("\n");
+	        }
+			
+			return tmp.toString();			
+		}
+	}
+	
+	private class QRCode implements ActionListener{
+		
+		private Context context;
+		private Window win;
+		
+		public QRCode(Context context, Window win){
+			this.context = context;
+			this.win = win;
+		}
+		
+		public void actionPerformed(ActionEvent e){
+			BooksManagerRemote remote_book = null;
+			try {
+				remote_book = (BooksManagerRemote)context.lookup("ejb:LibQEAR/LibQServer//BooksManagerBean!test.BooksManagerRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e);
+			}
+			QRCodeBeanRemote remote_qr = null;
+			try {
+				remote_qr = (QRCodeBeanRemote)context.lookup("ejb:LibQEAR/LibQServer//QRCodeBean!test.QRCodeBeanRemote");
+			} catch (NamingException e1) {
+				LOG.severe("Error: "+e);
+			}
+			int book_id = win.books_tab.getSelectedBook();
+			BooksModel book = remote_book.getDetail(book_id);
+			String str = getDetailString(book);
+			File file = win.books_tab.getSaveFilePath();
+			int result = remote_qr.createQRCode(file, str);
+			QRCodeWindow qrwin = new QRCodeWindow(file);
+			if (result == -1){
+				qrwin.showErrorMessage();
+			}
+			else qrwin.setWinVisible(true);
+		}
+		
+		public String getDetailString(BooksModel book){
+			StringBuilder tmp = new StringBuilder(); // Using default 16 character size
+			tmp.append("ID : \t" + book.getId() + "\n");
+			tmp.append("TITLE : \t" +book.getTitle() + "\n");
+			tmp.append("PUBLISHER : \t" +book.getPublisher() + "\n");
+			tmp.append("PAGES: \t" + book.getNo_pages() + "\n");
+			tmp.append("PIECES : \t" + book.getNo_pieces() + "\n");
+			tmp.append("EAN CODE : \t" + book.getEan_code() + "\n\n");
+			
+			tmp.append("GENRE : \t" + book.getGenre_id().getName() + "\n");
+			if (book.getGenre_id().getAdd_text() != null){
+				tmp.append("SUBGENRE: \t" + book.getGenre_id().getAdd_text() + "\n\n");
+			}
+			else tmp.append("\n");
+			
+			tmp.append("LOCATION: \tfloor: " + book.getLocation_id().getFloor()
+	        		+ " ||| room: " + book.getLocation_id().getRoom()
+	        		+ " ||| row: " + book.getLocation_id().getRow()
+	        		+ " ||| shelf: " + book.getLocation_id().getShelf() + "\n\n");
+			
+			for(AuthorsModel aut : book.getAuthors_list()){
+	        	tmp.append("AUTHOR: \t" + aut.getFirst_name() + " " + aut.getLast_name());
+	        	if (aut.getAdd_text() != null){
+	        		tmp.append(" (" + aut.getAdd_text() + ")\n");
+	        	}
+	        	else  tmp.append("\n");
+	        }
+			
+			return tmp.toString();			
 		}
 	}
 	

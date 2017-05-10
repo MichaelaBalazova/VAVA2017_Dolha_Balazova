@@ -1,0 +1,8 @@
+[St máj 10 21:39:43 CEST 2017] INFO: Successfuly opened xml config file 
+[St máj 10 21:39:46 CEST 2017] INFO: XNIO version 3.4.0.Final 
+[St máj 10 21:39:46 CEST 2017] INFO: XNIO NIO Implementation Version 3.4.0.Final 
+[St máj 10 21:39:46 CEST 2017] INFO: JBoss Remoting version 4.0.21.Final 
+[St máj 10 21:39:46 CEST 2017] INFO: Successful creation of context in Controller class. 
+[St máj 10 21:39:51 CEST 2017] INFO: EJBCLIENT000017: Received server version 2 and marshalling strategies [river] 
+[St máj 10 21:39:51 CEST 2017] INFO: EJBCLIENT000013: Successful version handshake completed for receiver context EJBReceiverContext{clientContext=org.jboss.ejb.client.EJBClientContext@4d0028db, receiver=Remoting connection EJB receiver [connection=org.jboss.ejb.client.remoting.ConnectionPool$PooledConnection@6c8da1ea,channel=jboss.ejb,nodename=michaela_yoga2]} on channel Channel ID c57f80d9 (outbound) of Remoting connection 46de9eee to localhost/127.0.0.1:8080 of endpoint "client-endpoint" <78d86a7e> 
+[St máj 10 21:39:51 CEST 2017] INFO: JBoss EJB Client version 2.1.4.Final 
