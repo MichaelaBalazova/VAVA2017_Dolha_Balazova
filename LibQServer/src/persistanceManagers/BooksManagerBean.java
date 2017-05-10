@@ -22,13 +22,17 @@ import entity.BooksModel;
 import test.BooksManagerRemote;
 
 /**
- * Session Bean implementation class TestBean
+ * Session Beana, ktora pracuje s DB tabulkou Books
+ * @author Michaela, Domca
  */
 @Stateless
 public class BooksManagerBean implements BooksManagerRemote {
     
 	private static Logger LOG = Logger.getLogger(BooksManagerBean.class.getName());
 	
+	/**
+	 * metoda ktora vykonava select vsetkych knih a strankuje ich
+	 */
     public List<BooksModel> getAllBooks(int limit, int offset){
     	
     	Context ctx;
@@ -79,6 +83,10 @@ public class BooksManagerBean implements BooksManagerRemote {
 		return list;	
     }
     
+    /**
+	 * metoda ktora vykonava select takych knih, kde krstne meno alebo priezviko autora obsahuje zadany string
+	 * teda vykonava nejake filtrovanie udajov na zaklade zadaneho mena autora
+	 */
     public List<BooksModel> findAuthor(String name, int limit, int offset){
     	
     	Context ctx;
@@ -134,6 +142,10 @@ public class BooksManagerBean implements BooksManagerRemote {
 		return list;	
     }
     
+    /**
+	 * metoda ktora vykonava select vsetkych zanrov, ktore nasledne vkladam do comboboxu pre ulahcenie hladania 
+	 * podla zanru
+	 */
     public List<GenresModel> fillComboBox(){
     	
     	Context ctx;
@@ -174,6 +186,10 @@ public class BooksManagerBean implements BooksManagerRemote {
 		return list;	
     }
     
+    /**
+	 * metoda ktora vykonava select vsetkych knih vybrateho zanru
+	 * udaje sa filtruju na zaklade zadaneho zanru v comboboxe v ktorom su vsetky zanre 
+	 */
     public List<BooksModel> findGenre(String genre, int limit, int offset){
     	
     	Context ctx;
@@ -227,6 +243,10 @@ public class BooksManagerBean implements BooksManagerRemote {
 		return list;	
     }
     
+    /**
+	 * metoda ktora vykonava select vsetkych knih, kde je datum publikacie knihy vacsi alebo rovny zadanemu 
+	 * datumu pouzivatelom
+	 */
     public List<BooksModel> findPublicationDate(Date date, int limit, int offset){
     	
     	Context ctx;
@@ -277,6 +297,10 @@ public class BooksManagerBean implements BooksManagerRemote {
 		return list;		
 	}
     
+    /**
+	 * metoda ziskava detail knihy, teda vykonava select a joinuje vsetky dostupne tabulky, ktore sa tykaju 
+	 * knihy (location, authors, genre)
+	 */
     public BooksModel getDetail(int book_id){
     	
     	Context ctx;

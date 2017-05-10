@@ -22,7 +22,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import test.QRCodeBeanRemote;
 
 /**
- * Session Bean implementation class QRCodeBean
+ * Session Beana ktora vytvara QR kod na zaklade zadaneho stringu a uklada ho na zvolenu cestu pouzivatelom
  */
 @Stateless
 public class QRCodeBean implements QRCodeBeanRemote {
