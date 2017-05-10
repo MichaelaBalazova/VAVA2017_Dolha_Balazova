@@ -2,6 +2,12 @@ package entity;
 
 import java.io.Serializable;
 
+/**
+ * trieda reprezentujuca udaje ulozene v tabulke v States
+ * teda zoskupuje 5 roznych stavov v ktorych sa moze kniha nachadzat 
+ * (available, borrowed, reserved, lost, only in library)
+ * @author Michaela, Domca
+ */
 public class StateModel implements Serializable{
 	
 	private int id;

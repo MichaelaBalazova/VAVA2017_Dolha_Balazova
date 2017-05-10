@@ -2,6 +2,11 @@ package entity;
 
 import java.io.Serializable;
 
+/**
+ * trieda reprezentujuca udaje ulozene v tabulke v Locations
+ * kde su zoskupene vsetky miesta v kniznici, kde sa moze kniha nachadzat
+ * @author Michaela, Domca
+ */
 public class LocationModel implements Serializable{
 	
 	private int id;

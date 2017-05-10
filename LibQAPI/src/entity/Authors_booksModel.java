@@ -2,6 +2,13 @@ package entity;
 
 import java.io.Serializable;
 
+
+/**
+ * trieda reprezentujuca udaje ulozene vo vazobnej tabulke Authors_books
+ * tabulka si uchovava cudzie kluce na entity kniha a autor
+ * DB tabulka rozbija vztah many-to-many
+ * @author Michaela, Domca
+ */
 public class Authors_booksModel implements Serializable{
 	
 	private int id;

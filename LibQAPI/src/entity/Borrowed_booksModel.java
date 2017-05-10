@@ -3,6 +3,13 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * trieda reprezentujuca udaje ulozene v tabulke Borrowed Books
+ * kde su len aktualne vypozicane knihy, teda knihy ktore su v tabulke available books pod stavom borrowed
+ * pri kazdom takomto zazzname je potrene si uchovava kto si knihu pozical (member), kto ju vypozical (employee)
+ * a datum odkedy dokedy je vypozicana 
+ * @author Michaela, Domca
+ */
 public class Borrowed_booksModel implements Serializable{
 	
 	private int id;

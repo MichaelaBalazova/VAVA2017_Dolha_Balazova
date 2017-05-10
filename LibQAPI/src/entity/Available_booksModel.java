@@ -2,6 +2,11 @@ package entity;
 
 import java.io.Serializable;
 
+/**
+ * trieda reprezentujuca udaje ulozene vo vazobnej tabulke Available Books
+ * kde su vsetky knihy kniznice a kazdy kus knihy ma svoj vlastny stav (volna, vypozicana, stratena...) 
+ * @author Michaela, Domca
+ */
 public class Available_booksModel implements Serializable{
 	
 	private int id;

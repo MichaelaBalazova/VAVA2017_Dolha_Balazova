@@ -3,6 +3,12 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * trieda reprezentujuca udaje ulozene v tabulke v Members
+ * zoskupuje vsetkych clenov ktory su zaregistrovany v kniznici
+ * kazdy clen ma osobne udaje ktore ho reprezentuju
+ * @author Michaela, Domca
+ */
 public class MembersModel implements Serializable{
 	
 	private int id;

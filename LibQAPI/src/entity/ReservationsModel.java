@@ -3,6 +3,11 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * trieda reprezentujuca udaje ulozene v tabulke v Reservations
+ * zoskupuje vsetky rezervacie knih, teda knihy ktore su v tabulke available books oznacene pod stavom reserved
+ * @author Michaela, Domca
+ */
 public class ReservationsModel implements Serializable{
 
 	private int id;

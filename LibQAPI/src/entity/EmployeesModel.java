@@ -3,6 +3,11 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * trieda reprezentujuca udaje ulozene v tabulke Employees
+ * predstavuje vsetkych zamestnancov kniznice
+ * @author Michaela, Domca
+ */
 public class EmployeesModel implements Serializable{
 	
 	private int id;
